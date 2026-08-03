@@ -11,12 +11,11 @@ required.
 
 ## ▶️ Play it
 
-- **Any computer, instantly:** just open `index.html` in a browser
-  (double-click works).
-- **On the web (recommended):** host the repo with GitHub Pages —
-  *Settings → Pages → Deploy from a branch → `main` / root*. Your game will be
-  at `https://<user>.github.io/<repo>/`. Netlify Drop or any static host works
-  too.
+- **Online (live):** https://jchinchillav.github.io/Chinchilla/ — deployed
+  automatically by GitHub Actions (`.github/workflows/pages.yml`) on every push
+  to the default branch.
+- **Any computer, offline:** just open `index.html` in a browser
+  (double-click works). Netlify Drop or any static host works too.
 
 ## 🎮 How the game works
 

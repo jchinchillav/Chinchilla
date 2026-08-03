@@ -1,8 +1,10 @@
 name: Deploy quiz to GitHub Pages
 
+# Note: the github-pages environment only allows deploys from the
+# repo's default branch, so the push trigger targets that branch.
 on:
   push:
-    branches: [main]
+    branches: [claude/rookie-quiz-game-wcnqhc]
   workflow_dispatch:
 
 permissions:
