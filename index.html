@@ -439,6 +439,7 @@ button{font:inherit;cursor:pointer;border:none;border-radius:10px;transition:all
       <div class="r-score" id="r-score">0/10</div>
       <p class="r-msg" id="r-msg"></p>
       <div class="r-xp" id="r-xp">+0 XP</div>
+      <div id="r-saveerr" style="display:none;max-width:560px;margin:14px auto 0;padding:10px 14px;border-radius:10px;background:rgba(229,72,77,.12);border:1px solid rgba(229,72,77,.4);color:#ff9b9e;font-size:.85rem"></div>
       <div class="r-promo" id="r-promo" style="display:none">
         <div class="promo-title">📢 Promotion earned</div>
         <div class="promo-rank" id="r-promo-rank"></div>
@@ -485,8 +486,8 @@ button{font:inherit;cursor:pointer;border:none;border-radius:10px;transition:all
    and progress syncs across devices automatically.
    ============================================================ */
 const CONFIG = {
-  SUPABASE_URL: "",   // e.g. "https://xxxx.supabase.co"
-  SUPABASE_ANON_KEY: "",
+  SUPABASE_URL: "https://pddqdfgwnhkojlnjcwzj.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_dx3xOfvKAexeUSqJ_3jVkw_LdUKuXLt",
   PASS_PCT: 0.7,          // score needed to clear a level
   XP_CORRECT: 100,        // XP per correct answer
   XP_STREAK: 25,          // extra XP every 3-in-a-row
@@ -1064,72 +1065,143 @@ const LocalBackend = {
   }
 };
 
+/* Talks to Supabase over plain fetch — no CDN, no SDK, so the page
+   stays a single self-contained file and can't be broken by a blocked
+   or offline third-party script. */
 const CloudBackend = {
   kind:"cloud",
-  sb:null,
-  async init(){
-    await new Promise((res,rej)=>{
-      const s=document.createElement("script");
-      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
-      s.onload=res; s.onerror=()=>rej(new Error("Could not load Supabase library"));
-      document.head.appendChild(s);
-    });
-    this.sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  ses:null,          // { access_token, refresh_token, user }
+  SESKEY:"rq.cloudsession",
+
+  _url(p){ return CONFIG.SUPABASE_URL.replace(/\/+$/,"") + p; },
+  async _fetch(path, opts={}, auth=true){
+    const h = Object.assign({
+      "apikey": CONFIG.SUPABASE_ANON_KEY,
+      "Content-Type": "application/json"
+    }, opts.headers||{});
+    if (auth && this.ses && this.ses.access_token) h["Authorization"] = "Bearer "+this.ses.access_token;
+    let r;
+    try{ r = await fetch(this._url(path), Object.assign({}, opts, {headers:h})); }
+    catch(e){ throw new Error("No connection to the server. Check your internet and try again."); }
+    if (r.status===401 && auth && this.ses && this.ses.refresh_token && !opts._retried){
+      if (await this._refresh()) return this._fetch(path, Object.assign({}, opts, {_retried:true}), auth);
+    }
+    if (!r.ok){
+      let msg = "Request failed ("+r.status+")";
+      try{ const j = await r.json(); msg = j.error_description || j.msg || j.message || j.error || msg; }catch(e){}
+      const err = new Error(msg); err.status = r.status; throw err;
+    }
+    if (r.status===204) return null;
+    const t = await r.text();
+    return t ? JSON.parse(t) : null;
   },
+  _save(s){ this.ses = s; try{ localStorage.setItem(this.SESKEY, JSON.stringify(s)); }catch(e){} },
+  _clear(){ this.ses = null; try{ localStorage.removeItem(this.SESKEY); }catch(e){} },
+  async _refresh(){
+    try{
+      const d = await this._fetch("/auth/v1/token?grant_type=refresh_token",
+        { method:"POST", body: JSON.stringify({ refresh_token: this.ses.refresh_token }) }, false);
+      if (d && d.access_token){ this._save(d); return true; }
+    }catch(e){}
+    this._clear(); return false;
+  },
+  _name(u, fallbackEmail){
+    return (u && u.user_metadata && u.user_metadata.display_name) || (fallbackEmail||"").split("@")[0] || "Officer";
+  },
+
+  async init(){
+    try{ this.ses = JSON.parse(localStorage.getItem(this.SESKEY)||"null"); }catch(e){ this.ses = null; }
+    /* Confirm the backend is actually reachable; Auth.boot falls back
+       to local mode if this throws, instead of leaving a dead page. */
+    const ctl = new AbortController();
+    const t = setTimeout(()=>ctl.abort(), 12000);
+    try{
+      const r = await fetch(this._url("/auth/v1/health"), { headers:{ "apikey": CONFIG.SUPABASE_ANON_KEY }, signal: ctl.signal });
+      if (!r.ok && r.status>=500) throw new Error("Server unavailable");
+    } finally { clearTimeout(t); }
+  },
+
   async register(email, pass, name){
-    const { data, error } = await this.sb.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
-    if (error) throw new Error(error.message);
-    if (!data.session) throw new Error("CONFIRM_EMAIL"); // email confirmation flow
-    await this.sb.from("rookie_quiz_progress").upsert({ user_id: data.user.id, display_name: name, data: {}, xp: 0 });
-    return { email, name };
+    const d = await this._fetch("/auth/v1/signup", { method:"POST", body: JSON.stringify({
+      email: email.trim(), password: pass, data: { display_name: name.trim() }
+    })}, false);
+    if (!d || !d.access_token) throw new Error("CONFIRM_EMAIL");
+    this._save(d);
+    const u = d.user || {};
+    await this.saveProgress({ xp:0, levels:{}, bonus:{} });
+    return { email: u.email || email, name: this._name(u, email) };
   },
   async login(email, pass){
-    const { data, error } = await this.sb.auth.signInWithPassword({ email, password: pass });
-    if (error) throw new Error(error.message);
-    const name = (data.user.user_metadata && data.user.user_metadata.display_name) || email.split("@")[0];
-    return { email, name };
+    const d = await this._fetch("/auth/v1/token?grant_type=password",
+      { method:"POST", body: JSON.stringify({ email: email.trim(), password: pass }) }, false);
+    this._save(d);
+    const u = d.user || {};
+    return { email: u.email || email, name: this._name(u, email) };
   },
-  async logout(){ await this.sb.auth.signOut(); },
+  async logout(){
+    try{ await this._fetch("/auth/v1/logout", { method:"POST" }); }catch(e){}
+    this._clear();
+  },
   async currentUser(){
-    const { data } = await this.sb.auth.getSession();
-    if (!data.session) return null;
-    const u = data.session.user;
-    return { email: u.email, name: (u.user_metadata && u.user_metadata.display_name) || u.email.split("@")[0] };
+    if (!this.ses || !this.ses.access_token) return null;
+    try{
+      const u = await this._fetch("/auth/v1/user", { method:"GET" });
+      if (!u || !u.id) { this._clear(); return null; }
+      this.ses.user = u; this._save(this.ses);
+      return { email: u.email, name: this._name(u, u.email) };
+    }catch(e){ if (e.status===401||e.status===403) this._clear(); return null; }
   },
   async loadProgress(){
-    const { data: s } = await this.sb.auth.getSession(); if(!s.session) return null;
-    const { data } = await this.sb.from("rookie_quiz_progress").select("data,xp").eq("user_id", s.session.user.id).maybeSingle();
-    if (!data) return null;
-    const p = data.data || {}; p.xp = data.xp || p.xp || 0;
+    if (!this.ses || !this.ses.user) return null;
+    const rows = await this._fetch("/rest/v1/rookie_quiz_progress?select=data,xp&user_id=eq."+encodeURIComponent(this.ses.user.id), { method:"GET" });
+    if (!rows || !rows.length) return null;
+    const p = rows[0].data || {};
+    p.xp = rows[0].xp || p.xp || 0;
     return p;
   },
   async saveProgress(p){
-    const { data: s } = await this.sb.auth.getSession(); if(!s.session) return;
-    const u = s.session.user;
-    await this.sb.from("rookie_quiz_progress").upsert({
-      user_id: u.id,
-      display_name: (u.user_metadata && u.user_metadata.display_name) || u.email.split("@")[0],
-      data: p, xp: p.xp||0, updated_at: new Date().toISOString()
+    if (!this.ses || !this.ses.user) return;
+    const u = this.ses.user;
+    await this._fetch("/rest/v1/rookie_quiz_progress", {
+      method:"POST",
+      headers:{ "Prefer":"resolution=merge-duplicates,return=minimal" },
+      body: JSON.stringify([{
+        user_id: u.id,
+        display_name: this._name(u, u.email),
+        data: p, xp: p.xp||0, rank_title: rankTitle(p),
+        updated_at: new Date().toISOString()
+      }])
     });
   },
   async leaderboard(){
-    const { data: s } = await this.sb.auth.getSession();
-    const { data } = await this.sb.from("rookie_quiz_leaderboard").select("*").order("xp",{ascending:false}).limit(25);
-    return (data||[]).map(r=>({ name:r.display_name, xp:r.xp, rank:r.rank_title||"", me: s.session && r.user_id===s.session.user.id }));
+    const rows = await this._fetch("/rest/v1/rpc/rookie_quiz_leaderboard", { method:"POST", body:"{}" });
+    const mine = this.ses && this.ses.user && this.ses.user.id;
+    return (rows||[]).map(r=>({ name:r.display_name, xp:r.xp, rank:r.rank_title||"", me: r.user_id===mine }));
   }
 };
 
-const Store = (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) ? CloudBackend : LocalBackend;
+let Store = (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) ? CloudBackend : LocalBackend;
 
 /* ==================== AUTH controller ==================== */
 const Auth = {
   user:null,
+  degraded:false,
   async boot(){
-    if (Store.init) { try{ await Store.init(); }catch(e){ console.error(e); } }
-    $("auth-mode-note").textContent = Store.kind==="cloud"
-      ? "☁️ Cloud mode: your account and progress sync across all your devices."
-      : "💾 Local mode: your account and progress are stored in this browser. (Cloud sync is pre-wired — see the Help screen.)";
-    this.user = await Store.currentUser();
+    if (Store.init){
+      try{ await Store.init(); }
+      catch(e){
+        /* Backend unreachable — keep the game playable instead of
+           leaving a dead page; progress stays in this browser. */
+        console.error("Cloud unavailable, falling back to local mode:", e);
+        Store = LocalBackend; this.degraded = true;
+      }
+    }
+    $("auth-mode-note").textContent = this.degraded
+      ? "⚠️ Can't reach the server right now, so you're playing in offline mode: your account and progress stay in this browser. Reload later to sync."
+      : (Store.kind==="cloud"
+        ? "☁️ Cloud mode: your account and progress sync across all your devices."
+        : "💾 Local mode: your account and progress are stored in this browser. (Cloud sync is pre-wired — see the Help screen.)");
+    try{ this.user = await Store.currentUser(); }catch(e){ this.user = null; }
     if (this.user) { await Game.loadUserProgress(); UI.showMap(); }
     else UI.show("screen-auth");
   },
@@ -1513,11 +1585,15 @@ const Game = {
     st.attempts++; st.best=Math.max(st.best,r.correct); st.stars=Math.max(st.stars,stars); st.passed=st.passed||passed;
     box[lvl.id]=st;
     this.progress.xp=(this.progress.xp||0)+r.xp;
-    try{ await Store.saveProgress(this.progress); }catch(e){ console.error("save failed",e); }
+    let saveErr = null;
+    try{ await Store.saveProgress(this.progress); }
+    catch(e){ console.error("save failed",e); saveErr = e.message||"unknown error"; }
     /* results screen */
     $("r-stars").textContent = stars>0 ? "⭐".repeat(stars) : "💤";
     $("r-score").textContent = r.correct+"/"+total;
     $("r-xp").textContent = "+"+r.xp.toLocaleString()+" XP"+(firstClear?" (incl. first-clear bonus)":"");
+    $("r-saveerr").style.display = saveErr ? "" : "none";
+    if (saveErr) $("r-saveerr").textContent = "⚠️ Couldn't save this run to the server ("+saveErr+"). Your XP is showing, but reload and replay if it doesn't stick.";
     const doneAll = LEVELS.every(l=>this.progress.levels[l.id]&&this.progress.levels[l.id].passed);
     if (passed){
       $("r-title").textContent = this.isBonus ? "Bonus cleared!" : "Promoted!";

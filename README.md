@@ -38,27 +38,39 @@ required.
 - Every answer reveals a 📁 **case-file fun fact**.
 - 🏆 **Precinct roster** ranks all registered players by XP.
 
-## 👤 Accounts & progress
+## 👤 Accounts & progress — ☁️ cloud mode is ON
 
-The game ships in **local mode**: accounts (email + password, hashed) and
-progress are stored in the browser's `localStorage`. You can move progress
-between computers with **Export / Import progress** (Help screen).
+Accounts are real Supabase Auth users (email + password). Progress syncs
+across every device, and the 🏆 **Precinct Roster** is a global leaderboard
+shared by all players.
 
-### ☁️ Switching to cloud mode (Supabase) — already wired
+How it stays safe:
 
-1. Create (or pick) a Supabase project.
-2. Run [`supabase/schema.sql`](supabase/schema.sql) in its SQL editor.
-3. In `index.html`, fill in the two values at the top of the script:
+- Players can read and write **only their own** progress row (row-level
+  security).
+- The leaderboard is a `SECURITY DEFINER` function that returns **only**
+  display name, rank and XP — never emails, never anything else in the
+  database.
+- The key in `CONFIG` is a *publishable* key. It is meant to be public; all
+  real access is decided by the policies above.
+
+If the backend is unreachable (offline, blocked network), the game does **not**
+break: it falls back to offline mode, says so on the sign-in screen, and keeps
+progress in that browser.
+
+### Pointing it at a different Supabase project
+
+1. Run [`supabase/schema.sql`](supabase/schema.sql) in the new project's SQL editor.
+2. Replace the two values at the top of the script in `index.html`:
 
 ```js
 const CONFIG = {
   SUPABASE_URL: "https://YOURPROJECT.supabase.co",
-  SUPABASE_ANON_KEY: "YOUR-ANON-KEY",
+  SUPABASE_ANON_KEY: "YOUR-PUBLISHABLE-KEY",
   ...
 ```
 
-That's it. Accounts become real Supabase Auth users (email + password),
-progress syncs across devices, and the leaderboard becomes global.
+Leave both empty to run the game fully offline (accounts stored per browser).
 
 ## 🖼️ Add your own screenshots
 
