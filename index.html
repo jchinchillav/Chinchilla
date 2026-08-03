@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rookie — Mid-Wilshire Quiz Academy</title>
+<meta name="description" content="Unofficial fan-made trivia game for the TV series The Rookie. Climb the ranks from Boot to Director!">
+<style>
+/* ============================================================
+   THE ROOKIE — MID-WILSHIRE QUIZ ACADEMY
+   Unofficial fan-made trivia game.
+   ============================================================ */
+:root{
+  --navy-950:#060b16;
+  --navy-900:#0a1224;
+  --navy-800:#101c36;
+  --navy-700:#182747;
+  --navy-600:#22345c;
+  --ink:#eaf0fb;
+  --ink-dim:#9fb0cc;
+  --ink-faint:#64748f;
+  --gold:#d9a521;
+  --gold-bright:#f2c14e;
+  --blue:#3b82f6;
+  --blue-soft:#7fb0ff;
+  --red:#e5484d;
+  --green:#30b566;
+  --card:#111d38;
+  --card-2:#0d1730;
+  --radius:14px;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  font-size:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--navy-950);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+/* ---- animated city backdrop ---- */
+.bg{
+  position:fixed;inset:0;z-index:0;overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(59,130,246,.16), transparent 60%),
+    radial-gradient(900px 500px at 10% 110%, rgba(217,165,33,.10), transparent 60%),
+    linear-gradient(180deg,#060b16 0%,#0a1224 55%,#0c1428 100%);
+}
+.bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.022) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.014) 0 1px, transparent 1px 44px);
+  mask-image:radial-gradient(80% 70% at 50% 30%, #000 30%, transparent 100%);
+}
+.lightbar{
+  position:fixed;top:0;left:0;right:0;height:4px;z-index:5;
+  background:linear-gradient(90deg,#e5484d 0%,#e5484d 45%,transparent 50%,#3b82f6 55%,#3b82f6 100%);
+  background-size:220% 100%;
+  animation:copsweep 5.5s linear infinite;
+  opacity:.85;
+}
+@keyframes copsweep{0%{background-position:0% 0}50%{background-position:100% 0}100%{background-position:0% 0}}
+
+#app{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:26px 18px 90px}
+.screen{display:none;animation:fadein .35s ease}
+.screen.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---- typography ---- */
+.h-title{
+  font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+  font-stretch:condensed;line-height:1.05;
+}
+.brand{display:flex;align-items:center;gap:16px;justify-content:center;margin:6px 0 4px}
+.brand .h-title{font-size:clamp(1.7rem,5vw,2.7rem)}
+.brand .sub{color:var(--gold-bright);letter-spacing:.42em;font-size:.78rem;font-weight:700;text-transform:uppercase;text-align:center}
+.tagline{color:var(--ink-dim);text-align:center;font-size:.95rem;margin-top:10px}
+.disclaimer{color:var(--ink-faint);font-size:.72rem;text-align:center;margin-top:14px}
+
+/* ---- badge logo ---- */
+.badge-logo{width:84px;height:92px;filter:drop-shadow(0 6px 16px rgba(217,165,33,.35))}
+
+/* ---- cards / panels ---- */
+.panel{
+  background:linear-gradient(180deg,var(--card) 0%,var(--card-2) 100%);
+  border:1px solid rgba(159,176,204,.14);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:26px;
+}
+.panel + .panel{margin-top:18px}
+
+/* ---- buttons ---- */
+button{font:inherit;cursor:pointer;border:none;border-radius:10px;transition:all .15s ease}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 22px;font-weight:700;letter-spacing:.04em;
+  background:var(--navy-700);color:var(--ink);
+  border:1px solid rgba(159,176,204,.18);
+}
+.btn:hover{background:var(--navy-600);transform:translateY(-1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-gold{
+  background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+  color:#20180a;border:1px solid rgba(0,0,0,.25);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.btn-gold:hover{filter:brightness(1.07);background:linear-gradient(180deg,var(--gold-bright),var(--gold))}
+.btn-blue{background:linear-gradient(180deg,#4f8ef7,#2563eb);color:#fff}
+.btn-ghost{background:transparent;border:1px solid rgba(159,176,204,.25);color:var(--ink-dim)}
+.btn-ghost:hover{color:var(--ink);border-color:rgba(159,176,204,.5);background:rgba(255,255,255,.03)}
+.btn-danger{background:transparent;border:1px solid rgba(229,72,77,.4);color:#ff8f93}
+.btn-sm{padding:7px 14px;font-size:.85rem}
+.btn-block{width:100%}
+
+/* ---- auth ---- */
+.auth-wrap{max-width:430px;margin:26px auto 0}
+.tabs{display:flex;gap:6px;background:var(--navy-800);padding:6px;border-radius:12px;margin-bottom:20px}
+.tabs button{flex:1;padding:10px;border-radius:8px;background:transparent;color:var(--ink-dim);font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:.8rem}
+.tabs button.on{background:var(--navy-600);color:var(--ink)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px}
+.field input{
+  width:100%;padding:12px 14px;border-radius:10px;
+  background:var(--navy-900);border:1px solid rgba(159,176,204,.22);
+  color:var(--ink);font-size:1rem;outline:none;
+}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.18)}
+.form-err{color:#ff9b9e;font-size:.85rem;min-height:1.2em;margin:4px 0 10px}
+.form-ok{color:#7fe0a8;font-size:.85rem;min-height:1.2em;margin:4px 0 10px}
+.auth-note{font-size:.78rem;color:var(--ink-faint);margin-top:16px;text-align:center}
+
+/* ---- top HUD ---- */
+.hud{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:linear-gradient(180deg,var(--card),var(--card-2));
+  border:1px solid rgba(159,176,204,.14);border-radius:var(--radius);
+  padding:12px 18px;margin-bottom:20px;box-shadow:var(--shadow);
+}
+.hud .who{display:flex;align-items:center;gap:10px;min-width:0}
+.hud .avatar{
+  width:40px;height:40px;border-radius:50%;flex:none;
+  background:linear-gradient(160deg,var(--gold-bright),var(--gold));
+  color:#241a08;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem;
+}
+.hud .name{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.hud .rank-line{font-size:.75rem;color:var(--gold-bright);letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.hud .spacer{flex:1}
+.hud .stat{
+  text-align:center;padding:4px 14px;border-left:1px solid rgba(159,176,204,.14);
+}
+.hud .stat b{display:block;font-size:1.05rem}
+.hud .stat span{font-size:.68rem;letter-spacing:.12em;color:var(--ink-dim);text-transform:uppercase}
+.hud-actions{display:flex;gap:8px}
+
+/* ---- career map ---- */
+.map-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:26px 0 14px;flex-wrap:wrap}
+.map-head h2{font-size:1.15rem;letter-spacing:.18em;text-transform:uppercase}
+.map-head .hint{color:var(--ink-faint);font-size:.8rem}
+.levels{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px}
+.level-card{
+  position:relative;display:flex;gap:14px;align-items:center;text-align:left;
+  background:linear-gradient(180deg,var(--card),var(--card-2));
+  border:1px solid rgba(159,176,204,.16);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow);color:var(--ink);
+}
+.level-card:hover:not(.locked){transform:translateY(-2px);border-color:rgba(217,165,33,.5)}
+.level-card.locked{opacity:.45;cursor:not-allowed;filter:saturate(.4)}
+.level-card.bonus{border-color:rgba(217,165,33,.45);background:linear-gradient(180deg,#1a1810,#12100a)}
+.level-card .insignia{width:52px;height:52px;flex:none}
+.level-card .meta{min-width:0;flex:1}
+.level-card .lvl-n{font-size:.66rem;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase;font-weight:700}
+.level-card .lvl-name{font-weight:900;letter-spacing:.05em;text-transform:uppercase;font-size:1.0rem;line-height:1.2}
+.level-card .lvl-desc{font-size:.78rem;color:var(--ink-dim);margin-top:2px}
+.level-card .lvl-stars{margin-top:5px;font-size:.85rem;letter-spacing:.1em;color:var(--gold-bright)}
+.level-card .lock{position:absolute;top:10px;right:12px;font-size:1rem}
+.level-card .done-chip{
+  position:absolute;top:10px;right:12px;font-size:.62rem;font-weight:800;letter-spacing:.08em;
+  background:rgba(48,181,102,.18);color:#7fe0a8;border:1px solid rgba(48,181,102,.4);
+  padding:2px 8px;border-radius:99px;text-transform:uppercase;
+}
+.bonus-tag{
+  display:inline-block;font-size:.6rem;font-weight:900;letter-spacing:.16em;
+  background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#241a08;
+  border-radius:4px;padding:2px 7px;margin-bottom:4px;text-transform:uppercase;
+}
+
+/* ---- quiz screen ---- */
+.quiz-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.quiz-top .q-level{font-weight:900;letter-spacing:.1em;text-transform:uppercase;font-size:.95rem}
+.quiz-top .q-level small{display:block;color:var(--gold-bright);font-size:.66rem;letter-spacing:.2em}
+.quiz-top .spacer{flex:1}
+.timer{
+  font-variant-numeric:tabular-nums;font-weight:900;font-size:1.05rem;
+  border:2px solid rgba(217,165,33,.55);color:var(--gold-bright);
+  border-radius:99px;padding:4px 14px;min-width:64px;text-align:center;
+}
+.timer.low{border-color:var(--red);color:#ff9b9e;animation:pulse .6s infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.07)}}
+.q-progress{display:flex;gap:5px;margin-bottom:18px}
+.q-progress .dot{height:6px;flex:1;border-radius:99px;background:var(--navy-700)}
+.q-progress .dot.cur{background:var(--blue)}
+.q-progress .dot.ok{background:var(--green)}
+.q-progress .dot.bad{background:var(--red)}
+.q-kind{
+  display:inline-block;font-size:.64rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue-soft);border:1px solid rgba(127,176,255,.35);border-radius:99px;
+  padding:3px 10px;margin-bottom:14px;
+}
+.q-text{font-size:clamp(1.05rem,2.6vw,1.35rem);font-weight:700;line-height:1.45;margin-bottom:8px}
+.q-quote{
+  margin:14px 0 6px;padding:16px 18px;border-left:4px solid var(--gold);
+  background:rgba(217,165,33,.07);border-radius:0 10px 10px 0;
+  font-size:1.08rem;font-style:italic;color:#f4ead0;
+}
+.q-media{margin:14px auto 6px;text-align:center}
+.q-media img,.q-media svg{max-width:100%;max-height:300px;border-radius:12px;border:1px solid rgba(159,176,204,.2)}
+.answers{display:grid;gap:10px;margin-top:18px}
+@media(min-width:640px){.answers.grid2{grid-template-columns:1fr 1fr}}
+.ans{
+  position:relative;text-align:left;padding:14px 16px 14px 52px;border-radius:12px;
+  background:var(--navy-800);border:1px solid rgba(159,176,204,.18);color:var(--ink);
+  font-size:1rem;font-weight:600;line-height:1.35;
+}
+.ans .key{
+  position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:8px;background:var(--navy-600);
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900;color:var(--ink-dim);
+}
+.ans:hover:not(:disabled){border-color:var(--blue);background:var(--navy-700)}
+.ans.correct{background:rgba(48,181,102,.16);border-color:var(--green)}
+.ans.correct .key{background:var(--green);color:#fff}
+.ans.wrong{background:rgba(229,72,77,.14);border-color:var(--red)}
+.ans.wrong .key{background:var(--red);color:#fff}
+.ans.dim{opacity:.5}
+.free-input{display:flex;gap:10px;margin-top:18px}
+.free-input input{
+  flex:1;padding:14px 16px;border-radius:12px;background:var(--navy-900);
+  border:1px solid rgba(159,176,204,.25);color:var(--ink);font-size:1.05rem;outline:none;
+  letter-spacing:.06em;
+}
+.free-input input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,165,33,.16)}
+.hint-line{margin-top:10px;font-size:.85rem;color:var(--ink-dim)}
+.hint-line button{background:none;color:var(--blue-soft);text-decoration:underline;font-size:.85rem;padding:0}
+
+/* feedback */
+.feedback{margin-top:18px;border-radius:12px;padding:16px 18px;display:none;animation:fadein .25s ease}
+.feedback.show{display:block}
+.feedback.good{background:rgba(48,181,102,.12);border:1px solid rgba(48,181,102,.4)}
+.feedback.bad{background:rgba(229,72,77,.12);border:1px solid rgba(229,72,77,.4)}
+.feedback .verdict{font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:.9rem;margin-bottom:6px}
+.feedback.good .verdict{color:#7fe0a8}
+.feedback.bad .verdict{color:#ff9b9e}
+.feedback .case-file{font-size:.9rem;color:var(--ink-dim)}
+.feedback .case-file b{color:var(--gold-bright);letter-spacing:.06em}
+.q-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+.streak-pop{
+  position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:60;
+  background:linear-gradient(180deg,var(--gold-bright),var(--gold));color:#241a08;
+  font-weight:900;letter-spacing:.1em;padding:10px 22px;border-radius:99px;
+  box-shadow:0 12px 30px rgba(217,165,33,.4);opacity:0;pointer-events:none;text-transform:uppercase;
+}
+.streak-pop.show{animation:streak 1.4s ease}
+@keyframes streak{0%{opacity:0;transform:translateX(-50%) scale(.6)}18%{opacity:1;transform:translateX(-50%) scale(1.05)}30%{transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-18px)}}
+
+/* ---- results ---- */
+.results{text-align:center;padding:34px 26px}
+.results .r-stars{font-size:2.4rem;letter-spacing:.2em;margin:8px 0}
+.results h2{font-size:1.6rem;letter-spacing:.12em;text-transform:uppercase;margin:6px 0}
+.results .r-score{font-size:3.2rem;font-weight:900;color:var(--gold-bright);font-variant-numeric:tabular-nums}
+.results .r-msg{color:var(--ink-dim);max-width:520px;margin:10px auto 0}
+.results .r-xp{
+  display:inline-block;margin-top:16px;padding:8px 20px;border-radius:99px;
+  background:rgba(59,130,246,.14);border:1px solid rgba(59,130,246,.4);color:var(--blue-soft);font-weight:800;
+}
+.results .r-promo{
+  margin:22px auto 0;max-width:560px;padding:18px;border-radius:12px;
+  background:rgba(217,165,33,.1);border:1px solid rgba(217,165,33,.45);
+}
+.results .r-promo .promo-title{color:var(--gold-bright);font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:.85rem}
+.results .r-promo .promo-rank{font-size:1.35rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+.results .r-actions{display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+
+/* ---- leaderboard / modal ---- */
+.modal-back{position:fixed;inset:0;background:rgba(3,6,12,.78);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+.modal-back.show{display:flex}
+.modal{max-width:640px;width:100%;animation:fadein .25s ease}
+.modal .m-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.modal .m-head h3{letter-spacing:.16em;text-transform:uppercase;font-size:1.05rem}
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--navy-800);margin-bottom:8px;border:1px solid rgba(159,176,204,.12)}
+.lb-row.me{border-color:rgba(217,165,33,.55);background:rgba(217,165,33,.08)}
+.lb-row .pos{width:34px;text-align:center;font-weight:900;color:var(--gold-bright);font-variant-numeric:tabular-nums}
+.lb-row .lb-name{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-row .lb-rank{font-size:.68rem;color:var(--ink-dim);letter-spacing:.1em;text-transform:uppercase}
+.lb-row .lb-xp{font-weight:900;font-variant-numeric:tabular-nums;color:var(--blue-soft)}
+.m-note{font-size:.78rem;color:var(--ink-faint);margin-top:12px}
+.about p{margin-bottom:10px;font-size:.92rem;color:var(--ink-dim)}
+.about h4{margin:16px 0 6px;color:var(--gold-bright);letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
+.about code{background:var(--navy-900);border:1px solid rgba(159,176,204,.2);border-radius:6px;padding:1px 6px;font-size:.82rem;color:#bcd3ff}
+
+/* ---- confetti ---- */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.confetti i{
+  position:absolute;top:-14px;width:9px;height:14px;opacity:.95;
+  animation:fall linear forwards;
+}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.7}}
+
+/* ---- footer ---- */
+.foot{position:fixed;bottom:0;left:0;right:0;z-index:4;text-align:center;padding:9px;font-size:.68rem;color:var(--ink-faint);background:linear-gradient(0deg,rgba(4,8,16,.92),transparent)}
+@media(max-width:560px){
+  .hud .stat{padding:4px 9px}
+  .hud .name{max-width:110px}
+  #app{padding:16px 12px 90px}
+  .panel{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="lightbar"></div>
+<div id="app">
+
+  <!-- ============ AUTH SCREEN ============ -->
+  <section id="screen-auth" class="screen">
+    <div class="brand" style="flex-direction:column;margin-top:26px">
+      <svg class="badge-logo" viewBox="0 0 100 110" aria-hidden="true">
+        <path d="M50 4 L62 12 L78 10 L82 26 L96 34 L90 50 L96 66 L82 74 L78 90 L62 88 L50 104 L38 88 L22 90 L18 74 L4 66 L10 50 L4 34 L18 26 L22 10 L38 12 Z" fill="#0e1a33" stroke="#d9a521" stroke-width="3"/>
+        <circle cx="50" cy="50" r="26" fill="none" stroke="#d9a521" stroke-width="2.5"/>
+        <path d="M50 32 l5.5 11.2 12.4 1.8 -9 8.7 2.1 12.3 -11 -5.8 -11 5.8 2.1 -12.3 -9 -8.7 12.4 -1.8 Z" fill="#f2c14e"/>
+        <text x="50" y="19" text-anchor="middle" font-size="7.5" font-weight="900" fill="#f2c14e" letter-spacing="1">QUIZ</text>
+        <text x="50" y="97" text-anchor="middle" font-size="7.5" font-weight="900" fill="#f2c14e" letter-spacing="1">ACADEMY</text>
+      </svg>
+      <div>
+        <div class="h-title" style="text-align:center">The Rookie</div>
+        <div class="sub">Mid-Wilshire Quiz Academy</div>
+      </div>
+    </div>
+    <p class="tagline">Enroll at the academy, climb the ranks from <b>Boot</b> to <b>Director of The Rookie</b>.<br>Every question is a Tim Test. Don't wash out.</p>
+
+    <div class="auth-wrap panel">
+      <div class="tabs">
+        <button id="tab-login" class="on" onclick="UI.authTab('login')">Sign in</button>
+        <button id="tab-register" onclick="UI.authTab('register')">Register</button>
+      </div>
+      <form id="form-login" onsubmit="return Auth.submitLogin(event)">
+        <div class="field"><label>Email</label><input type="email" id="li-email" autocomplete="username" required placeholder="officer@midwilshire.lapd"></div>
+        <div class="field"><label>Password</label><input type="password" id="li-pass" autocomplete="current-password" required placeholder="••••••••"></div>
+        <div class="form-err" id="li-err"></div>
+        <button class="btn btn-gold btn-block" type="submit">🚔 &nbsp;Report for duty</button>
+      </form>
+      <form id="form-register" style="display:none" onsubmit="return Auth.submitRegister(event)">
+        <div class="field"><label>Officer name (shown on leaderboard)</label><input type="text" id="rg-name" maxlength="24" required placeholder="e.g. Officer Chinchilla"></div>
+        <div class="field"><label>Email</label><input type="email" id="rg-email" autocomplete="username" required placeholder="you@example.com"></div>
+        <div class="field"><label>Password (min. 6 characters)</label><input type="password" id="rg-pass" autocomplete="new-password" minlength="6" required placeholder="••••••••"></div>
+        <div class="form-err" id="rg-err"></div>
+        <button class="btn btn-gold btn-block" type="submit">⭐ &nbsp;Join the academy</button>
+      </form>
+      <div class="auth-note" id="auth-mode-note"></div>
+    </div>
+    <p class="disclaimer">Unofficial fan project. Not affiliated with ABC, Lionsgate/eOne or the creators of “The Rookie”. Made with ❤️ for fans.</p>
+  </section>
+
+  <!-- ============ CAREER MAP ============ -->
+  <section id="screen-map" class="screen">
+    <div class="hud">
+      <div class="who">
+        <div class="avatar" id="hud-avatar">?</div>
+        <div>
+          <div class="name" id="hud-name">Officer</div>
+          <div class="rank-line" id="hud-rank">Boot</div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="stat"><b id="hud-xp">0</b><span>XP</span></div>
+      <div class="stat"><b id="hud-levels">0/9</b><span>Ranks</span></div>
+      <div class="stat"><b id="hud-stars">0</b><span>Stars</span></div>
+      <div class="hud-actions">
+        <button class="btn btn-ghost btn-sm" onclick="UI.openLeaderboard()">🏆 Roster</button>
+        <button class="btn btn-ghost btn-sm" onclick="UI.openAbout()">ℹ️ Help</button>
+        <button class="btn btn-ghost btn-sm" onclick="Auth.logout()">End of watch</button>
+      </div>
+    </div>
+
+    <div class="panel" id="next-mission" style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:.68rem;letter-spacing:.22em;color:var(--gold-bright);font-weight:800;text-transform:uppercase">Current assignment</div>
+        <div id="mission-text" style="font-weight:800;font-size:1.1rem;margin-top:4px">—</div>
+        <div id="mission-sub" style="color:var(--ink-dim);font-size:.85rem;margin-top:2px">—</div>
+      </div>
+      <button class="btn btn-gold" id="mission-btn" onclick="Game.startNext()">▶ Roll out</button>
+    </div>
+
+    <div class="map-head">
+      <h2>Career path</h2>
+      <div class="hint">Score 70%+ to get promoted · ⭐ 7-8 · ⭐⭐ 9 · ⭐⭐⭐ perfect 10</div>
+    </div>
+    <div class="levels" id="level-grid"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="screen">
+    <div class="quiz-top">
+      <div class="q-level"><small id="quiz-rank-tag">LEVEL 1</small><span id="quiz-level-name">Rookie</span></div>
+      <div class="spacer"></div>
+      <div class="timer" id="quiz-timer" style="display:none">20</div>
+      <button class="btn btn-ghost btn-sm" onclick="Game.abort()">✕ Abort</button>
+    </div>
+    <div class="q-progress" id="quiz-dots"></div>
+    <div class="panel">
+      <span class="q-kind" id="q-kind">Multiple choice</span>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-quote" id="q-quote" style="display:none"></div>
+      <div class="q-media" id="q-media" style="display:none"></div>
+      <div class="answers" id="q-answers"></div>
+      <div class="free-input" id="q-free" style="display:none">
+        <input type="text" id="q-free-input" placeholder="Type your answer, Officer…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-blue" onclick="Game.submitFree()">Submit</button>
+      </div>
+      <div class="hint-line" id="q-hint-line" style="display:none">Stuck? <button onclick="Game.showHint()">Request backup (hint)</button> <span id="q-hint" style="display:none;color:var(--gold-bright)"></span></div>
+      <div class="feedback" id="q-feedback">
+        <div class="verdict" id="q-verdict"></div>
+        <div class="case-file" id="q-case"></div>
+      </div>
+      <div class="q-actions">
+        <button class="btn btn-gold" id="q-next" style="display:none" onclick="Game.next()">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS ============ -->
+  <section id="screen-results" class="screen">
+    <div class="panel results">
+      <div class="r-stars" id="r-stars"></div>
+      <h2 id="r-title">Debrief</h2>
+      <div class="r-score" id="r-score">0/10</div>
+      <p class="r-msg" id="r-msg"></p>
+      <div class="r-xp" id="r-xp">+0 XP</div>
+      <div class="r-promo" id="r-promo" style="display:none">
+        <div class="promo-title">📢 Promotion earned</div>
+        <div class="promo-rank" id="r-promo-rank"></div>
+      </div>
+      <div class="r-actions">
+        <button class="btn btn-ghost" onclick="Game.retry()">↻ Retry level</button>
+        <button class="btn btn-gold" onclick="UI.showMap()">Back to career path</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="modal-back" id="modal-lb">
+  <div class="modal panel">
+    <div class="m-head"><h3>🏆 Precinct roster</h3><button class="btn btn-ghost btn-sm" onclick="UI.closeModals()">✕ Close</button></div>
+    <div id="lb-list"></div>
+    <div class="m-note" id="lb-note"></div>
+  </div>
+</div>
+
+<div class="modal-back" id="modal-about">
+  <div class="modal panel about">
+    <div class="m-head"><h3>ℹ️ Watch commander's briefing</h3><button class="btn btn-ghost btn-sm" onclick="UI.closeModals()">✕ Close</button></div>
+    <div id="about-body"></div>
+  </div>
+</div>
+
+<div class="streak-pop" id="streak-pop">🔥 Streak ×3 — bonus XP!</div>
+<div class="confetti" id="confetti"></div>
+<div class="foot">THE ROOKIE — MID-WILSHIRE QUIZ ACADEMY · unofficial fan game · quotes remain property of their respective owners</div>
+
+<script>
+"use strict";
+/* ============================================================
+   CONFIG — Supabase is OPTIONAL.
+   The game runs 100% locally (accounts + progress in this
+   browser) until you fill these two values in. To go cloud:
+     1. Create/choose a Supabase project.
+     2. Run supabase/schema.sql in its SQL editor.
+     3. Paste the project URL and the anon/publishable key here.
+   Accounts then become real (email+password via Supabase Auth)
+   and progress syncs across devices automatically.
+   ============================================================ */
+const CONFIG = {
+  SUPABASE_URL: "",   // e.g. "https://xxxx.supabase.co"
+  SUPABASE_ANON_KEY: "",
+  PASS_PCT: 0.7,          // score needed to clear a level
+  XP_CORRECT: 100,        // XP per correct answer
+  XP_STREAK: 25,          // extra XP every 3-in-a-row
+  XP_FIRST_CLEAR: 500,    // first time you clear a level
+  BONUS_MULT: 2,          // XP multiplier in bonus rounds
+  BONUS_TIME: 20          // seconds per question in bonus rounds
+};
+
+/* ============================================================
+   USER IMAGES (optional) — add your own screenshots!
+   Drop image files next to this page (or use full URLs / data
+   URIs) and register them here; matching questions are added
+   automatically to the "Evidence Locker" bonus and upper levels.
+   kind: "scene"  -> asks which season the scene is from
+                     (give the correct season in `season`, and
+                      optionally `episode` shown in the fun fact)
+   kind: "who"    -> asks who is pictured (give `answer`, plus
+                     3 wrong `decoys`)
+   ============================================================ */
+const USER_IMAGES = [
+  // { kind:"scene", src:"images/my-screenshot1.jpg", season:2, episode:"2x11 'Day of Death'", note:"Optional fun fact shown after answering." },
+  // { kind:"who",   src:"images/tim.jpg", answer:"Tim Bradford", decoys:["John Nolan","Wesley Evers","Aaron Thorsen"], note:"" },
+];
+
+/* ==================== utilities ==================== */
+const $ = id => document.getElementById(id);
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]/g,"");
+
+/* ============================================================
+   QUESTION BANK
+   Types:
+     mc    -> multiple choice        {q, a:[4], c:correctIndex}
+     quote -> "who said it"          {quote, a:[4], c, askedAs?}
+     free  -> type the answer        {q, accept:[strings], hint}
+   Every question can carry:
+     fx    -> fun fact / case file shown after answering
+     media -> {svg:"copcard", clues:[...]} or {img:"url"}
+   Difficulty ramps up level by level. All content in English.
+   ============================================================ */
+
+const LEVELS = [
+/* ---------------- LEVEL 1 ---------------- */
+{ id:"l1", n:1, name:"Rookie (Boot)", desc:"Academy basics. Everyone starts somewhere.",
+  insignia:"boot",
+  questions:[
+  { t:"mc", q:"John Nolan makes history the moment he joins the LAPD. Why?",
+    a:["He's the oldest rookie on the force","He's the youngest officer ever hired","He's the first officer from Pennsylvania","He's the tallest cop in Mid-Wilshire"], c:0,
+    fx:"Nolan is 45 in the pilot — the LAPD's oldest rookie, inspired by a real officer who joined the LAPD in his mid-40s." },
+  { t:"mc", q:"Which actor plays John Nolan?",
+    a:["Nathan Fillion","Eric Winter","Shawn Ashmore","Richard T. Jones"], c:0,
+    fx:"Before pounding the beat, Nathan Fillion solved crimes as novelist Richard Castle and captained the Serenity in Firefly." },
+  { t:"mc", q:"Before the LAPD, Nolan spent 20 years running a…",
+    a:["Construction business","Sports bar","Law office","Surf shop"], c:0,
+    fx:"Small-town contractor from Foxburg, Pennsylvania — which is why he's forever fixing houses on his days off." },
+  { t:"mc", q:"What life-changing event convinces Nolan to become a cop?",
+    a:["He's caught in the middle of a bank robbery","He wins the lottery","He survives a plane crash","He watches a police documentary"], c:0,
+    fx:"In the pilot, a divorced, adrift Nolan is inside a bank when it's robbed — and discovers he keeps his cool under fire." },
+  { t:"mc", q:"Tim Bradford calls every rookie by the same 'affectionate' nickname. What is it?",
+    a:["Boot","Cadet","Probie","Greenhorn"], c:0,
+    fx:"'Boot' is real LAPD slang for a rookie fresh out of the academy. Lucy heard it so much she claims shoe shopping now triggers her." },
+  { t:"quote", quote:"Cupcake ate my taser!",
+    a:["Lucy Chen","Angela Lopez","Bailey Nune","Celina Juarez"], c:0,
+    fx:"Only Lucy's shift can include a taser-eating dog named Cupcake and still end in an arrest." },
+  { t:"mc", q:"Which LAPD division do our rookies report to every morning?",
+    a:["Mid-Wilshire","Hollywood","Rampart","Van Nuys"], c:0,
+    fx:"Roll call at the fictional Mid-Wilshire Division — 'the toughest division in the city', per Sergeant Grey." },
+  { t:"mc", q:"Who is the drill-sergeant Training Officer famous for ambushing rookies with surprise 'Tim Tests'?",
+    a:["Tim Bradford","John Nolan","Wade Grey","Wesley Evers"], c:0,
+    fx:"A 'Tim Test' is an improvised, usually terrifying pop quiz. Fail one and you'll hear about it for a week." },
+  { t:"mc", q:"What is Sergeant Grey's first name?",
+    a:["Wade","Percy","Marcus","Elijah"], c:0,
+    fx:"Watch Commander Wade Grey — played by Richard T. Jones — went from wanting Nolan gone to being his biggest (secret) supporter." },
+  { t:"mc", q:"Kojo, the goodest boy in the whole precinct, is…",
+    a:["A dog","A police horse","A parrot","Nolan's pickup truck"], c:0,
+    fx:"Lucy adopted Kojo (S2) while recovering from her kidnapping, then gave him to Tim — the start of TV's most adorable custody arrangement. He also allegedly ate Tim's last PlayStation." }
+]},
+
+/* ---------------- LEVEL 2 ---------------- */
+{ id:"l2", n:2, name:"Officer II", desc:"You know the people. Now prove it.",
+  insignia:"chev1",
+  questions:[
+  { t:"mc", q:"What do fans (and eventually the whole precinct) call the Tim + Lucy romance?",
+    a:["Chenford","Brademance","TimLu","CopCuties"], c:0,
+    fx:"Chen + Bradford = Chenford, one of TV's most beloved slow-burn ships." },
+  { t:"mc", q:"Nolan's patrol unit callsign — the one you hear on the radio all series long — is…",
+    a:["7-Adam-15","7-Adam-07","5-David-22","6-Union-9"], c:0,
+    fx:"'7-Adam-15, officer needs help!' — if you've binged the show, that dispatch audio lives in your head rent-free." },
+  { t:"mc", q:"When Angela Lopez meets Wesley Evers, he is working as a…",
+    a:["Defense attorney","District attorney","Firefighter","Internal Affairs detective"], c:0,
+    fx:"They start as courtroom enemies — cop vs. defense lawyer — and end up married. His trust fund becomes Angela's favorite joke." },
+  { t:"mc", q:"Before returning to patrol as a TO, Nyla Harper was a legend at…",
+    a:["Deep undercover work","The K-9 unit","The bomb squad","Air support"], c:0,
+    fx:"Harper went so deep undercover it nearly cost her custody of her daughter Lila — it's why she came back to a black-and-white." },
+  { t:"mc", q:"Lucy opens her home (and heart) to a homeless college student who becomes family. Her name?",
+    a:["Tamara Colins","Lila Harper","Dominique Grey","Genny Bradford"], c:0,
+    fx:"Tamara went from living in her car to teasing Lucy about kissing her boss. Zero respect, maximum love." },
+  { t:"quote", quote:"#vanlife",
+    a:["Smitty","Nolan","Aaron","Jackson"], c:0,
+    fx:"Officer Quigley Smitty: minimum effort, maximum catchphrase. A legend of doing absolutely nothing." },
+  { t:"mc", q:"Bailey Nune — Nolan's overachieving love — works primarily as a…",
+    a:["Firefighter","Helicopter pilot","Trauma surgeon","Judge"], c:0,
+    fx:"LAFD firefighter lieutenant, Army reservist, capoeira teacher… the running gag is that there's nothing Bailey doesn't do." },
+  { t:"mc", q:"Nolan's college-age son is named…",
+    a:["Henry","Harry","Hank","Howie"], c:0,
+    fx:"Henry Nolan — whose heart condition gave his dad one of Season 1's biggest scares." },
+  { t:"mc", q:"Rookie Celina Juarez drives her TO crazy because she trusts…",
+    a:["Auras and cosmic signs","Only the rulebook","Tarot cards from suspects","Her lucky coin"], c:0,
+    fx:"Celina reads auras at crime scenes. Nolan, king of second chances, ended up half-believing her." },
+  { t:"mc", q:"Before the academy, Aaron Thorsen was famous for…",
+    a:["Starring on a reality TV show","Playing pro football","Being a pop star","Winning a cooking competition"], c:0,
+    fx:"Rich, famous and wrongly accused of murder in Paris, Thorsen joined the LAPD to rebuild his name — and could NOT live in poverty." }
+]},
+
+/* ---------------- LEVEL 3 ---------------- */
+{ id:"l3", n:3, name:"Field Training Officer", desc:"Who said it? Prove you know their voices.",
+  insignia:"chev2",
+  questions:[
+  { t:"quote", quote:"What am I, Google?",
+    a:["Tim Bradford","John Nolan","Wade Grey","Wesley Evers"], c:0,
+    fx:"Tim Bradford: allergic to questions, secretly knows every answer." },
+  { t:"quote", quote:"You called me 'boot' so many times, I get triggered when I go shoe shopping!",
+    a:["Lucy Chen","Jackson West","John Nolan","Celina Juarez"], c:0,
+    fx:"Lucy, summarizing years of Tim's training methods in one perfect sentence." },
+  { t:"quote", quote:"I am a grown man. I don't have BFFs.",
+    a:["Tim Bradford","Wade Grey","Smitty","Oscar Hutchinson"], c:0,
+    fx:"Said by a man who absolutely has BFFs and would take a bullet for every one of them." },
+  { t:"quote", quote:"My wife's my bestie.",
+    a:["Wesley Evers","John Nolan","James Murray","Tim Bradford"], c:0,
+    fx:"Wesley Evers, founding member (and only willing member) of the Angela Lopez fan club." },
+  { t:"quote", quote:"Why do women need tampons? Can't they just hold it?",
+    a:["Smitty","Oscar Hutchinson","Rodge","Skip Tracer Randy"], c:0,
+    fx:"Peak Smitty. The precinct's collective sigh could be heard from Long Beach." },
+  { t:"quote", quote:"Sit yo ass back down!",
+    a:["Nyla Harper","Angela Lopez","Wade Grey","Bailey Nune"], c:0,
+    fx:"Harper's suspects rarely need to be told twice." },
+  { t:"quote", quote:"Now give me half of that burrito before I use my evil against you.",
+    a:["Angela Lopez","Lucy Chen","Nyla Harper","Tamara Colins"], c:0,
+    fx:"Detective Lopez: feared by criminals, respected by burritos." },
+  { t:"quote", quote:"Is it available on Kindle?",
+    a:["John Nolan","Wesley Evers","Aaron Thorsen","Smitty"], c:0,
+    fx:"Nolan, unshakeably polite even when the situation is absurd." },
+  { t:"quote", quote:"Make out, stop crime — that totally tracks.",
+    a:["Tamara Colins","Lucy Chen","Celina Juarez","Bailey Nune"], c:0,
+    fx:"Tamara's review of the Chenford policing method." },
+  { t:"quote", quote:"I started listening at 'sexy badass.'",
+    a:["Bailey Nune","Angela Lopez","Lucy Chen","Nyla Harper"], c:0,
+    fx:"Bailey has priorities, and they are excellent." }
+]},
+
+/* ---------------- LEVEL 4 ---------------- */
+{ id:"l4", n:4, name:"Detective", desc:"Case files from five+ seasons. Details matter.",
+  insignia:"detective",
+  questions:[
+  { t:"mc", q:"Season 1 ends in tragedy when this commanding officer is killed in the line of duty:",
+    a:["Captain Zoe Andersen","Sergeant Wade Grey","Commander Percy West","Captain Jason Wexler"], c:0,
+    fx:"Captain Andersen (Mercedes Mason) — Nolan's fiercest defender — dies a hero, and Mid-Wilshire is never quite the same." },
+  { t:"mc", q:"In Season 2, Lucy is abducted on a date-gone-wrong and buried alive in a barrel. Who took her?",
+    a:["Caleb Wright","Oscar Hutchinson","Elijah Stone","Doug Stanton"], c:0,
+    fx:"'Day of Death' (S2) is routinely ranked the show's most intense episode. Tim refuses to stop searching until he digs her out with his bare hands." },
+  { t:"quote", quote:"You weren't conscious for your birth, but you will feel every second of your death.",
+    a:["Caleb Wright","Rosalind Dyer","Oscar Hutchinson","La Fiera"], c:0,
+    fx:"Caleb Wright, apprentice of serial killer Rosalind Dyer — proof the show can go FULL thriller when it wants to." },
+  { t:"mc", q:"The serial killer who keeps pulling strings from behind bars across multiple seasons is…",
+    a:["Rosalind Dyer","Monica Stevens","Sandra 'La Fiera' de la Cruz","Isabel Bradford"], c:0,
+    fx:"Rosalind Dyer was played by the late, great Annie Wersching, who made every scene feel like a chess match." },
+  { t:"mc", q:"Which rookie secretly stood up to (and helped take down) racist training officer Doug Stanton?",
+    a:["Jackson West","Lucy Chen","Aaron Thorsen","Celina Juarez"], c:0,
+    fx:"One of the show's most powerful storylines (Season 3). Fun fact: Doug Stanton was played by Brandon Routh — yes, Superman himself, being the worst." },
+  { t:"mc", q:"Who kidnaps a pregnant Angela Lopez and smuggles her to Guatemala?",
+    a:["Sandra 'La Fiera' de la Cruz","Rosalind Dyer","Elijah Stone","The Sons of Prophecy"], c:0,
+    fx:"Crime boss La Fiera wanted Angela's baby. Wesley, Tim and the team mounted an off-the-books rescue to get her back." },
+  { t:"mc", q:"Who is killed in the Season 4 premiere while protecting Angela during the abduction?",
+    a:["Jackson West","Henry Nolan","James Murray","Officer Smitty"], c:0,
+    fx:"Jackson goes out a hero fighting La Fiera's men. Actor Titus Makin Jr. had already left the show, so the scene was filmed with a body double shown from behind." },
+  { t:"mc", q:"Lucy's most legendary undercover alias — the one Tim will never let her forget — is…",
+    a:["Juicy","Bubbles","Roxy","Marmalade"], c:0,
+    fx:"And when Tim had to play her partner-in-crime, his alias was, naturally… Dim." },
+  { t:"mc", q:"Wesley's darkest arc: he gets blackmailed into working for which gangster?",
+    a:["Elijah Stone","Oscar Hutchinson","Caleb Wright","Randy the Skip Tracer"], c:0,
+    fx:"To save Angela, Wesley made a devil's bargain with Elijah Stone — and spent seasons clawing his way out of it." },
+  { t:"mc", q:"When Nolan finally becomes a Training Officer, his very first rookie is…",
+    a:["Celina Juarez","Aaron Thorsen","Tamara Colins","Miles Penn"], c:0,
+    fx:"The oldest rookie becomes the most patient TO — assigned the precinct's most delightfully weird boot, Celina Juarez." }
+]},
+
+/* ---------------- LEVEL 5 ---------------- */
+{ id:"l5", n:5, name:"Sergeant", desc:"Quote combat: duos, comebacks and complete-the-line.",
+  insignia:"chev3",
+  questions:[
+  { t:"quote", quote:"If it makes you feel better, I am 72% certain you are my forever husband.",
+    a:["Angela Lopez","Lucy Chen","Bailey Nune","Nyla Harper"], c:0,
+    fx:"Angela's romance math. Wesley took the remaining 28% as a personal challenge." },
+  { t:"mc", q:"Complete Lucy's battle cry: “Lucy Chen, ___ of justice!”",
+    a:["Fists","Boots","Badge","Angel"], c:0,
+    fx:"Delivered with 100% commitment and questionable tactical value." },
+  { t:"quote", quote:"We accept Wesley because we fear Lopez.",
+    a:["Tim Bradford","Wade Grey","John Nolan","Nyla Harper"], c:0,
+    fx:"Tim, explaining precinct diplomacy with characteristic honesty." },
+  { t:"mc", q:"On a stakeout, Lucy orders a chai tea latte. Tim's correction?",
+    a:["“Two coffees. Black.”","“One water. Tap.”","“Nothing. We're leaving.”","“Two espressos. Double.”"], c:0,
+    fx:"“This is a stakeout. He's not going to Starbucks.” Romance was already brewing; the coffee was not." },
+  { t:"quote", quote:"You have my permission to call me a badass!",
+    a:["Celina Juarez","Lucy Chen","Bailey Nune","Angela Lopez"], c:0,
+    fx:"And Nolan, ever the supportive TO, replies without missing a beat: “You are a badass.”" },
+  { t:"quote", quote:"Get in the car, Bubbles!",
+    a:["John Nolan","Tim Bradford","Wade Grey","Nyla Harper"], c:0,
+    fx:"Some arrests are dignified. This was not one of them." },
+  { t:"mc", q:"Complete the Tim Bradford motivational special: “Get up, boot! 'Quit' is a ___-letter word.”",
+    a:["Four","Five","Dirty","Boot-shaped"], c:0,
+    fx:"“Failure is not an option. Come on man, we are almost home.” Tim's tough love at its most literal." },
+  { t:"quote", quote:"Did you really just say the Q word in my shop?!",
+    a:["Nyla Harper","Tim Bradford","Wade Grey","Angela Lopez"], c:0,
+    fx:"Cop superstition 101: never, EVER say 'quiet' on shift. The scanner gods are always listening." },
+  { t:"quote", quote:"OK, I gotta go maybe shoot a guy.",
+    a:["Angela Lopez","Nyla Harper","Lucy Chen","Tim Bradford"], c:0,
+    fx:"Angela Lopez, hanging up the phone like a totally normal wife and mother." },
+  { t:"mc", q:"Who corners Tim with the question “Timothy, do you have feelings for Lucy?” (answer: a very convincing “Noooo!”)",
+    a:["Angela Lopez","Wade Grey","John Nolan","Tamara Colins"], c:0,
+    fx:"Angela clocked Chenford before Chenford did. Detectives detect." }
+]},
+
+/* ---------------- LEVEL 6 ---------------- */
+{ id:"l6", n:6, name:"Lieutenant", desc:"Deep cuts: undercover ops, side characters, weird days.",
+  insignia:"lt",
+  questions:[
+  { t:"mc", q:"Tim defeats a lie detector with pure word chaos: “Bethesda, left clavicle, Lady Marmalade, tarantulas, ___.”",
+    a:["Xanadu","Timbuktu","Kalamazoo","Shangri-La"], c:0,
+    fx:"Random-word salad: an actual counter-interrogation technique, weaponized by Tim Bradford." },
+  { t:"mc", q:"“You know littering is a $250 fine.” — “Worth it.” Which duo is this?",
+    a:["Lucy & Tim","Angela & Wesley","Nolan & Bailey","Harper & Nolan"], c:0,
+    fx:"Chenford flirting stage 1: citing municipal code at each other." },
+  { t:"mc", q:"A recurring scene-stealer blesses the precinct with original bops like “Daddy Cop” and “911 (Send Your Cutest)”. His name?",
+    a:["Rodge","Randy","Ripper","Rex"], c:0,
+    fx:"Rodge is played by Zander Hawley — the show creator's own son! “Daddy Cop” was inspired by Nolan; “911” he sings for his beloved Celina. He also gifted humanity the word “necessanary.”" },
+  { t:"mc", q:"When Lucy goes undercover as “Juicy,” Tim's matching alias is…",
+    a:["Dim","Jim","Slim","Grim"], c:0,
+    fx:"“Oh my god, it's Tim and Dim.” Lucy has never recovered from the joy of this." },
+  { t:"quote", quote:"Lobster salad! Lobster salad life.", askedAs:"Who says this to an undercover Lucy?",
+    a:["Sava","Rosalind Dyer","Monica Stevens","La Fiera"], c:0,
+    fx:"Sava, from Lucy's undercover-as-Juicy world, where lobster salad is a lifestyle, not a dish." },
+  { t:"mc", q:"“John Nolan! So nice to finally meet the handsome face that hangs on my wall.” Who greets him like this?",
+    a:["Skip Tracer Randy","Oscar Hutchinson","Elijah Stone","Smitty"], c:0,
+    fx:"Skip Tracer Randy — bounty hunter, chaos gremlin, beloved recurring guest — is played by German comedian Flula Borg." },
+  { t:"quote", quote:"You just stay down there creating life.",
+    a:["Angela Lopez","Wesley Evers","Nyla Harper","Bailey Nune"], c:0,
+    fx:"Angela multitasks: interrogating suspects upstairs, encouraging gestation downstairs." },
+  { t:"mc", q:"Grey runs a rideshare sting: “Yo yo yo, you call an Uber? I understand if you don't give me ___.”",
+    a:["Five stars","A tip","Good vibes","Front seat"], c:0,
+    fx:"Wade Grey, undercover legend. The gun in his hand really undercut the customer-service energy." },
+  { t:"quote", quote:"The universe? You sound like Celina.",
+    a:["Angela Lopez","Tim Bradford","Nyla Harper","John Nolan"], c:0,
+    fx:"Being compared to Celina is either an insult or the highest compliment. There is no in-between." },
+  { t:"quote", quote:"He ate my last PlayStation!",
+    a:["Tim Bradford","Aaron Thorsen","Jackson West","Smitty"], c:0,
+    fx:"Kojo the K-9: certified good boy, certified console destroyer." }
+]},
+
+/* ---------------- LEVEL 7 ---------------- */
+{ id:"l7", n:7, name:"Captain", desc:"Only true fans survive this floor.",
+  insignia:"capt",
+  questions:[
+  { t:"quote", quote:"Get your eyes off Officer Chen, Texas — you're not fit to breathe the same air!",
+    a:["Tim Bradford","John Nolan","Wade Grey","Aaron Thorsen"], c:0,
+    fx:"Tim being 'totally not jealous' and 'purely professional' about Lucy. Sure, Tim." },
+  { t:"quote", quote:"I believe the term I used was 'freak in the sheets.'",
+    a:["Tim Bradford","Wesley Evers","Smitty","Oscar Hutchinson"], c:0,
+    fx:"Deadpan delivery, full eye contact. That's the Bradford way." },
+  { t:"mc", q:"“You can't just kill it!” — “So what the hell are we supposed to do? Snuggle?” Who's arguing?",
+    a:["Tim & Lucy","Angela & Wesley","Nolan & Bailey","Grey & Smitty"], c:0,
+    fx:"Chenford versus wildlife. The wildlife nearly won." },
+  { t:"quote", quote:"If he comes home with so much as a bruise, I will hunt you down and strangle you with your own intestines.",
+    a:["Bailey Nune","Angela Lopez","Nyla Harper","Lucy Chen"], c:0,
+    fx:"Bailey Nune, re: her husband. Firefighter, Army reservist, and apparently a certified threat artist." },
+  { t:"quote", quote:"Listen, dumbass — my daddy doesn't work for IA, he runs it!",
+    a:["Jackson West","Aaron Thorsen","Lucy Chen","Dominique Grey"], c:0,
+    fx:"Jackson's father, Commander Percy West, ran Internal Affairs — awkward for everyone who badmouthed IA near Jackson." },
+  { t:"mc", q:"Asked for his name by an annoying official, Nolan replies: “First name: Kiss My. Last name: ___.”",
+    a:["Ass","Badge","Grits","Boot"], c:0,
+    fx:"“Is there a hyphen in there somewhere?” Nolan's politeness has limits. This was the limit." },
+  { t:"mc", q:"Who faints on duty and insists they merely “briefly succumbed to gravity”?",
+    a:["John Nolan","Wade Grey","Smitty","Wesley Evers"], c:0,
+    fx:"Same scene, Grey: “I am a grown-ass man, I don't need a juice box.” He needed the juice box." },
+  { t:"quote", quote:"We're rich, bitch!",
+    a:["Smitty","Oscar Hutchinson","Aaron Thorsen","Randy"], c:0,
+    fx:"Smitty's retirement plan is basically vibes and catchphrases." },
+  { t:"quote", quote:"Grief is a hole that can't be filled, but over time it will shrink enough so that you won't fall every time you take a step.",
+    a:["Tim Bradford","John Nolan","Wade Grey","Nyla Harper"], c:0,
+    fx:"Tim Bradford's soft side: rarely seen, devastating when deployed." },
+  { t:"mc", q:"“So… I chose a suit.” — “Hey, so did I!” — “Cool! Mine has a tie.” Which two members of the 'married to a Mid-Wilshire badass' club compare outfits here?",
+    a:["Wesley & James","Nolan & Tim","Grey & Smitty","Aaron & Jackson"], c:0,
+    fx:"Wesley Evers and James Murray (Harper's husband), accidentally becoming a buddy comedy in real time." }
+]},
+
+/* ---------------- LEVEL 8 ---------------- */
+{ id:"l8", n:8, name:"Chief of Police", desc:"Command-level knowledge. Every detail counts.",
+  insignia:"chief",
+  questions:[
+  { t:"mc", q:"After the barrel, Lucy gets a hidden tattoo. Tim tells her: “It wasn't your ___, Officer Chen — it was the first day of the rest of your life.”",
+    a:["Day of death","Worst mistake","Last shift","Fault"], c:0,
+    fx:"Lucy's kidnapper tattooed her 'day of death' on her — and Tim's speech about surviving it is a defining Chenford moment." },
+  { t:"mc", q:"Years later, Lucy finally trades 'LIGF Lucy' for a new title. Which one?",
+    a:["Sergeant Chen","Detective Chen","Captain Chen","Agent Chen"], c:0,
+    fx:"“LIGF Lucy is officially clocking out, and Sergeant Chen is taking over.” She ranked 17th on the detective exam, pivoted, and crushed the sergeant's path instead (Season 7)." },
+  { t:"mc", q:"“So Lucy Chen… will you marry me?” She says yes — and then what happens?",
+    a:["They get kidnapped","The precinct explodes","Tim faints","Kojo eats the ring"], c:0,
+    fx:"Season 8 finale 'The Bandit': beach proposal, three yeses… then Heath Everett's crew drugs and grabs them both. Peak cliffhanger cruelty — see you in Season 9." },
+  { t:"mc", q:"Angela and Wesley name their first son in honor of a fallen friend. His name?",
+    a:["Jack","Percy","Wade","Timothy"], c:0,
+    fx:"Baby Jack carries Jackson West's name — the precinct's way of keeping him close." },
+  { t:"mc", q:"Nyla Harper's older daughter — the reason she left undercover life — is named…",
+    a:["Lila","Layla","Lola","Luna"], c:0,
+    fx:"Harper fought her way back to being the mom Lila deserved — and later welcomed baby Leah with husband James Murray." },
+  { t:"mc", q:"Tim's ex-wife Isabel broke his heart. What happened to her?",
+    a:["Undercover work led her into addiction","She joined the FBI","She testified against him","She moved to Guatemala"], c:0,
+    fx:"Isabel's spiral explains a lot about early-seasons Tim: the armor, the rules, the trust issues." },
+  { t:"mc", q:"Oscar Hutchinson — everyone's favorite recurring menace — spends most of the series…",
+    a:["In prison, negotiating ridiculous deals","Running a food truck","On house arrest in Malibu","Hiding in Mexico"], c:0,
+    fx:"As Nolan put it: “You know what we love about you, Oscar? You are so damn predictable.”" },
+  { t:"mc", q:"Angela radios in “3, Ocean, Edward, 4-0-5-8.” What is she reading out?",
+    a:["A license plate","A badge number","A locker combination","A penal code"], c:0,
+    fx:"Cops use phonetic alphabets so letters can't be misheard over the radio — O for Ocean, E for Edward." },
+  { t:"mc", q:"Lucy's parents never wanted her to be a cop. What do they do?",
+    a:["They're psychologists","They're surgeons","They're lawyers","They run a restaurant"], c:0,
+    fx:"Two therapists raised a daughter who interrogates people for a living. The irony writes itself." },
+  { t:"mc", q:"“You know I peed on that, right? Just saying, you might want to wash your hands.” Angela says this about…",
+    a:["A pregnancy test","A crime-scene doorknob","Wesley's phone","A winning lottery ticket"], c:0,
+    fx:"The most Angela way imaginable to announce a baby. Wesley washed his hands. Twice." }
+]},
+
+/* ---------------- LEVEL 9 ---------------- */
+{ id:"l9", n:9, name:"Director of The Rookie", desc:"Behind the camera. The final promotion.",
+  insignia:"director",
+  questions:[
+  { t:"mc", q:"When did The Rookie premiere on ABC?",
+    a:["October 16, 2018","September 3, 2017","January 10, 2019","October 16, 2019"], c:0,
+    fx:"A Tuesday-night premiere in fall 2018 launched what became ABC's long-running cop hit." },
+  { t:"mc", q:"Who created The Rookie?",
+    a:["Alexi Hawley","Shonda Rhimes","Dick Wolf","Greg Berlanti"], c:0,
+    fx:"Alexi Hawley also ran Castle — which is how he and Nathan Fillion became a dream team." },
+  { t:"mc", q:"The show is inspired by a real person. Who?",
+    a:["Bill Norcross, a real LAPD officer who joined in his mid-40s","A retired NYPD detective's memoir","Creator Alexi Hawley's father","A viral news story about a fake cop"], c:0,
+    fx:"William Norcross left his family's printing business and joined the LAPD at 44. He now produces the show, keeps it realistic — and has even appeared on screen." },
+  { t:"mc", q:"Before The Rookie, Nathan Fillion and creator Alexi Hawley worked together on…",
+    a:["Castle","Bones","Firefly","Brooklyn Nine-Nine"], c:0,
+    fx:"Eight seasons of Castle taught them exactly how to mix crime, comedy and heart." },
+  { t:"mc", q:"Melissa O'Neil (Lucy Chen) first became famous by winning…",
+    a:["Canadian Idol","American Idol","The Voice","Star Search"], c:0,
+    fx:"She won Canadian Idol in 2005 at just 17 — the first female (and youngest) winner ever. It's why Lucy's rare singing moments sound suspiciously professional." },
+  { t:"mc", q:"Nathan Fillion's hometown is…",
+    a:["Edmonton, Canada","Los Angeles, USA","Dublin, Ireland","Vancouver, Canada"], c:0,
+    fx:"Both of Fillion's parents were English teachers in Edmonton, Alberta. He keeps casting Canadians around him, too." },
+  { t:"mc", q:"Shawn Ashmore (Wesley) is also famous for playing which superhero — a role he shares a twin brother with in Hollywood?",
+    a:["Iceman in X-Men","The Flash","Cyclops in X-Men","Human Torch"], c:0,
+    fx:"Shawn played Iceman; identical twin Aaron Ashmore starred in Smallville and Warehouse 13. Casting directors love the pair." },
+  { t:"mc", q:"The Rookie's 2022 spin-off series was called…",
+    a:["The Rookie: Feds","The Rookie: North","LAPD: Mid-Wilshire","The Rookie: Homicide"], c:0,
+    fx:"The Rookie: Feds starred Niecy Nash-Betts as Simone Clark — the FBI's oldest rookie. It ran for one season." },
+  { t:"mc", q:"Annie Wersching, unforgettable as Rosalind Dyer, passed away in 2023. How did the show respond?",
+    a:["Dedicated an episode to her memory","Recast the role immediately","Retired the character silently","Ended the storyline off-screen"], c:0,
+    fx:"The production honored Wersching with an on-screen dedication. She was also known for 24 and voicing Tess in The Last of Us." },
+  { t:"mc", q:"Which season was cut short to just 14 episodes because of the COVID-19 pandemic?",
+    a:["Season 3","Season 1","Season 5","Season 7"], c:0,
+    fx:"Season 3 (2021) ran 14 episodes; later, the 2023 Hollywood strikes also shortened Season 6 to 10." }
+]}
+];
+
+/* ============================================================
+   BONUS ROUNDS — optional, timed, double XP.
+   Unlock as you clear levels. Even harder than the main path.
+   ============================================================ */
+const BONUS = [
+{ id:"b1", after:"l2", n:"★", name:"Bonus: Code 3 — Rapid Fire", desc:"20 seconds per question. Lights and sirens!",
+  timed:true, insignia:"siren",
+  questions:[
+  { t:"mc", q:"Tim's four-legged partner at home is named…", a:["Kojo","Rex","Cupcake","Bubbles"], c:0,
+    fx:"Retired K-9, PlayStation connoisseur." },
+  { t:"quote", quote:"Fo shizzle.", a:["Smitty","Grey","Nolan","Oscar"], c:0,
+    fx:"Smitty remains fluent in 2004." },
+  { t:"quote", quote:"Hydrating.", a:["John Nolan","Tim Bradford","Wade Grey","Aaron Thorsen"], c:0,
+    fx:"Nolan's one-word wellness seminar." },
+  { t:"quote", quote:"Bad puppy.", a:["Tim Bradford","Lucy Chen","Celina Juarez","Bailey Nune"], c:0,
+    fx:"Firm but fair. The Bradford training method works on all species." },
+  { t:"quote", quote:"NERD!", a:["Tim Bradford","Angela Lopez","Tamara Colins","Smitty"], c:0,
+    fx:"Tim's love language is insults with a smile." },
+  { t:"mc", q:"“Hands over your head. You too, grandma.” Who's making this very inclusive arrest?", a:["Wade Grey","Tim Bradford","Nyla Harper","John Nolan"], c:0,
+    fx:"Sergeant Grey: equal-opportunity law enforcement." }
+]},
+{ id:"b2", after:"l4", n:"★★", name:"Bonus: Undercover Round", desc:"Minor characters, major difficulty. Double XP.",
+  timed:true, insignia:"mask",
+  questions:[
+  { t:"quote", quote:"Have fun at work — with your boss, who you kissed!", a:["Tamara Colins","Angela Lopez","Celina Juarez","Bailey Nune"], c:0,
+    fx:"Tamara, ruthlessly roasting Lucy over breakfast. Zero mercy in that household." },
+  { t:"quote", quote:"Aaron is a great girl's name too.", a:["Aaron Thorsen","Jackson West","Smitty","Rodge"], c:0,
+    fx:"Thorsen's confidence cannot be dented. Not even by paperwork errors." },
+  { t:"quote", quote:"Lucy will kill me if I let you die, so I'm dead either way.",
+    a:["Aaron Thorsen","John Nolan","Celina Juarez","Wesley Evers"], c:0,
+    fx:"Thorsen math: correctly identifying Lucy Chen as the deadliest variable in any equation." },
+  { t:"quote", quote:"Son of a puta!", a:["Angela Lopez","Celina Juarez","Nyla Harper","La Fiera"], c:0,
+    fx:"Bilingual rage is the most efficient rage. Detective Lopez proves it." },
+  { t:"quote", quote:"Time is doing funny things.", a:["Lucy Chen","Celina Juarez","John Nolan","Bailey Nune"], c:0,
+    fx:"Lucy in crisis mode — when the clock bends and training takes over." },
+  { t:"quote", quote:"Crunchy.", askedAs:"One word, one legend. Who?",
+    a:["Skip Tracer Randy","Smitty","Oscar Hutchinson","Rodge"], c:0,
+    fx:"Skip Tracer Randy communicates in riddles. 'Crunchy' is a complete sentence to him." }
+]},
+{ id:"b3", after:"l6", n:"★★★", name:"Bonus: Evidence Locker", desc:"Decipher the names. Type your answers, Officer.",
+  timed:false, insignia:"folder",
+  questions:[
+  { t:"free", q:"Unscramble this officer's name: “DIM FART BROD”", accept:["timbradford","tim bradford"], hint:"His undercover alias rhymes with his name. 🐕 owner. Hates chai lattes on stakeouts.",
+    fx:"TIM BRADFORD — and yes, 'Dim' was right there inside the anagram." },
+  { t:"free", q:"Unscramble the rookie: “CHYNULEC”", accept:["lucychen","lucy chen"], hint:"Undercover legend. Fists of justice. Survived the barrel.",
+    fx:"LUCY CHEN — from boot to sergeant, the heart of Mid-Wilshire." },
+  { t:"free", q:"Decode the suspect description: lawyer 👔, married a detective 💍, feared by criminals only slightly less than his wife. Unscramble: “SLEEPY SERVEW”", accept:["wesleyevers","wesley evers"], hint:"His trust fund funds wine o'clock.",
+    fx:"WESLEY EVERS — defense attorney turned honorary member of the LAPD family." },
+  { t:"media-who", media:"copcard", clues:["Ex-deep-undercover legend 🕵️","Mom of Lila, wife of James","“Did you really just say the Q word in my shop?!”"],
+    q:"IDENTIFY THE OFFICER from the case card:", accept:["nylaharper","harper","nyla harper"], hint:"Her name is an anagram of “HARLYN PARE”… almost. Detective N.H.",
+    fx:"NYLA HARPER — undercover royalty, allergic to the Q word." },
+  { t:"media-who", media:"copcard", clues:["Oldest boot in LAPD history 🧱→🚔","Built houses before catching bad guys","Relentlessly, dangerously optimistic"],
+    q:"IDENTIFY THE OFFICER from the case card:", accept:["johnnolan","nolan","john nolan"], hint:"7-Adam-15.",
+    fx:"JOHN NOLAN — living proof that there's always a path for reinvention." },
+  { t:"media-who", media:"copcard", clues:["Sees auras at crime scenes ✨","Nolan's first-ever rookie","“And I'm out the ditch.”"],
+    q:"IDENTIFY THE OFFICER from the case card:", accept:["celinajuarez","celina","celina juarez"], hint:"First name starts with C, ends with 'elina'.",
+    fx:"CELINA JUAREZ — the universe's favorite officer." }
+]},
+{ id:"b4", after:"l8", n:"★★★★", name:"Bonus: Showrunner's Cut", desc:"Production-office secrets. The hardest round in the game.",
+  timed:true, insignia:"clap",
+  questions:[
+  { t:"mc", q:"The 2023 Hollywood strikes shortened Season 6 to how many episodes?", a:["10","14","18","22"], c:0,
+    fx:"Season 6 (2024) is the show's shortest at 10 episodes; full seasons usually run 18–22." },
+  { t:"mc", q:"How many seasons did The Rookie: Feds last before cancellation?", a:["1","2","3","It's still running"], c:0,
+    fx:"One 22-episode season (2022–23). Simone Clark still guest-starred back on the mothership afterwards." },
+  { t:"mc", q:"Eric Winter (Tim) is married to which fellow actor?", a:["Roselyn Sanchez","Jenna Dewan","Mercedes Mason","Alyssa Diaz"], c:0,
+    fx:"Winter and Roselyn Sanchez (Devious Maids, Fantasy Island) host a couples podcast together." },
+  { t:"mc", q:"Jenna Dewan (Bailey) is also famous for…", a:["Dancing — Step Up and a dance career","Winning a cooking show","Olympic gymnastics","Voicing a Disney princess"], c:0,
+    fx:"Professional dancer first (Janet Jackson tours, Step Up), actress second — Bailey's overachieving is on-brand." },
+  { t:"mc", q:"Titus Makin Jr. (Jackson West) has a parallel career as…", a:["A singer","A stunt double","A screenwriter","A pro gamer"], c:0,
+    fx:"Makin releases music and even fronted a pop project — Glee fans may also recognize him." },
+  { t:"mc", q:"Where is The Rookie primarily filmed?", a:["In and around Los Angeles","Atlanta, Georgia","Vancouver, Canada","Albuquerque, New Mexico"], c:0,
+    fx:"Real L.A. (plus Oxnard). The Mid-Wilshire station exterior is actually the LA DWP John Ferraro Building downtown." },
+  { t:"mc", q:"The show's milestone 100th episode — Season 6's “The Hammer” — celebrated with…",
+    a:["Nolan & Bailey's wedding","Chenford's engagement","Grey's retirement party","A full musical episode"], c:0,
+    fx:"And because The Rookie can't have nice things, Celina got kidnapped mid-reception." },
+  { t:"mc", q:"Rosalind Dyer was killed off in “The Choice,” aired October 16, 2022. Why is that date poetic?",
+    a:["Exactly 4 years after the series premiere","It was Halloween week","It was Annie Wersching's birthday","It was the 100th episode"], c:0,
+    fx:"The Rookie premiered Oct 16, 2018. Rosalind was shot by fellow acolyte Eli Reynolds — four years to the day later." },
+  { t:"mc", q:"Which comedy star played John Nolan's half-brother, Pete?",
+    a:["Pete Davidson","Colin Jost","Kenan Thompson","Bill Hader"], c:0,
+    fx:"Nathan Fillion met Pete Davidson filming The Suicide Squad and recruited him for the family role." },
+  { t:"mc", q:"The Season 8 premiere “Czech Mate” sent the team on an international op to…",
+    a:["Prague","Berlin","Vienna","Budapest"], c:0,
+    fx:"An LAPD/FBI/Interpol operation — and the launchpad for Season 8 villain Heath Everett, who later escaped custody via a helicopter-and-magnet van heist." }
+]}
+];
+
+/* ============================================================
+   Extra “who said it” pool — used to refresh retries with
+   fresh questions so replaying a level stays fun.
+   ============================================================ */
+const EXTRA_QUOTES = [
+  { quote:"And thus ended the Lucy lesson.", who:"Lucy Chen", pool:["Lucy Chen","Tim Bradford","Angela Lopez","Nyla Harper"], fx:"Lucy's TED talks are short, unsolicited and correct." },
+  { quote:"You are a lying liar who lies!", who:"Lucy Chen", pool:["Lucy Chen","Tamara Colins","Angela Lopez","Celina Juarez"], fx:"Peer-reviewed, court-admissible Lucy logic." },
+  { quote:"But I'm a sucker for a man in uniform.", who:"Lucy Chen", pool:["Lucy Chen","Bailey Nune","Angela Lopez","Nyla Harper"], fx:"Reader, she married (well, got engaged to) one." },
+  { quote:"I think I have a girl crush.", who:"Lucy Chen", pool:["Lucy Chen","Celina Juarez","Tamara Colins","Bailey Nune"], fx:"Happens to everyone at Mid-Wilshire eventually." },
+  { quote:"Where are the keys?", who:"Lucy Chen", pool:["Lucy Chen","Tim Bradford","John Nolan","Smitty"], fx:"Four words. Infinite panic." },
+  { quote:"In order to be a good cop, I need to be a good human first.", who:"Lucy Chen", pool:["Lucy Chen","John Nolan","Celina Juarez","Wade Grey"], fx:"Lucy's whole philosophy in one line." },
+  { quote:"Do you ever have that feeling where a moment is so perfect you're trying to memorize it while you're experiencing it?", who:"Lucy Chen", pool:["Lucy Chen","Bailey Nune","Angela Lopez","John Nolan"], fx:"Chenford-era Lucy, quietly devastating." },
+  { quote:"You're an evil genius — emphasis on the evil.", who:"Tim Bradford", pool:["Tim Bradford","Lucy Chen","Angela Lopez","Wesley Evers"], fx:"Tim compliments are 60% accusation." },
+  { quote:"It was just a kiss, it's not a big deal.", who:"Tim Bradford", pool:["Tim Bradford","Lucy Chen","Angela Lopez","Tamara Colins"], fx:"Narrator: it was, in fact, a very big deal." },
+  { quote:"Do I look like a big softie?", who:"Tim Bradford", pool:["Tim Bradford","Wade Grey","Nyla Harper","Oscar Hutchinson"], fx:"Yes. Under exactly one layer of kevlar." },
+  { quote:"WOW, the arrogance!", who:"Tim Bradford", pool:["Tim Bradford","Angela Lopez","Lucy Chen","Wesley Evers"], fx:"Said with the confidence of a man who is never arrogant, obviously." },
+  { quote:"I'm a realist.", who:"Tim Bradford", pool:["Tim Bradford","John Nolan","Nyla Harper","Wade Grey"], fx:"Tim's brand: realism with a side of push-ups." },
+  { quote:"Bad girlfriend! No — horrible!", who:"Tim Bradford", pool:["Tim Bradford","Wesley Evers","John Nolan","Smitty"], fx:"Tim reviews relationships like a strict TO grades boots." },
+  { quote:"Hell hath no fury like a woman scorned, right?", who:"Tim Bradford", pool:["Tim Bradford","Wesley Evers","Oscar Hutchinson","Nolan"], fx:"Quoting (almost) Shakespeare mid-shift. Lucy would be proud." },
+  { quote:"Why? Because I'm a girl and you're a boy?", who:"Lucy Chen", pool:["Lucy Chen","Angela Lopez","Celina Juarez","Tamara Colins"], fx:"Tim's answer — 'a very handsome boy' — earned an official 'oh, gag.'" },
+  { quote:"If you get dispatched to a loud party, make sure they know you're not the stripper.", who:"Tim Bradford", pool:["Tim Bradford","Smitty","Wade Grey","John Nolan"], fx:"Genuinely useful field advice from TO Bradford's syllabus." },
+  { quote:"Tell it to my ass!", who:"John Nolan", pool:["John Nolan","Tim Bradford","Oscar Hutchinson","Smitty"], fx:"Even Nolan has a sass reserve for special occasions." },
+  { quote:"His name was Martin.", who:"John Nolan", pool:["John Nolan","Wade Grey","Wesley Evers","Aaron Thorsen"], fx:"Nolan remembers every name. It's his superpower and his burden." },
+  { quote:"Wow, labor must have been hell.", who:"John Nolan", pool:["John Nolan","Wesley Evers","Tim Bradford","Smitty"], fx:"Nolan's bedside manner: 10/10 comedic timing, questionable timing otherwise." },
+  { quote:"Who's buying beers when we're done?", who:"John Nolan", pool:["John Nolan","Smitty","Aaron Thorsen","Wade Grey"], fx:"The real Mid-Wilshire motivational program." },
+  { quote:"There will always be a path for reinvention. I'm living proof.", who:"John Nolan", pool:["John Nolan","Wade Grey","Nyla Harper","Celina Juarez"], fx:"The thesis statement of the entire show, delivered by its oldest rookie." },
+  { quote:"I love you, loser.", who:"Angela Lopez", pool:["Angela Lopez","Lucy Chen","Nyla Harper","Bailey Nune"], fx:"Lopez-brand affection: 50% insult, 100% sincere." },
+  { quote:"Let's kill all the lawyers — Shakespeare said that!", who:"Angela Lopez", pool:["Angela Lopez","Tim Bradford","Wade Grey","Oscar Hutchinson"], fx:"Said TO her lawyer husband. Henry VI, Part 2, for the record." },
+  { quote:"Did you just wave me over like I was your waiter?", who:"Angela Lopez", pool:["Angela Lopez","Nyla Harper","Wade Grey","Tim Bradford"], fx:"A mistake the waver made exactly once." },
+  { quote:"If Lucy gets fired, it's a problem. If I get fired, I start living off my husband's trust fund and call it wine o'clock.", who:"Angela Lopez", pool:["Angela Lopez","Nyla Harper","Bailey Nune","Lucy Chen"], fx:"Detective Lopez has run the numbers on every scenario." },
+  { quote:"There is bad news, and you think a riot shield will save you.", who:"Angela Lopez", pool:["Angela Lopez","Wade Grey","Nyla Harper","Tim Bradford"], fx:"When Lopez is the bad news, no shield rating is high enough." },
+  { quote:"What if a copier could copy your thoughts?", who:"Jackson West", pool:["Jackson West","Aaron Thorsen","Smitty","Celina Juarez"], fx:"Night-shift philosophy, brought to you by Jackson West." },
+  { quote:"I just… can't live in poverty.", who:"Aaron Thorsen", pool:["Aaron Thorsen","Jackson West","Smitty","Wesley Evers"], fx:"Thorsen, upon learning what a cop's salary is." },
+  { quote:"We don't have to pay for that, do we?", who:"Aaron Thorsen", pool:["Aaron Thorsen","Smitty","Lucy Chen","John Nolan"], fx:"Rich-kid reflexes die hard." },
+  { quote:"That's what some people call 'my bad.'", who:"Aaron Thorsen", pool:["Aaron Thorsen","Jackson West","Rodge","Smitty"], fx:"Legally airtight. Emotionally? Also airtight." },
+  { quote:"The only name I know is Nolan, so today you are not Nolan.", who:"Nyla Harper", pool:["Nyla Harper","Wade Grey","Tim Bradford","Angela Lopez"], fx:"Harper's undercover training: brutal, effective, iconic." },
+  { quote:"What kind of weird-ass movie is this?", who:"Nyla Harper", pool:["Nyla Harper","Angela Lopez","Wade Grey","Tamara Colins"], fx:"Harper reviews cinema the way she reviews suspects: no mercy." },
+  { quote:"And I'm out the ditch.", who:"Celina Juarez", pool:["Celina Juarez","Lucy Chen","Bailey Nune","Tamara Colins"], fx:"Celina's version of 'crisis resolved.'" },
+  { quote:"Why can't you just lie?", who:"Celina Juarez", pool:["Celina Juarez","Aaron Thorsen","Tamara Colins","Smitty"], fx:"Celina asking her TO the real questions." },
+  { quote:"I have my moments.", who:"Smitty", pool:["Smitty","Wade Grey","Oscar Hutchinson","Rodge"], fx:"He does. Roughly one per season. Cherish them." },
+  { quote:"That's really not 'necessanary.'", who:"Rodge", pool:["Rodge","Smitty","Oscar Hutchinson","Randy"], fx:"Rodge inventing words with total confidence. Necessanary entered our hearts immediately." },
+  { quote:"Peace sign, emoji wearing glasses, peace sign.", who:"Tim Bradford", pool:["Tim Bradford","Wade Grey","John Nolan","Smitty"], fx:"Tim reading a text message aloud like it's evidence. ✌️😎✌️" },
+  { quote:"You knew that off the top of your head?", who:"Lucy Chen", pool:["Lucy Chen","Celina Juarez","Aaron Thorsen","Tamara Colins"], fx:"Tim's reply: 'You didn't?' — the eternal Chenford dynamic." },
+  { quote:"There is nothing like a day on the job to remind you how quickly life can change.", who:"Celina Juarez", pool:["Celina Juarez","John Nolan","Tim Bradford","Wade Grey"], fx:"The rookie becomes the narrator. Full circle." },
+  { quote:"The thing you learn early on about being a police officer is that your future is never certain.", who:"Tim Bradford", pool:["Tim Bradford","John Nolan","Wade Grey","Nyla Harper"], fx:"Bradford wisdom: delivered flat, lands heavy." }
+];
+
+
+/* ============================================================
+   STORAGE LAYER — pluggable.
+   LocalBackend  : accounts + progress in this browser (default)
+   CloudBackend  : Supabase Auth + Postgres (activates itself
+                   when CONFIG.SUPABASE_URL/KEY are filled in)
+   Both expose the same async interface:
+     register(email, pass, name) -> {user} | throws
+     login(email, pass)          -> {user} | throws
+     logout()
+     currentUser()               -> {email, name} | null
+     loadProgress()  / saveProgress(data)
+     leaderboard()               -> [{name, xp, rank}]
+   ============================================================ */
+
+async function sha256(str){
+  if (window.crypto && crypto.subtle) {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+  /* tiny fallback hash for non-secure contexts */
+  let h1=0xdeadbeef, h2=0x41c6ce57;
+  for (let i=0;i<str.length;i++){const ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (h2>>>0).toString(16)+(h1>>>0).toString(16);
+}
+
+const LocalBackend = {
+  kind:"local",
+  _readUsers(){ try{ return JSON.parse(localStorage.getItem("rq.users")||"{}"); }catch(e){ return {}; } },
+  _writeUsers(u){ localStorage.setItem("rq.users", JSON.stringify(u)); },
+  async register(email, pass, name){
+    email = email.trim().toLowerCase();
+    const users = this._readUsers();
+    if (users[email]) throw new Error("That email is already enrolled at the academy. Try signing in.");
+    const salt = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    users[email] = { name:name.trim(), salt, hash: await sha256(salt+pass), created: Date.now() };
+    this._writeUsers(users);
+    localStorage.setItem("rq.session", email);
+    return { email, name:users[email].name };
+  },
+  async login(email, pass){
+    email = email.trim().toLowerCase();
+    const u = this._readUsers()[email];
+    if (!u) throw new Error("No officer found with that email. Register first.");
+    if (u.hash !== await sha256(u.salt+pass)) throw new Error("Wrong password. Nice try, Oscar.");
+    localStorage.setItem("rq.session", email);
+    return { email, name:u.name };
+  },
+  async logout(){ localStorage.removeItem("rq.session"); },
+  async currentUser(){
+    const email = localStorage.getItem("rq.session");
+    if (!email) return null;
+    const u = this._readUsers()[email];
+    return u ? { email, name:u.name } : null;
+  },
+  async loadProgress(){
+    const email = localStorage.getItem("rq.session"); if(!email) return null;
+    try{ return JSON.parse(localStorage.getItem("rq.progress."+email)||"null"); }catch(e){ return null; }
+  },
+  async saveProgress(data){
+    const email = localStorage.getItem("rq.session"); if(!email) return;
+    localStorage.setItem("rq.progress."+email, JSON.stringify(data));
+  },
+  async leaderboard(){
+    const users = this._readUsers();
+    return Object.keys(users).map(email=>{
+      let p=null; try{ p=JSON.parse(localStorage.getItem("rq.progress."+email)||"null"); }catch(e){}
+      return { name:users[email].name, xp:(p&&p.xp)||0, rank:rankTitle(p), me: email===localStorage.getItem("rq.session") };
+    }).sort((a,b)=>b.xp-a.xp);
+  }
+};
+
+const CloudBackend = {
+  kind:"cloud",
+  sb:null,
+  async init(){
+    await new Promise((res,rej)=>{
+      const s=document.createElement("script");
+      s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+      s.onload=res; s.onerror=()=>rej(new Error("Could not load Supabase library"));
+      document.head.appendChild(s);
+    });
+    this.sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  },
+  async register(email, pass, name){
+    const { data, error } = await this.sb.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
+    if (error) throw new Error(error.message);
+    if (!data.session) throw new Error("CONFIRM_EMAIL"); // email confirmation flow
+    await this.sb.from("rookie_quiz_progress").upsert({ user_id: data.user.id, display_name: name, data: {}, xp: 0 });
+    return { email, name };
+  },
+  async login(email, pass){
+    const { data, error } = await this.sb.auth.signInWithPassword({ email, password: pass });
+    if (error) throw new Error(error.message);
+    const name = (data.user.user_metadata && data.user.user_metadata.display_name) || email.split("@")[0];
+    return { email, name };
+  },
+  async logout(){ await this.sb.auth.signOut(); },
+  async currentUser(){
+    const { data } = await this.sb.auth.getSession();
+    if (!data.session) return null;
+    const u = data.session.user;
+    return { email: u.email, name: (u.user_metadata && u.user_metadata.display_name) || u.email.split("@")[0] };
+  },
+  async loadProgress(){
+    const { data: s } = await this.sb.auth.getSession(); if(!s.session) return null;
+    const { data } = await this.sb.from("rookie_quiz_progress").select("data,xp").eq("user_id", s.session.user.id).maybeSingle();
+    if (!data) return null;
+    const p = data.data || {}; p.xp = data.xp || p.xp || 0;
+    return p;
+  },
+  async saveProgress(p){
+    const { data: s } = await this.sb.auth.getSession(); if(!s.session) return;
+    const u = s.session.user;
+    await this.sb.from("rookie_quiz_progress").upsert({
+      user_id: u.id,
+      display_name: (u.user_metadata && u.user_metadata.display_name) || u.email.split("@")[0],
+      data: p, xp: p.xp||0, updated_at: new Date().toISOString()
+    });
+  },
+  async leaderboard(){
+    const { data: s } = await this.sb.auth.getSession();
+    const { data } = await this.sb.from("rookie_quiz_leaderboard").select("*").order("xp",{ascending:false}).limit(25);
+    return (data||[]).map(r=>({ name:r.display_name, xp:r.xp, rank:r.rank_title||"", me: s.session && r.user_id===s.session.user.id }));
+  }
+};
+
+const Store = (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) ? CloudBackend : LocalBackend;
+
+/* ==================== AUTH controller ==================== */
+const Auth = {
+  user:null,
+  async boot(){
+    if (Store.init) { try{ await Store.init(); }catch(e){ console.error(e); } }
+    $("auth-mode-note").textContent = Store.kind==="cloud"
+      ? "☁️ Cloud mode: your account and progress sync across all your devices."
+      : "💾 Local mode: your account and progress are stored in this browser. (Cloud sync is pre-wired — see the Help screen.)";
+    this.user = await Store.currentUser();
+    if (this.user) { await Game.loadUserProgress(); UI.showMap(); }
+    else UI.show("screen-auth");
+  },
+  async submitLogin(ev){
+    ev.preventDefault(); $("li-err").textContent="";
+    try{
+      this.user = await Store.login($("li-email").value, $("li-pass").value);
+      await Game.loadUserProgress(); UI.showMap();
+    }catch(e){ $("li-err").textContent = friendlyErr(e); }
+    return false;
+  },
+  async submitRegister(ev){
+    ev.preventDefault(); $("rg-err").textContent="";
+    try{
+      this.user = await Store.register($("rg-email").value, $("rg-pass").value, $("rg-name").value);
+      await Game.loadUserProgress(); UI.showMap();
+    }catch(e){
+      if (e.message==="CONFIRM_EMAIL"){
+        UI.authTab("login");
+        $("li-err").textContent="Almost there! Check your inbox and confirm your email, then sign in.";
+      } else $("rg-err").textContent = friendlyErr(e);
+    }
+    return false;
+  },
+  async logout(){ await Store.logout(); this.user=null; Game.progress=null; UI.authTab("login"); UI.show("screen-auth"); }
+};
+function friendlyErr(e){
+  const m = (e && e.message) || "Something went wrong.";
+  if (/invalid login credentials/i.test(m)) return "Wrong email or password.";
+  if (/rate limit/i.test(m)) return "Too many attempts — take a breath, Officer, and retry in a minute.";
+  return m;
+}
+
+
+/* ============================================================
+   RANKS & INSIGNIA
+   ============================================================ */
+function rankTitle(p){
+  if (!p || !p.levels) return "Boot";
+  let idx = -1;
+  for (let i=0;i<LEVELS.length;i++){ const st=p.levels[LEVELS[i].id]; if (st && st.passed) idx=i; else break; }
+  if (idx === LEVELS.length-1) return "Director of The Rookie";
+  if (idx === -1) return "Boot";
+  return LEVELS[idx+1].name.replace(/\s*\(.*\)$/,"");
+}
+function insignia(key){
+  const wrap = inner => `<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 3 L52 10 V30 C52 44 42 53 30 57 C18 53 8 44 8 30 V10 Z" fill="#0e1a33" stroke="#d9a521" stroke-width="2.5"/>${inner}</svg>`;
+  const chev = n => { let s=""; for(let i=0;i<n;i++){ s+=`<path d="M18 ${40-i*9} L30 ${32-i*9} L42 ${40-i*9}" fill="none" stroke="#f2c14e" stroke-width="4" stroke-linecap="round"/>`; } return wrap(s); };
+  switch(key){
+    case "boot":      return wrap(`<circle cx="30" cy="31" r="5" fill="#f2c14e"/><text x="30" y="50" text-anchor="middle" font-size="9" font-weight="900" fill="#f2c14e">BOOT</text>`);
+    case "chev1":     return chev(1);
+    case "chev2":     return chev(2);
+    case "chev3":     return chev(3);
+    case "detective": return wrap(`<circle cx="27" cy="27" r="9" fill="none" stroke="#f2c14e" stroke-width="3.5"/><path d="M33.5 33.5 L42 42" stroke="#f2c14e" stroke-width="4.5" stroke-linecap="round"/>`);
+    case "lt":        return wrap(`<rect x="19" y="26" width="22" height="8" rx="1.5" fill="#f2c14e"/>`);
+    case "capt":      return wrap(`<rect x="19" y="20" width="22" height="7" rx="1.5" fill="#f2c14e"/><rect x="19" y="33" width="22" height="7" rx="1.5" fill="#f2c14e"/>`);
+    case "chief":     return wrap(`<path d="M30 14 l3.4 7 7.6 1.1 -5.5 5.4 1.3 7.6 -6.8 -3.6 -6.8 3.6 1.3 -7.6 -5.5 -5.4 7.6 -1.1 Z" fill="#f2c14e"/><path d="M18 42 l2 4.2 4.6 .6 -3.3 3.2 .8 4.6 -4.1 -2.2 -4.1 2.2 .8 -4.6 -3.3 -3.2 4.6 -.6 Z" fill="#f2c14e" transform="scale(.8) translate(6,7)"/><path d="M42 42 l2 4.2 4.6 .6 -3.3 3.2 .8 4.6 -4.1 -2.2 -4.1 2.2 .8 -4.6 -3.3 -3.2 4.6 -.6 Z" fill="#f2c14e" transform="scale(.8) translate(9,7)"/>`);
+    case "director":  return wrap(`<rect x="16" y="27" width="28" height="16" rx="2" fill="#f2c14e"/><path d="M16 25 L44 19 L42.5 13 L14.5 19 Z" fill="#f2c14e"/><path d="M20 23.8 l4-6.3 M28 22.2 l4-6.3 M36 20.5 l4-6.3" stroke="#0e1a33" stroke-width="2.5"/>`);
+    case "siren":     return wrap(`<path d="M20 38 a10 10 0 0 1 20 0 Z" fill="#f2c14e"/><rect x="16" y="38" width="28" height="5" rx="2" fill="#f2c14e"/><path d="M30 20 v-5 M20 24 l-4 -4 M40 24 l4 -4" stroke="#f2c14e" stroke-width="3" stroke-linecap="round"/>`);
+    case "mask":      return wrap(`<path d="M17 26 q13 -8 26 0 q-2 12 -13 14 q-11 -2 -13 -14 Z" fill="#f2c14e"/><ellipse cx="24.5" cy="30" rx="3.6" ry="2.6" fill="#0e1a33"/><ellipse cx="35.5" cy="30" rx="3.6" ry="2.6" fill="#0e1a33"/>`);
+    case "folder":    return wrap(`<path d="M17 22 h10 l3 4 h13 v16 a2 2 0 0 1 -2 2 h-22 a2 2 0 0 1 -2 -2 Z" fill="#f2c14e"/><text x="30" y="37" text-anchor="middle" font-size="10" font-weight="900" fill="#0e1a33">?</text>`);
+    case "clap":      return wrap(`<rect x="16" y="27" width="28" height="14" rx="2" fill="#f2c14e"/><path d="M16 25 L44 19 L42.5 13 L14.5 19 Z" fill="#f2c14e"/>`);
+    default:          return wrap("");
+  }
+}
+function copCard(clues){
+  const rows = clues.map((c,i)=>`<text x="150" y="${118+i*24}" text-anchor="middle" font-size="12.5" fill="#cdd9ef" font-style="italic">${esc(c)}</text>`).join("");
+  return `<svg viewBox="0 0 300 ${128+clues.length*24}" style="max-width:420px;width:100%">
+    <rect x="1" y="1" width="298" height="${126+clues.length*24}" rx="12" fill="#0d1730" stroke="rgba(217,165,33,.55)" stroke-width="2"/>
+    <rect x="1" y="1" width="298" height="30" rx="12" fill="#d9a521"/>
+    <rect x="1" y="18" width="298" height="13" fill="#d9a521"/>
+    <text x="150" y="21" text-anchor="middle" font-size="12" font-weight="900" fill="#241a08" letter-spacing="2">MID-WILSHIRE · CASE FILE</text>
+    <circle cx="150" cy="66" r="24" fill="#182747"/>
+    <path d="M150 52 a11 11 0 1 1 -0.01 0 M128 92 a22 14 0 0 1 44 0" fill="#22345c"/>
+    <text x="150" y="74" text-anchor="middle" font-size="24" font-weight="900" fill="#f2c14e">?</text>
+    ${rows}
+  </svg>`;
+}
+
+/* ============================================================
+   UI controller
+   ============================================================ */
+const UI = {
+  show(id){ document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); $(id).classList.add("active"); window.scrollTo(0,0); },
+  authTab(which){
+    $("form-login").style.display  = which==="login" ? "" : "none";
+    $("form-register").style.display = which==="register" ? "" : "none";
+    $("tab-login").classList.toggle("on", which==="login");
+    $("tab-register").classList.toggle("on", which==="register");
+  },
+  showMap(){
+    const p = Game.progress;
+    $("hud-name").textContent = Auth.user.name;
+    $("hud-avatar").textContent = (Auth.user.name||"?").trim().charAt(0).toUpperCase();
+    $("hud-rank").textContent = rankTitle(p);
+    $("hud-xp").textContent = (p.xp||0).toLocaleString();
+    const passed = LEVELS.filter(l=>p.levels[l.id] && p.levels[l.id].passed).length;
+    $("hud-levels").textContent = passed+"/"+LEVELS.length;
+    let stars = 0;
+    [...LEVELS, ...BONUS].forEach(l=>{ const st = Game.stateFor(l.id); stars += (st.stars||0); });
+    $("hud-stars").textContent = stars;
+    /* mission box */
+    const nxt = LEVELS.find(l=>!(p.levels[l.id]&&p.levels[l.id].passed));
+    if (nxt){
+      $("mission-text").textContent = "Level "+nxt.n+" — "+nxt.name;
+      $("mission-sub").textContent = nxt.desc;
+      $("mission-btn").style.display="";
+    } else {
+      $("mission-text").textContent = "🎬 You run this show now, Director.";
+      $("mission-sub").textContent = "All ranks cleared. Replay levels for 3-star perfection or chase the bonus rounds.";
+      $("mission-btn").style.display="none";
+    }
+    this.renderMap();
+    this.show("screen-map");
+  },
+  renderMap(){
+    const grid = $("level-grid"); grid.innerHTML="";
+    const order = [];
+    LEVELS.forEach(l=>{ order.push({obj:l,bonus:false}); BONUS.forEach(b=>{ if(b.after===l.id) order.push({obj:b,bonus:true}); }); });
+    order.forEach(({obj,bonus})=>{
+      const st = Game.stateFor(obj.id);
+      const unlocked = Game.isUnlocked(obj, bonus);
+      const el = document.createElement("button");
+      el.className = "level-card"+(unlocked?"":" locked")+(bonus?" bonus":"");
+      el.innerHTML = `
+        <div class="insignia">${insignia(obj.insignia)}</div>
+        <div class="meta">
+          ${bonus?'<span class="bonus-tag">Bonus round · 2× XP'+(obj.timed?' · timed':'')+'</span>':''}
+          <div class="lvl-n">${bonus?"Optional detail":"Level "+obj.n+" / "+LEVELS.length}</div>
+          <div class="lvl-name">${esc(obj.name)}</div>
+          <div class="lvl-desc">${esc(obj.desc)}</div>
+          <div class="lvl-stars">${st.passed ? "★".repeat(st.stars)+"<span style='opacity:.25'>"+"★".repeat(Math.max(0,3-st.stars))+"</span>" : (unlocked?"<span style='opacity:.4'>Not cleared yet</span>":"")}</div>
+        </div>
+        ${unlocked ? (st.passed?'<span class="done-chip">Cleared</span>':"") : '<span class="lock">🔒</span>'}`;
+      if (unlocked) el.onclick = ()=>Game.start(obj, bonus);
+      grid.appendChild(el);
+    });
+  },
+  async openLeaderboard(){
+    $("modal-lb").classList.add("show");
+    $("lb-list").innerHTML = "<div style='color:var(--ink-dim)'>Pulling up the roster…</div>";
+    try{
+      const rows = await Store.leaderboard();
+      $("lb-list").innerHTML = rows.length ? rows.map((r,i)=>`
+        <div class="lb-row${r.me?" me":""}">
+          <div class="pos">${i+1}</div>
+          <div class="lb-name">${esc(r.name)}<div class="lb-rank">${esc(r.rank||"")}</div></div>
+          <div class="lb-xp">${(r.xp||0).toLocaleString()} XP</div>
+        </div>`).join("") : "<div style='color:var(--ink-dim)'>No officers enrolled yet.</div>";
+      $("lb-note").textContent = Store.kind==="cloud" ? "Global roster — synced across all devices." : "Local roster — officers registered in this browser only.";
+    }catch(e){ $("lb-list").innerHTML = "<div style='color:#ff9b9e'>Could not load the roster: "+esc(e.message)+"</div>"; }
+  },
+  openAbout(){
+    $("modal-about").classList.add("show");
+    $("about-body").innerHTML = `
+      <h4>How it works</h4>
+      <p>Answer <b>10 questions per level</b> and score <b>70%+</b> to get promoted to the next rank — from Boot all the way to <b>Director of The Rookie</b>. Perfect scores earn ⭐⭐⭐. Optional <b>bonus rounds</b> unlock along the way: harder questions, some timed, all worth <b>double XP</b>. After every answer you get a 📁 case-file fun fact.</p>
+      <h4>Your account (${Store.kind==="cloud"?"cloud mode":"local mode"})</h4>
+      <p>${Store.kind==="cloud"
+        ? "Cloud mode is ON: your email/password account and progress live in Supabase and sync across every device."
+        : "Local mode: your account &amp; progress are stored <b>in this browser</b>. Use the buttons below to move progress between computers, or activate cloud mode: open <code>index.html</code>, run <code>supabase/schema.sql</code> in a Supabase project, and paste its URL + anon key into <code>CONFIG</code> at the top of the script. Everything else is already wired."}</p>
+      <p><button class="btn btn-ghost btn-sm" onclick="Game.exportProgress()">⬇ Export progress</button>
+      <button class="btn btn-ghost btn-sm" onclick="$('imp-file').click()">⬆ Import progress</button>
+      <input type="file" id="imp-file" accept=".json" style="display:none" onchange="Game.importProgress(event)"></p>
+      <h4>Add your own screenshots</h4>
+      <p>Open <code>index.html</code> and add entries to <code>USER_IMAGES</code> (top of the script): <code>kind:"scene"</code> asks which season a screenshot is from; <code>kind:"who"</code> asks who's pictured. They appear automatically in the <b>Evidence Locker</b> bonus round.</p>
+      <h4>Credits</h4>
+      <p>Unofficial fan-made game for “The Rookie” (ABC), created by Alexi Hawley. Quotes and characters belong to their respective owners. No copyright infringement intended — just fan love. 🚔</p>`;
+  },
+  closeModals(){ document.querySelectorAll(".modal-back").forEach(m=>m.classList.remove("show")); }
+};
+document.addEventListener("click", e=>{ if(e.target.classList && e.target.classList.contains("modal-back")) UI.closeModals(); });
+
+/* ============================================================
+   GAME engine
+   ============================================================ */
+const Game = {
+  progress:null, level:null, isBonus:false, run:null, timerInt:null,
+
+  freshProgress(){ return { xp:0, levels:{}, bonus:{} }; },
+  async loadUserProgress(){
+    this.progress = (await Store.loadProgress()) || this.freshProgress();
+    if (!this.progress.levels) this.progress.levels = {};
+    if (!this.progress.bonus) this.progress.bonus = {};
+  },
+  stateFor(id){
+    const isB = id.startsWith("b");
+    const box = isB ? this.progress.bonus : this.progress.levels;
+    return box[id] || { best:0, stars:0, passed:false, attempts:0 };
+  },
+  isUnlocked(obj, bonus){
+    if (bonus){ const dep = this.progress.levels[obj.after]; return !!(dep && dep.passed); }
+    const i = LEVELS.indexOf(obj);
+    if (i===0) return true;
+    const prev = this.progress.levels[LEVELS[i-1].id];
+    return !!(prev && prev.passed);
+  },
+  startNext(){
+    const nxt = LEVELS.find(l=>!(this.progress.levels[l.id]&&this.progress.levels[l.id].passed));
+    if (nxt) this.start(nxt,false);
+  },
+
+  buildQuestions(level, bonus){
+    let qs = level.questions.slice();
+    /* Evidence Locker: append the player's own screenshots */
+    if (level.id==="b3" && Array.isArray(USER_IMAGES)){
+      USER_IMAGES.forEach(im=>{
+        if (!im || !im.src) return;
+        if (im.kind==="scene" && im.season){
+          const correct = "Season "+im.season;
+          const pool = []; for(let s=1;s<=8;s++){ if(s!==im.season) pool.push("Season "+s); }
+          qs.push({ t:"mc", q:"EVIDENCE PHOTO: which season is this scene from?", media:{img:im.src},
+            a:[correct, ...shuffle(pool).slice(0,3)], c:0,
+            fx: im.episode ? ("It's from "+im.episode+". "+(im.note||"")) : (im.note||"Straight from your own evidence locker.") });
+        } else if (im.kind==="who" && im.answer){
+          qs.push({ t:"mc", q:"EVIDENCE PHOTO: identify this person.", media:{img:im.src},
+            a:[im.answer, ...(im.decoys||["John Nolan","Lucy Chen","Tim Bradford"]).slice(0,3)], c:0,
+            fx: im.note || "Positive ID. Nice work, Officer." });
+        }
+      });
+    }
+    /* replays of quote-heavy levels get fresh quotes from the extra pool */
+    const st = this.stateFor(level.id);
+    if (!bonus && st.attempts>0){
+      const quoteIdx = qs.map((q,i)=>q.t==="quote"?i:-1).filter(i=>i>=0);
+      const swaps = shuffle(EXTRA_QUOTES).slice(0, Math.min(3, quoteIdx.length));
+      shuffle(quoteIdx).slice(0, swaps.length).forEach((qi,k)=>{
+        const ex = swaps[k];
+        qs[qi] = { t:"quote", quote:ex.quote, a:ex.pool.slice(), c:0, fx:ex.fx };
+      });
+    }
+    /* shuffle question order & answer order */
+    return shuffle(qs).map(q=>{
+      if (q.t==="mc"||q.t==="quote"){
+        const correct = q.a[q.c];
+        const opts = shuffle(q.a.slice());
+        return {...q, a:opts, c:opts.indexOf(correct)};
+      }
+      return {...q};
+    });
+  },
+
+  start(level, bonus){
+    this.level = level; this.isBonus = !!bonus;
+    this.run = { qs:this.buildQuestions(level,bonus), i:0, correct:0, streak:0, xp:0, answered:false };
+    $("quiz-rank-tag").textContent = bonus ? "BONUS ROUND" : ("LEVEL "+level.n+" / "+LEVELS.length);
+    $("quiz-level-name").textContent = level.name;
+    UI.show("screen-quiz");
+    this.renderQ();
+  },
+  renderQ(){
+    const r = this.run, q = r.qs[r.i];
+    r.answered = false;
+    /* progress dots */
+    $("quiz-dots").innerHTML = r.qs.map((_,i)=>{
+      let cls="dot"; if(i<r.i) cls+= r.results && r.results[i]?" ok":" bad"; if(i===r.i) cls+=" cur";
+      return `<span class="${cls}"></span>`;
+    }).join("");
+    if (!r.results) r.results = [];
+    const kinds = { mc:"Multiple choice", quote:"Who said it?", free:"Type the answer", "media-who":"Evidence — identify" };
+    $("q-kind").textContent = (this.isBonus?"Bonus · ":"")+(kinds[q.t]||"Question")+" · "+(r.i+1)+"/"+r.qs.length;
+    /* text & quote */
+    if (q.t==="quote"){
+      $("q-text").textContent = q.askedAs || "Who said it?";
+      $("q-quote").style.display=""; $("q-quote").textContent = "“"+q.quote+"”";
+    } else {
+      $("q-text").textContent = q.q;
+      $("q-quote").style.display="none";
+    }
+    /* media */
+    const media = $("q-media");
+    if (q.media==="copcard" && q.clues){ media.style.display=""; media.innerHTML = copCard(q.clues); }
+    else if (q.media && q.media.img){
+      media.style.display=""; media.innerHTML="";
+      const im=document.createElement("img");
+      im.src=q.media.img; im.alt="evidence photo";
+      im.onerror=()=>{ media.innerHTML="<div style='color:var(--ink-faint);padding:20px'>📷 (image not found — check the USER_IMAGES path)</div>"; };
+      media.appendChild(im);
+    }
+    else { media.style.display="none"; media.innerHTML=""; }
+    /* answers */
+    const isFree = q.t==="free"||q.t==="media-who";
+    $("q-answers").innerHTML = "";
+    $("q-answers").className = "answers"+((q.a&&q.a.join("").length<70)?" grid2":"");
+    $("q-free").style.display = isFree?"":"none";
+    $("q-hint-line").style.display = (isFree && q.hint)?"":"none";
+    $("q-hint").style.display="none"; $("q-hint").textContent = q.hint||"";
+    if (isFree){
+      $("q-free-input").value=""; setTimeout(()=>$("q-free-input").focus(),50);
+    } else {
+      q.a.forEach((opt,i)=>{
+        const b=document.createElement("button");
+        b.className="ans"; b.innerHTML=`<span class="key">${"ABCD"[i]}</span>${esc(opt)}`;
+        b.onclick=()=>this.answer(i);
+        $("q-answers").appendChild(b);
+      });
+    }
+    /* feedback reset */
+    $("q-feedback").className="feedback"; $("q-next").style.display="none";
+    /* timer */
+    this.stopTimer();
+    if (this.level.timed){
+      let t = CONFIG.BONUS_TIME;
+      const el=$("quiz-timer"); el.style.display=""; el.classList.remove("low"); el.textContent=t;
+      this.timerInt = setInterval(()=>{
+        t--; el.textContent=t; if(t<=5) el.classList.add("low");
+        if(t<=0){ this.stopTimer(); this.timeout(); }
+      },1000);
+    } else $("quiz-timer").style.display="none";
+  },
+  stopTimer(){ if(this.timerInt){ clearInterval(this.timerInt); this.timerInt=null; } },
+
+  answer(i){
+    const r=this.run, q=r.qs[r.i];
+    if (r.answered) return; r.answered=true; this.stopTimer();
+    const ok = i===q.c;
+    document.querySelectorAll("#q-answers .ans").forEach((b,bi)=>{
+      b.disabled=true;
+      if (bi===q.c) b.classList.add("correct");
+      else if (bi===i) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    this.afterAnswer(ok, null);
+  },
+  submitFree(){
+    const r=this.run, q=r.qs[r.i];
+    if (r.answered) return;
+    const val = $("q-free-input").value; if(!val.trim()) return;
+    r.answered=true; this.stopTimer();
+    const ok = q.accept.map(norm).includes(norm(val));
+    $("q-free-input").disabled = true;
+    this.afterAnswer(ok, ok?null:("Correct answer: “"+(q.accept[q.accept.length-1].toUpperCase())+"”"));
+    setTimeout(()=>{ $("q-free-input").disabled=false; },0);
+  },
+  timeout(){
+    const r=this.run, q=r.qs[r.i];
+    if (r.answered) return; r.answered=true;
+    document.querySelectorAll("#q-answers .ans").forEach((b,bi)=>{ b.disabled=true; if(bi===q.c) b.classList.add("correct"); else b.classList.add("dim"); });
+    this.afterAnswer(false, "⏱ Time's up, Officer!");
+  },
+  afterAnswer(ok, extra){
+    const r=this.run, q=r.qs[r.i];
+    r.results[r.i]=ok;
+    const mult = this.isBonus ? CONFIG.BONUS_MULT : 1;
+    if (ok){
+      r.correct++; r.streak++;
+      r.xp += CONFIG.XP_CORRECT*mult;
+      if (r.streak>0 && r.streak%3===0){
+        r.xp += CONFIG.XP_STREAK*mult;
+        const pop=$("streak-pop"); pop.textContent="🔥 Streak ×"+r.streak+" — bonus XP!";
+        pop.classList.remove("show"); void pop.offsetWidth; pop.classList.add("show");
+      }
+    } else r.streak=0;
+    const fb=$("q-feedback");
+    fb.className="feedback show "+(ok?"good":"bad");
+    $("q-verdict").textContent = ok
+      ? shuffle(["✅ Code 4 — correct!","✅ Nailed it, Officer.","✅ Correct. Grey nods approvingly.","✅ Correct — no Tim Test needed."])[0]
+      : shuffle(["❌ Wrong — back to the academy.","❌ Negative. Tim is disappointed.","❌ Incorrect — that's a write-up.","❌ Wrong answer, boot."])[0];
+    $("q-case").innerHTML = (extra?esc(extra)+" · ":"") + (q.fx?("<b>📁 CASE FILE:</b> "+esc(q.fx)):"");
+    $("q-next").style.display="";
+    $("q-next").textContent = r.i===r.qs.length-1 ? "See debrief →" : "Next →";
+    setTimeout(()=>$("q-next").focus(),50);
+  },
+  showHint(){ $("q-hint").style.display=""; },
+  next(){
+    const r=this.run;
+    if (r.i===r.qs.length-1) return this.finish();
+    r.i++; this.renderQ();
+  },
+
+  async finish(){
+    this.stopTimer();
+    const r=this.run, lvl=this.level;
+    const total=r.qs.length, pct=r.correct/total;
+    const passed = pct>=CONFIG.PASS_PCT;
+    const stars = r.correct===total?3 : pct>=0.9?2 : passed?1:0;
+    const box = this.isBonus ? this.progress.bonus : this.progress.levels;
+    const st = box[lvl.id] || { best:0, stars:0, passed:false, attempts:0 };
+    const firstClear = passed && !st.passed;
+    if (firstClear) r.xp += CONFIG.XP_FIRST_CLEAR;
+    st.attempts++; st.best=Math.max(st.best,r.correct); st.stars=Math.max(st.stars,stars); st.passed=st.passed||passed;
+    box[lvl.id]=st;
+    this.progress.xp=(this.progress.xp||0)+r.xp;
+    try{ await Store.saveProgress(this.progress); }catch(e){ console.error("save failed",e); }
+    /* results screen */
+    $("r-stars").textContent = stars>0 ? "⭐".repeat(stars) : "💤";
+    $("r-score").textContent = r.correct+"/"+total;
+    $("r-xp").textContent = "+"+r.xp.toLocaleString()+" XP"+(firstClear?" (incl. first-clear bonus)":"");
+    const doneAll = LEVELS.every(l=>this.progress.levels[l.id]&&this.progress.levels[l.id].passed);
+    if (passed){
+      $("r-title").textContent = this.isBonus ? "Bonus cleared!" : "Promoted!";
+      $("r-msg").textContent = this.isBonus
+        ? "Extra credit earned. Grey pretends not to be impressed. He is."
+        : (r.correct===total ? "A perfect run. Even Tim Bradford has no notes." : "Solid police work. Your next assignment is waiting on the career path.");
+    } else {
+      $("r-title").textContent = "Not this time";
+      $("r-msg").textContent = "You need "+Math.ceil(total*CONFIG.PASS_PCT)+"/"+total+" to clear it. In the words of Tim: “Get up, boot! 'Quit' is a four-letter word.”";
+    }
+    const promo=$("r-promo");
+    if (firstClear && !this.isBonus){
+      promo.style.display="";
+      $("r-promo-rank").textContent = doneAll ? "🎬 DIRECTOR OF THE ROOKIE" : rankTitle(this.progress);
+      if (doneAll){
+        $("r-msg").textContent="You've mastered every quote, case and behind-the-scenes secret. The show is yours now — call action!";
+        this.confetti(220);
+      } else this.confetti(90);
+    } else promo.style.display="none";
+    UI.show("screen-results");
+  },
+  retry(){ this.start(this.level, this.isBonus); },
+  abort(){ this.stopTimer(); UI.showMap(); },
+
+  confetti(n){
+    const box=$("confetti"); box.innerHTML="";
+    const colors=["#f2c14e","#d9a521","#3b82f6","#e5484d","#eaf0fb","#30b566"];
+    for(let i=0;i<n;i++){
+      const p=document.createElement("i");
+      p.style.left=(Math.random()*100)+"vw";
+      p.style.background=colors[i%colors.length];
+      p.style.animationDuration=(2.2+Math.random()*2.4)+"s";
+      p.style.animationDelay=(Math.random()*0.9)+"s";
+      p.style.transform="rotate("+(Math.random()*360)+"deg)";
+      box.appendChild(p);
+    }
+    setTimeout(()=>box.innerHTML="",5200);
+  },
+
+  exportProgress(){
+    const blob=new Blob([JSON.stringify({user:Auth.user,progress:this.progress},null,2)],{type:"application/json"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="rookie-quiz-progress.json"; a.click(); URL.revokeObjectURL(a.href);
+  },
+  importProgress(ev){
+    const f=ev.target.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=async ()=>{
+      try{
+        const d=JSON.parse(rd.result);
+        if(!d.progress || typeof d.progress.xp!=="number") throw new Error("Not a valid progress file.");
+        this.progress=d.progress; await Store.saveProgress(this.progress);
+        UI.closeModals(); UI.showMap();
+      }catch(e){ alert("Import failed: "+e.message); }
+    };
+    rd.readAsText(f);
+  }
+};
+
+/* free-text: submit with Enter */
+document.addEventListener("keydown", e=>{
+  if (e.key==="Enter" && $("screen-quiz").classList.contains("active") && $("q-free").style.display!=="none" && document.activeElement===$("q-free-input")){
+    e.preventDefault(); Game.submitFree();
+  }
+});
+
+window.addEventListener("load", ()=>Auth.boot());
+
+</script>
+</body>
+</html>
