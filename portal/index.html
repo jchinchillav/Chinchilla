@@ -330,6 +330,13 @@ dl.kv dt{color:var(--muted);font-weight:700}
           <button class="btn primary" id="sf_add">Agregar</button>
         </div>
       </div>
+      <div class="card">
+        <div class="row between"><h3>Correos RFQ listos para copiar</h3><div class="row"><select class="cell-in" id="emailSel" style="min-width:280px"></select><button class="btn primary" id="btnCopyEmail">Copiar correo</button></div></div>
+        <div class="hint">Pediste que los redactara para copiar y pegar desde tu correo de mychinchilla.ca. Reemplaza los corchetes. El NCNDA va adjunto antes de enviar tech pack o vector del logo.</div>
+        <div class="tiny" id="emailTo" style="margin-bottom:4px"></div>
+        <div style="font-weight:700;margin-bottom:6px" id="emailSubject"></div>
+        <pre id="emailBody" style="white-space:pre-wrap;font-family:var(--body);font-size:.86rem;line-height:1.55;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:14px;max-height:420px;overflow:auto"></pre>
+      </div>
       <div class="callout accent"><b>Regla de la fase muestras:</b> ningún proveedor pasa a "Muestra pedida" sin ficha técnica escrita (gramaje, composición, acabado interior, encogimiento declarado) y costo de muestra + envío confirmado por escrito.</div>
     </section>
 
@@ -367,6 +374,12 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <h3>Parámetros de aplicación (punto de partida, validar con la hoja técnica de cada proveedor)</h3>
         <div class="tablewrap"><table id="paramsTable"></table></div>
         <div class="note">Regla de oro: cada lote de transfers llega con su hoja técnica. Se hacen 3 pruebas en la misma tela del lote antes de tocar una prenda de tester. Se lava una de las tres 5 veces a 30 °C y se revisa adhesión y bordes.</div>
+      </div>
+      <div class="card">
+        <h3>Top 5 planchas de calor para producción artesanal (comprables en Canadá)</h3>
+        <div class="hint">Orden por relación valor/uso. Precios CAD publicados el 6 sep 2026 por vendedores canadienses; "no publicado" significa que hay que pedir cotización.</div>
+        <div class="tablewrap"><table id="pressTable"></table></div>
+        <div id="pressNotes"></div>
       </div>
       <div class="card">
         <h3>Proveedores de transfers de silicona 3D y planchas</h3>
@@ -441,6 +454,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div class="row between"><h3>1. Presupuesto fase muestras (10 semanas, CAD)</h3><span class="tiny">Edita cantidad y costo unitario; el total se recalcula.</span></div>
         <div class="tablewrap"><table id="budgetTable"></table></div>
         <div class="note">Supuesto base: todo el lote test se hace con blanks premium decorados en casa. Si se decide esperar muestras OEM para el lote test, el presupuesto no sube pero el Test Day se mueve 2-3 semanas.</div>
+        <div id="budgetLevers"></div>
       </div>
 
       <div class="card">
@@ -458,6 +472,10 @@ dl.kv dt{color:var(--muted);font-weight:700}
             <label class="tiny" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase">Monto objetivo (CAD)</label>
             <input class="cell-in num" id="roundAsk" type="number" step="1000" style="font-size:1.2rem;font-weight:700;max-width:220px;margin-top:4px">
             <div class="tablewrap" style="margin-top:12px"><table id="useTable"></table></div>
+            <h4 style="margin:16px 0 6px">Equity: máximo 15 % en la primera ronda</h4>
+            <div class="row"><label class="tiny" style="font-weight:700">Equity máximo a ceder %</label><input class="cell-in num" id="maxEquity" type="number" min="1" max="49" step="0.5" style="max-width:90px"></div>
+            <div class="tablewrap" style="margin-top:8px"><table id="equityTable"></table></div>
+            <div id="equityNote"></div>
           </div>
           <div>
             <h4 style="margin-bottom:8px">Estructuras posibles</h4>
@@ -612,7 +630,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <h3>Producto y promesa (fuente: decks de junio y julio 2026)</h3>
         <dl class="kv">
           <dt>Promesa</dt><dd>"Soft enough to notice. Clean enough to wear every day."</dd>
-          <dt>Tela objetivo</dt><dd>French terry 280 gsm bambú / algodón orgánico con modal TENCEL™; interior cepillado. Alternativa evaluada: algodón-spandex premium.</dd>
+          <dt>Tela objetivo</dt><dd>Decisión del 6 sep: algodón-spandex como mezcla ideal (French terry stretch 320-400 gsm, 90-95 % algodón / 5-10 % spandex, interior cepillado). Alternativa con la misma mano: bambú-algodón-spandex (KenDor T4151 280 gsm 6 % spandex, Kinderel 280 gsm 5 %, Nature's Fabrics 300 gsm 6 %). El deck de julio hablaba de bambú/orgánico con modal; se actualiza.</dd>
           <dt>SKUs test</dt><dd>Hoodie héroe, jogger, tee pesada, gorra estructurada minimalista.</dd>
           <dt>Logo</dt><dd>Isotipo chinchilla + hoja (Opción 2), relieve 3D de silicona mate, ~1 mm, tono sobre tono, aplicado en casa pieza por pieza.</dd>
           <dt>Cliente</dt><dd>16 a 28 años, activos, Vancouver primero; descubren marcas con amigos.</dd>
@@ -649,7 +667,7 @@ const WS = {
 
 // id, ws, título, semana inicio, semana fin, responsable, detalle, gate?
 const TASKS = [
- ['A1','A','Congelar specs de las 4 piezas del lote test',1,1,'Jorge','Hoodie y jogger (tee y gorra quedan para el piloto): fit (relaxed, ligeramente oversized), gramaje objetivo ≥280 gsm French terry o fleece cepillado, composición objetivo, colorway del test y curva de tallas del roster.'],
+ ['A1','A','Congelar specs de las 4 piezas del lote test',1,1,'Jorge','Hoodie y jogger (tee y gorra quedan para el piloto): fit (relaxed, ligeramente oversized), gramaje objetivo 320-400 gsm French terry o fleece cepillado, composición objetivo algodón-spandex (90-95/5-10) o bambú-algodón-spandex según tu respuesta del 6 sep, colorway del test y curva de tallas del roster.'],
  ['A2','A','Definir el protocolo de suavidad',1,1,'Familia · QA','Panel de 5 personas, ciego, escala 1-5, contra 2 referencias (un hoodie premium de mercado y uno estándar). Misma hoja para blanks, muestras OEM y testers.'],
  ['A3','A','Enviar tech pack y RFQ a 5 OEM',1,2,'Jorge (Claude redacta)','Pedir: muestra de desarrollo (costo y tiempo), MOQ piloto, precio a 300 y 500 u, telas disponibles en bambú/orgánico/modal, capacidad de aplicar transfer de silicona en fábrica.'],
  ['A4','A','Pedir sample packs de blanks premium',2,2,'Jorge','3-4 mayoristas de la pista Blanks: hoodie y jogger talla M en 2 colores cada uno. Envío a Vancouver. Registrar costo landed real (precio + envío + duties).'],
@@ -677,9 +695,9 @@ const TASKS = [
  ['C5','C','Feedback ola 1 (7 días de uso)',7,7,'Embajador(a)','Recordatorio personal a cada tester. Meta: ≥80 % de respuesta.'],
  ['C6','C','Feedback ola 2 y cierre de gates',8,8,'QA · Claude','Tras 3+ lavadas. Consolidar suavidad, encogimiento, pilling e intención de compra contra umbrales. Resumen de una página para inversionistas.',true],
 
- ['D1','D','Búsqueda de disponibilidad de marca (clase 25)',1,2,'Jorge (Claude busca)','Base de datos de marcas de CIPO y USPTO para "Chinchilla" en ropa. Decidir si se presenta nombre, isotipo o ambos.'],
- ['D2','D','Presentar solicitud de marca en CIPO',2,2,'Jorge','Presentación en línea. Tarifa oficial vigente a verificar en el sitio de CIPO al momento de presentar.'],
- ['D3','D','Definir vehículo legal y cuenta bancaria',2,3,'Jorge','Constituir BC Ltd (o usar entidad existente) antes de recibir dinero de terceros. Cuenta separada para la fase de muestras.'],
+ ['D1','D','Búsqueda de disponibilidad de marca (clases 25 y 35)',1,2,'Jorge (Claude busca)','Base de CIPO (exacta y fonética), WIPO y USPTO. En EE. UU. el único CHINCHILLA en clase 25 está abandonado desde 2008; verificar ROYAL CHINCHILLAS (2023). Decisión ya tomada: nombre e isotipo, dos solicitudes.'],
+ ['D2','D','Presentar las dos solicitudes de marca en CIPO (palabra y logo)',2,2,'Jorge','Pasos detallados en la pestaña Marca y legal. CAD 1,280.20 por las dos solicitudes en clases 25+35. La fecha de presentación abre 6 meses de prioridad para EE. UU. y México.'],
+ ['D3','D','Constituir BC Ltd nueva y abrir cuenta bancaria',2,3,'Jorge','Tu respuesta: la empresa existente tiene un socio que habría que comprar. Recomendación: sociedad nueva y limpia (BC Registries, ≈ CAD 450 con búsqueda de nombre) antes de recibir dinero de terceros; luego cesión de la marca. Cuenta separada para la fase de muestras.'],
  ['D4','D','Dominio, redes y landing "coming soon"',3,3,'Voz de marca · Claude','Verificar chinchilla.store (usado en el deck) y alternativas. Landing con captura de email para preventa.'],
  ['D5','D','Guía básica de marca v1',7,7,'Claude','Logo, usos, colores, tono. Una página. Sirve para proveedores, inversionistas y contenido.'],
 
@@ -697,16 +715,16 @@ const TASKS = [
 ].map(t => ({id:t[0], ws:t[1], title:t[2], w0:t[3], w1:t[4], owner:t[5], detail:t[6], gate:!!t[7]}));
 
 const QUESTIONS = [
- ['q1','¿Las 4 piezas del lote test son hoodie, jogger, tee y gorra, o solo hoodie + jogger? Cambia el presupuesto y el roster.'],
- ['q2','¿Tope de presupuesto para la fase de muestras? Respondiste CAD 15,000; ya está como tope en Financieros.'],
- ['q3','¿Quién diseñó el isotipo? Necesito el archivo vectorial (AI/EPS/PDF). En Drive solo hay JPG y PDF rasterizado.'],
- ['q4','¿Colorway del lote test? El deck familiar lo dejaba a votación. Propongo Graphite Ink y Mountain Bluebird.'],
- ['q5','¿Ya existe una entidad legal o cuenta bancaria para Chinchilla, o usamos una existente?'],
- ['q6','¿Fecha objetivo del Test Day? Propuse sábado 17 de octubre (semana 6).'],
- ['q7','¿Estructura preferida de la ronda (préstamo, nota convertible, equity)? ¿Ya hablaste con abogado?'],
- ['q8','¿Confirmas que el lote test se decora en casa (plancha propia)? Alternativa: decorador local en Vancouver.'],
- ['q9','¿Tienes referencias físicas de suavidad (hoodie Lululemon u otro) para el panel ciego?'],
- ['q10','¿Quieres que redacte yo los correos de RFQ a proveedores y el formulario de testers esta semana?']
+ ['q1','¿Piezas del lote test? Respondiste hoodie y jogger. Presupuesto, tareas y roster ya ajustados.'],
+ ['q2','¿Tope de presupuesto para la fase de muestras? Respondiste CAD 13,000; ya está como tope en Financieros.'],
+ ['q3','¿Vector del isotipo? Respondiste: lo pides; faltan CAD 600 al diseñador (ya en presupuesto, línea b17). Pedir también cesión de derechos por escrito (contratos, c7).'],
+ ['q4','¿Colorway del lote test? Respondiste: en principio bien la selección, pero quieres más opciones. Hay 12 candidatos con votación en Marketing → Colorway.'],
+ ['q5','¿Entidad legal? Respondiste: no; la existente tiene un socio que habría que comprar. Recomendación: BC Ltd nueva y limpia (≈ CAD 450 en BC Registries) antes de recibir dinero; evita heredar pasivos y un cap table con tercero.'],
+ ['q6','¿Test Day 17 de octubre (semana 6)? Respondiste ok. Fijado en el plan (C4).'],
+ ['q7','¿Estructura de la ronda? Respondiste equity con máximo 15 % en la primera ronda. Cálculo de monto y valuación implícita ya está en Financieros (bloque 3).'],
+ ['q8','¿Confirmas que el lote test se decora en casa (plancha propia)? Respondiste sí, salvo opción rápida y económica en Vancouver: Firebird Prints (East Van, sin mínimos, prensa transfers sobre prendas del cliente) es el plan B; pedir cotización por 70 aplicaciones.'],
+ ['q9','¿Tienes referencias físicas de suavidad (hoodie Lululemon u otro) para el panel ciego? Respondiste: todavía no; mezcla ideal algodón-spandex (ya aplicado en specs y correos RFQ).'],
+ ['q10','¿Correos RFQ y formulario? Respondiste sí (los copias desde mychinchilla.ca). Los 6 correos están en Proveedores → Correos RFQ; las preguntas del formulario en Testers.']
 ];
 
 const DATAROOM = [
@@ -728,17 +746,18 @@ const BUDGET = [
  ['b6','Muestras OEM (3 proveedores × 2 piezas) + courier','Producto',3,380,true,'Incluye costo de muestra y envío express'],
  ['b7','Muestras de transfers de silicona (3 proveedores)','Logo',3,130,true,'DOY: muestra US$9.99/pz + courier; WeMust y Cusmytrims a cotizar'],
  ['b8','Transfers de silicona de producción (200 pcs, 2 tamaños)','Logo',200,2.2,true,'DOY publica US$0.79-1.49/pz en bulk; QWL desde US$2.59/pz a 100 pz. Incluye envío'],
- ['b9','Plancha de calor 15×15 in (clase Hotronix MAXX) + teflón + almohadillas + termómetro','Logo',1,1200,true,'Equipo reutilizable. Opción profesional: Hotronix Auto-Open Clam 16×20 a CAD 2,650 (Sign Supply Canada)'],
+ ['b9','Plancha de calor + pad de silicona + teflón + termómetro','Logo',1,2484,true,'Hotronix Auto Open Clam 16×20: CAD 2,650 nuevo o 2,484 nearly new (Stahls Canada). Alternativa económica: Hotronix MAXX 15×15 (cotizar) o HTVRONT Auto 2. Ver top 5 en Logo 3D'],
  ['b10','Kits de entrega (bolsa, tarjeta, etiqueta)','Testers',70,5,true,''],
  ['b11','Test Day (espacio, bebidas, impresos)','Testers',1,600,true,''],
- ['b12','Solicitud de marca CIPO (1 clase + isotipo)','Legal',1,650,true,'Verificar tarifa vigente en CIPO'],
+ ['b12','Solicitud de marca CIPO: palabra + logo, clases 25 y 35 (CAD 640.10 c/u)','Legal',2,640.10,true,'Tasa 2026 en línea: 491.06 primera clase + 149.04 adicional. Solo clase 25 en ambas: 2 × 491.06'],
  ['b13','Constitución BC Ltd + búsqueda de nombre','Legal',1,450,true,'Verificar tarifas vigentes de BC Registries'],
  ['b14','Abogado: instrumento de inversión y revisión de exención','Legal',1,2000,true,'Plantilla + revisión; presupuesto conservador'],
  ['b15','Dominio, Shopify básico (2 meses), herramientas','Marca',1,180,true,''],
  ['b16','Fotografía y contenido','Marca',1,500,true,''],
+ ['b17','Saldo al diseñador por el vector del isotipo','Marca',1,600,false,'Confirmado por Jorge el 6 sep. Requisito para transfers y para la marca figurativa en CIPO'],
 ];
 const CONTINGENCY = 0.10;
-const BUDGET_CAP_DEFAULT = 15000; // tope indicado por Jorge el 6 sep
+const BUDGET_CAP_DEFAULT = 13000; // tope indicado por Jorge el 6 sep (respuesta final)
 
 // Piloto: sku, unidades, precio, COGS landed
 const PILOT_DEFAULT = {
@@ -794,6 +813,18 @@ const METHODS = [
  {id:'tpu', name:'Etiqueta TPU 3D', how:'Mismo proceso que la silicona pero con poliuretano termoplástico.', look:'Más limpio y ligero; menos relieve que la silicona.', thick:'0.6-2.5 mm según fabricante', dur:'TPU amarillea con UV; la silicona es UV-estable', cost:'Similar a silicona', moq:'Similar a silicona', home:'Sí.'},
  {id:'puffemb', name:'Bordado 3D puff (solo gorras)', how:'Espuma de 2-6 mm bajo el hilo. Solo admite formas gruesas y simples.', look:'Relieve textil tono sobre tono con hilo del color de la gorra.', thick:'2-6 mm', dur:'Alta', cost:'GetBold (North Vancouver): mínimo 6 sin setup; precio a cotizar', moq:'6 pz', home:'No. Bordador local.'}
 ];
+const PRESSES = [
+ ['1','Hotronix Auto Open Clam 16×20 (STX20)','Clam con apertura automática','16×20 in','Perilla','CAD 2,650 nuevo · CAD 2,484 "nearly new"','Sign Supply Canada / Stahls Canada clearance','https://signsupplycanada.com/index.php?main_page=product_info&products_id=92','Mejor relación precio/productividad para pasar de 80 a 500 unidades. Garantía de por vida en elemento.'],
+ ['2','Hotronix MAXX 15×15','Clam manual, perilla central over-the-center','15×15 in','Perilla central','CAD no publicado (11×15 desde CAD 1,200; ref. EE. UU. US$1,150)','RB Digital / Stahls Canada 1-800-521-5255','https://rbdigital.ca/products/hotronix-the-maxx-clam-heat-press','La profesional más económica. Presión pareja en tela gruesa. Pedir cotización del 15×15.'],
+ ['3','Geo Knight DK20S 16×20','Swing-away manual','16×20 in','Perilla','CAD 3,395','Sign Supply Canada; también Transfer Paper Canada y Quality Digital Solutions (Calgary)','https://signsupplycanada.com/index.php?main_page=product_info&products_id=327','El plato caliente se aleja del operador; posicionamiento preciso sobre hoodie con pad. Más pesado y caro.'],
+ ['4','HTVRONT Auto Heat Press 2 (15×15)','Clam automático con bandeja','15×15 in','Digital, 7 niveles (20-80 kg)','CAD no publicado (promos "C$50 off")','ca.htvront.com','https://ca.htvront.com/products/htvront-ca-auto-heat-press-2','Única opción económica con presión numérica y auto-open; 4.5 cm de altura para hoodies. Máx. ~200 °C basta para silicona. Menor respaldo que las industriales.'],
+ ['5','Hotronix Fusion IQ 16×20','Swing-away + cajón, pantalla táctil','16×20 in','Perilla + lectura digital','CAD 3,575 nuevo · CAD 3,375 "nearly new"','Sign Supply Canada / Stahls Canada','https://www.signsupplycanada.com/hotronix-m-5.html','La más versátil y repetible; el sobreprecio vs STX20 solo se justifica con decoración variada o varios operadores.']
+];
+const PRESS_NOTES = [
+ 'No recomendadas para silicona 3D: Cricut AutoPress original (C$399, sin control de presión); VEVOR 15×15 solo como respaldo (sin garantía publicada). Cricut AutoPress 2 sí trae presión ajustable (44-220 lb) pero no hay precio ni fecha para Canadá.',
+ 'Requisito de aplicación (Stahls UK): 150 °C, 3.5-5 bar, 25 s, despegue en frío. Sobre hoodie usar pad de silicona para nivelar costuras; los pillows de baja densidad no sirven para presión firme.',
+ 'Para gorras después: Geo Knight DK7 (CAD no publicado; ref. US$795) o Hotronix cap press CAD 1,560 en RB Digital.'
+];
 const LOGO_STEPS = [
  ['Arte vectorial','AI, EPS, PDF o SVG. Ancho mínimo de línea 1.5 mm (Stahls exige ≥1.6 mm; algunos proveedores 2 mm). Sin líneas finas: en nuestro isotipo el ojo y la separación oreja-cabeza son los puntos a engrosar. Color en Pantone Solid Coated; para tono sobre tono enviar el Pantone de la tela o un recorte físico.'],
  ['Especificar el pedido','Tamaño en mm por prenda, grosor (0.8-1.0 mm para el look Lululemon; 0.5 es el estándar barato), acabado mate, número de colores (1), tela destino (French terry algodón/bambú 280 gsm) y cantidad (100 pz es el MOQ típico).'],
@@ -837,6 +868,7 @@ const LOGO_SOURCES = [
  ['Thread Logic — What is 3D puff embroidery','https://threadlogic.com/blogs/logo-embroidery/what-is-3-d-or-puff-embroidery'],
  ['Firebird Prints (Vancouver) — Print my supplied products','https://firebirdprints.com/print-my-item/'],
  ['Informe completo de logo 3D (repo, portal/research/logo-3d-silicona.md)','https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/research/logo-3d-silicona.md'],
+ ['Informe México y planchas en Canadá (repo, portal/research/mexico-y-planchas.md)','https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/research/mexico-y-planchas.md'],
  ['Informe completo de proveedores (repo, portal/research/proveedores.md)','https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/research/proveedores.md']
 ];
 
@@ -871,7 +903,7 @@ const SUPPLIERS = [
  {id:'o_ati', country:'Vietnam', track:'oem', name:'ATI – Apparel & Textile Innovations', loc:'Hong Kong · planta en Thu Duc, HCMC, Vietnam', prod:'Hoodies streetwear, lotes pequeños', fabric:'No publicado', moq:'50-100 / estilo', price:'No publicado', lead:'No publicado', url:'https://atihongkong.com/small-batch-clothing-manufacturer-in-vietnam', note:''},
  {id:'o_dony', country:'Vietnam', track:'oem', name:'DONY Garment', loc:'Ho Chi Minh, Vietnam', prod:'Cut & sew; enfoque uniformes y workwear', fabric:'No publicado', moq:'200 (combinando diseños)', price:'Muestra US$100 reembolsable con bulk', lead:'Muestra 5-7 días; producción 2-5 sem', url:'https://garment.dony.vn/', note:'Ya estaba en la lista de 2024.'},
  {id:'o_thyg', country:'Vietnam', track:'oem', name:'Thygesen Textile Vietnam', loc:'Vietnam (SA8000, GOTS, GRS, OEKO-TEX)', prod:'Activewear; algodón orgánico, Tencel, bambú viscosa, French terry', fabric:'Bambú viscosa/spandex, Tencel, FT', moq:'3,000 / diseño', price:'Muestra cobrada y reembolsada con bulk', lead:'Muestra 7-10 días', url:'https://thygesenapparel.com/faqs', note:'MOQ demasiado alto para piloto; candidato para Drop 01 en adelante.'},
- {id:'o_mutuo', country:'México', track:'oem', name:'MUTUO Maquila Deportiva', loc:'Monterrey, NL, México', prod:'Maquila deportiva (Dry Fit, 4-way); FT no publicado', fabric:'Deportiva', moq:'100 (hasta 2 colores, 3 tallas)', price:'No publicado (+52 81 3101 0361)', lead:'No publicado', url:'https://www.maquiladeropadeportiva.com/', note:'Nearshoring Monterrey; confirmar si manejan French terry pesado.'},
+ {id:'o_mutuo', country:'México', track:'oem', name:'MUTUO Maquila Deportiva', loc:'Monterrey, NL, México', prod:'Maquila deportiva (Dry Fit, 4-way); FT no publicado', fabric:'Deportiva', moq:'100 (hasta 2 colores, 3 tallas)', price:'No publicado (+52 81 3101 0361)', lead:'No publicado', url:'https://www.maquiladeropadeportiva.com/', note:'MOQ 100 con hasta 2 colores y 3 tallas; paquete completo desde patronaje; envíos internacionales. Shortlist #1 México. Confirmar French terry pesado.'},
  {id:'o_bomme', country:'México / EE. UU.', track:'oem', name:'BOMME Studio', loc:'Los Ángeles + planta en Tijuana', prod:'CMT (cliente provee tela); desarrollo de muestras', fabric:'Tela del cliente (p. ej. KenDor bambú)', moq:'CMT 150 / estilo; full package 600+', price:'Muestra cotizada aparte', lead:'No publicado', url:'https://www.bommestudio.com/clothing-sample-development', note:''},
  {id:'o_api', country:'República Dominicana / EE. UU.', track:'oem', name:'Apparel Production Inc.', loc:'Nueva York + República Dominicana (CAFTA-DR)', prod:'Nearshore cut & sew', fabric:'No publicado', moq:'200 doméstico; 300 overseas', price:'No publicado', lead:'RD 6-8 sem', url:'https://apparelproductionny.com/services/nearshore-production/', note:''},
  {id:'o_wearlab', country:'Canadá', track:'oem', name:'Wearlab', loc:'Vancouver, BC', prod:'Desarrollo completo: consultoría, sourcing, patrón, fittings, producción', fabric:'Sourcing a medida', moq:'50-100', price:'Paquete desde CAD 2,500; guía CAD 5-10k all-in para 50-100 u', lead:'No publicado', url:'https://wearlabinc.com/pages/manufacturing', note:'Opción para coser en Vancouver con tela KenDor.'},
@@ -879,8 +911,25 @@ const SUPPLIERS = [
  {id:'o_xeno', country:'Canadá', track:'oem', name:'Xeno Fashion', loc:'129-1020 Mainland St, Vancouver', prod:'Contract sewing, lotes pequeños y grandes', fabric:'Tela del cliente', moq:'Lotes pequeños', price:'No publicado (604-600-5803)', lead:'No publicado', url:'https://xenofashion.com/contract-sewing-manufacturing/', note:''},
  {id:'o_peros', country:'Canadá', track:'oem', name:'Peros Garment Factory', loc:'Toronto / Scarborough, ON', prod:'CMT y full service; blanks French terry y micro modal', fabric:'Micro modal y French terry en catálogo', moq:'CMT 150; full service 300; blanks FT desde 30 pz', price:'No publicado', lead:'No publicado', url:'https://www.perosgarmentfactory.com/pages/full-service-cmt-1', note:''},
 
+ // México (investigación 6 sep, ronda 2)
+ {id:'o_maoyi', country:'México', track:'oem', name:'MAOYI Maquiladora Textil', loc:'Zapopan (Guadalajara), Jalisco', prod:'Hoodies, joggers, tees, pants; diseño, confección, branding y logística', fabric:'Algodón y poliéster; French terry ≥280 gsm no publicado', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://maoyi.mx/maquila-textil/', note:'Certificación IMMEX (facilita exportar a Canadá). Shortlist #3 México.'},
+ {id:'o_roman', country:'México', track:'oem', name:'Grupo Textil Román', loc:'Guadalajara, Jalisco · WhatsApp +52 33 1256 1290', prod:'Sudaderas y pants; bordado computarizado y DTF in-house', fabric:'No publicado (base: uniformes corporativos)', moq:'Escala de 50 a 500 y 5,000 pzas', price:'No publicado', lead:'No publicado', url:'https://grupotextilroman.com/fabricantes-de-ropa-en-guadalajara/', note:'Pre-producción para confirmar tallas y acabados. Validar acabado premium. Shortlist #2 México.'},
+ {id:'o_aboutblanks', country:'México', track:'oem', name:'About Blanks', loc:'Guadalajara, Jalisco · Instagram @about.blankss', prod:'Playeras, sudaderas, pants para marcas con textiles premium y mínimos bajos', fabric:'No publicado', moq:'"Mínimo de piezas" (no publicado)', price:'No publicado', lead:'No publicado', url:'https://modaemprende.com/directorio/about-blanks/', note:'El más afín al concepto; contacto solo por redes. Shortlist #4 México.', verified:false},
+ {id:'o_maldo', country:'México', track:'oem', name:'Sudaderas MALDO (sudaderaz.com.mx)', loc:'CDMX · +52 55 3037 5159', prod:'Hoodies premium, cuello redondo, pants como blanks para decorar', fabric:'Felpa nacional 50/50 algodón-poliéster', moq:'Por docena o ciento (esquemas flexibles)', price:'No publicado', lead:'No publicado', url:'https://www.sudaderaz.com.mx/fabricantes-de-sudaderas/', note:'Opción "blank mexicano + logo" rápida. Tela 50/50 está por debajo de la promesa de suavidad.'},
+ {id:'o_joite', country:'México', track:'oem', name:'JOITE — La casa de la sudadera', loc:'CDMX · WhatsApp +52 56 1375 5141', prod:'Fábrica y maquila integral de sudaderas', fabric:'No publicado', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://joyte.com.mx/', note:'Redes activas 2024-2025.', verified:false},
+ {id:'o_simon', country:'México', track:'oem', name:'Simón Textiles (fabricadesudaderas.com)', loc:'San Andrés Cholula, Puebla', prod:'Hoodies, polos, gorras; bordado, sublimado, serigrafía', fabric:'50 % algodón peinado / 50 % poliéster', moq:'Desde 1 pieza', price:'No publicado', lead:'No publicado', url:'https://fabricadesudaderas.com/', note:'Útil para piezas sueltas de prueba de fit.'},
+ {id:'o_cstech', country:'México', track:'oem', name:'CS Tech Contract Manufacturing', loc:'Tijuana, BC · muestras vía San Diego', prod:'Manufactura por contrato de ropa; ISO 9001', fabric:'No publicado', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://cstechmexico.com/', note:'Logística costa oeste hacia Vancouver; aduana resuelta vía San Diego.'},
+ {id:'o_mammon', country:'México', track:'blanks', name:'Mammon Blanks — Hoodie French Terry 480 g', loc:'México (ciudad no publicada)', prod:'Hoodie French terry 480 gsm 100 % algodón, blanks', fabric:'French terry 480 gsm 100 % algodón', moq:'Mayoreo desde 10 pzas', price:'US$29 preventa (lista US$56)', lead:'Preventa; verificar', url:'https://mammonblanks.com/products/hoodie-french-terry-480g', note:'Demuestra que hay French terry pesado hecho en México. Pedir 2 muestras para el panel de suavidad.'},
+ {id:'o_hoodee', country:'México', track:'blanks', name:'HOODEE', loc:'Monterrey, NL', prod:'Hoodies streetwear con DTF; mayoreo', fabric:'No publicado', moq:'Desde 12 pzas', price:'No publicado', lead:'No publicado', url:'https://hoodee.mx/', note:'Productor de hoodies, no maquila bajo spec.', verified:false},
+ {id:'o_mexmakers', country:'México', track:'oem', name:'Mexmakers (clúster de 30 empresas textiles)', loc:'México (red nacional)', prod:'Paquete completo trazable: hilo, tela y confección; objetivo declarado de bajar MOQ', fabric:'Varía por empresa', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://mexmakers.net/', note:'Lanzado julio 2025. Punto de entrada para cotizar con varias plantas a la vez.'},
+ {id:'o_loomex', country:'México', track:'oem', name:'Loomex Group (agencia de sourcing)', loc:'CDMX, Guadalajara, Monterrey', prod:'Intermediario: tech pack, muestreo y producción con fábricas de su red', fabric:'Varía', moq:'Programas desde 50 pzas/estilo con tallas mixtas', price:'Comisión no publicada', lead:'No publicado', url:'https://www.loomexgroup.com/regions/mexico', note:'Cobra intermediación; útil si no hay tiempo de calificar fábricas.'},
+ {id:'t_texterra', country:'México', track:'tela', name:'Texterra — French Terry reciclado 330 gsm', loc:'CDMX (envío nacional)', prod:'French terry reciclado 330 g/m², 165 cm; también bambú, modal y algodón orgánico', fabric:'Poliéster reciclado; orgánico certificado', moq:'Desde 1-3 m; precio rollo 100+ m', price:'MXN 179.10/m (10-49 m); MXN 155.15/m (50+ m)', lead:'Stock', url:'https://telastexterra.com/tienda/textiles-reciclados/french-terry-polyreciclado/', note:'Pedir muestra de metro para el panel de suavidad.'},
+ {id:'t_coko', country:'México', track:'tela', name:'Coko & co — French terry bambú/orgánico 400 gsm', loc:'México · WhatsApp 55 3851 9152', prod:'French terry 70 % bambú / 30 % algodón orgánico, 400 gsm, 1.5 m', fabric:'Bambú / algodón orgánico', moq:'10 % desc. desde 10 m; 15 % desde 20 m', price:'No publicado', lead:'Stock', url:'https://coko.com.mx/tiendas/producto/french-terry-de-bambu/', note:'La tela mexicana más cercana a la promesa de la marca.'},
+ {id:'t_roble', country:'México', track:'tela', name:'Grupo Textil El Roble (tejedora)', loc:'Moroleón, Guanajuato', prod:'French terry, felpa, interlock; algodón 100 % orgánico, modal y Tencel', fabric:'Orgánico / modal / Tencel', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://canaintex.org.mx/roble/', note:'Tejedora industrial para volumen (Drop 01). Dominio propio no resolvió; contactar vía CANAINTEX.', verified:false},
+ {id:'t_tejitex', country:'México', track:'tela', name:'TEJITEX (tejedora + maquila)', loc:'Tulancingo, Hidalgo', prod:'Felpa y French terry poliéster/algodón, 30+ colores; venta por rollo o kilo', fabric:'Poliéster / algodón', moq:'Tela: rollo o kilo. Maquila: 1,000 pzas', price:'No publicado', lead:'No publicado', url:'https://tejitex.mx/maquila-fabrica-playeras-pants-sudaderas.html', note:'Solo como proveedor de tela; su maquila exige 1,000 pzas.'},
+ {id:'t_campoytex', country:'México', track:'tela', name:'Campoytex — French Terry perchado 290 gsm', loc:'México (entrega 24-48 h)', prod:'French terry perchado 290 g/m², 62/34/4 poliéster/algodón/spandex, tubular', fabric:'Mezcla sintética', moq:'Por rollo', price:'No publicado', lead:'24-48 h', url:'https://campoytex.com/producto/french-terry-perchado/', note:'Composición sintética alta; probable menor suavidad que bambú/algodón.'},
  // Tela
- {id:'t_kendor', country:'Canadá', track:'tela', name:'KenDor Textiles — T4151 Bamboo/Cotton Stretch French Terry', loc:'Vancouver, BC', prod:'French terry 280 gsm, 60"', fabric:'66 % rayón de bambú / 28 % algodón / 6 % spandex', moq:'Por rollo; muestra 1 por color', price:'Lista por rollo vía rep (askus@kendortextiles.com)', lead:'Stock local', url:'https://kendortextiles.com/products/t4151-t4751-bamboo-cotton-stretch-french-terry', note:'Tela candidata para muestras cosidas en Vancouver.'},
+ {id:'t_kendor', country:'Canadá', track:'tela', name:'KenDor Textiles — T4151 Bamboo/Cotton Stretch French Terry', loc:'Vancouver, BC', prod:'French terry 280 gsm, 60"', fabric:'66 % rayón de bambú / 28 % algodón / 6 % spandex', moq:'Por rollo; muestra 1 por color', price:'Lista por rollo vía rep (askus@kendortextiles.com)', lead:'Stock local', url:'https://kendortextiles.com/products/t4151-t4751-bamboo-cotton-stretch-french-terry', note:'Tela candidata para muestras cosidas en Vancouver. Cumple la mezcla ideal (6 % spandex) aunque con bambú en lugar de algodón puro.'},
  {id:'t_kinderel', country:'Canadá / EE. UU.', track:'tela', name:'Kinderel Organic Fabrics — Bamboo Cotton Stretch French Terry', loc:'Envía desde Canadá y EE. UU.', prod:'French terry 280 gsm, 163-165 cm', fabric:'67 % bambú / 28 % algodón orgánico / 5 % spandex', moq:'8-10 yardas', price:'US$9.45/yd (8-10 yd); US$8.50/yd rollo', lead:'Stock', url:'https://www.kinderel.com/products/wholesale-bamboo-stretch-french-terry-fabric', note:''},
  {id:'t_nature', country:'EE. UU.', track:'tela', name:"Nature's Fabrics — Bamboo Stretch French Terry 300 gsm", loc:'EE. UU.', prod:'French terry 300 gsm, 62"', fabric:'66 % bambú viscosa / 28 % algodón orgánico / 6 % spandex', moq:'1 yarda; rollos 39-45 yd', price:'US$14.99/yd retail', lead:'Stock', url:'https://naturesfabrics.com/products/black-bamboo-stretch-french-terry-300-gsm', note:''},
  {id:'t_ctg', country:'EE. UU.', track:'tela', name:'California Textile Group — 3-End French Terry', loc:'Los Ángeles', prod:'FT 320 gsm; orgánico 310-315; también 360/430/470 gsm', fabric:'100 % algodón', moq:'No publicado', price:'No publicado (213-765-0555)', lead:'Stock', url:'https://californiatextilegroup.com/products/72140', note:''},
@@ -1138,6 +1187,126 @@ document.getElementById('sf_add').addEventListener('click',()=>{
 const sf = k => document.getElementById('sf_'+k).value.trim();
 
 /* ============================================================
+   CORREOS RFQ (listos para copiar; remitente mychinchilla.ca)
+   ============================================================ */
+const SIGN = "Jorge Chinchilla\nFounder, Chinchilla\nVancouver, BC, Canada\n[tu correo]@mychinchilla.ca";
+const EMAILS = [
+ {id:'blanks', name:'Blanks premium · pedido de sample pack (EN)', to:'S&S Canada, T-Sport, Jerico, Gabe, House of Blanks, Lane Seven/United Blanks, Mammon Blanks', subject:'Wholesale account + sample order: heavyweight hoodie and jogger (Vancouver brand)', body:
+`Hello [Name / Wholesale team],
+
+I am launching Chinchilla, a Vancouver-based athleisure brand, and I am selecting blanks for a 70-unit tester batch shipping in early October, followed by a 300-500 unit pilot.
+
+I would like to (1) open a wholesale account and (2) order a sample pack this week:
+
+- [Style code] hoodie, size M, colours: black/graphite and [light colour], 2 units
+- [Style code] jogger/sweatpant, size M, same colours, 2 units
+
+Could you confirm:
+1. Unit price in CAD at 1-11 units and at 70 units, and whether a 300-unit order changes the tier.
+2. Fabric spec: weight in gsm (or oz), fibre composition, inside finish (brushed / loop), and declared shrinkage after wash.
+3. Stock by size and colour in your Canadian warehouse, and delivery time to Vancouver V6[...].
+4. Whether the garments are compatible with heat-applied silicone transfers at 150-165 °C (we apply our logo in-house).
+
+Ship to: [address], Vancouver, BC. Billing: [entity or name].
+
+Thank you,
+${SIGN}`},
+ {id:'oem', name:'OEM / cut & sew · muestra de desarrollo (EN)', to:'Groovecolor, Qianshiwear, Tuozhen, White Cotton, ASBX, AG Tekstil, ATI, Wearlab, Designer Apparel Services, Peros', subject:'Development samples + pilot quote: heavyweight cotton-spandex French terry hoodie and jogger', body:
+`Hello [Name],
+
+I am the founder of Chinchilla, a Vancouver, Canada athleisure brand launching with two core pieces. I am looking for a manufacturing partner for development samples now and a 300-500 unit pilot in Q1 2027.
+
+Brief spec (full tech pack available after NDA):
+- Hoodie: relaxed, slightly oversized fit; heavyweight French terry or brushed fleece, 320-400 gsm; target blend cotton-spandex (90-95 % cotton / 5-10 % spandex) or bamboo-cotton-spandex; brushed interior; double-layer hood; kangaroo pocket; ribbed cuffs and hem; no drawcord.
+- Jogger: matching fabric; tapered leg; elastic waist with flat drawcord; ribbed cuffs.
+- Sizes XS-XL. Colours: 2 solid colourways for the pilot (Pantone to be provided).
+- Branding: no print at the factory. We apply a 3D silicone heat-transfer logo ourselves (or we may ask you to apply it: please quote separately).
+- Care and size labels: woven neck label and printed care label (artwork provided).
+
+Please quote:
+1. Development samples: cost and lead time for 1 hoodie + 1 jogger in size M, using your closest stock fabric, and whether the sample fee is credited against production.
+2. Fabrics available in-house that meet 320-400 gsm with cotton-spandex or bamboo blends (composition, gsm, price per kg or metre, colour minimums).
+3. Production price per unit at 150, 300 and 500 units per style (FOB and, if possible, DDP Vancouver), MOQ per colour and size, payment terms, and lead time after sample approval.
+4. Certifications (OEKO-TEX, GOTS, BSCI, WRAP) and whether you can share references of small brands you produce for.
+
+I can send our NDA and tech pack as soon as you confirm interest.
+
+Best regards,
+${SIGN}`},
+ {id:'oem_es', name:'OEM México · muestra de desarrollo (ES)', to:'MUTUO, Grupo Textil Román, MAOYI, About Blanks, JOITE, Simón Textiles', subject:'Muestras de desarrollo y cotización de piloto: hoodie y jogger en French terry algodón-spandex', body:
+`Hola [Nombre],
+
+Soy fundador de Chinchilla, una marca de athleisure con base en Vancouver, Canadá. Estamos buscando un taller aliado en México para muestras de desarrollo ahora y un piloto de 300 a 500 piezas en el primer trimestre de 2027, con la idea de crecer a producción recurrente.
+
+Resumen de la especificación (ficha técnica completa disponible tras firmar un acuerdo de confidencialidad):
+- Hoodie: corte relajado, ligeramente oversized; French terry pesado o felpa perchada de 320 a 400 g/m²; mezcla objetivo algodón-spandex (90-95 % algodón / 5-10 % spandex) o bambú-algodón-spandex; interior perchado; capucha doble; bolsa canguro; puños y pretina de rib; sin cordón.
+- Jogger: misma tela; pierna entallada; cintura elástica con cordón plano; puños de rib.
+- Tallas XS a XL. Dos colores sólidos para el piloto (Pantone por definir).
+- Marca: sin estampado en fábrica. El logo lo aplicamos nosotros con transfer de silicona 3D (o pueden cotizarlo aparte si lo manejan).
+- Etiquetas: etiqueta tejida de cuello y etiqueta de cuidado impresa (arte incluido).
+
+Les pido cotizar:
+1. Muestras de desarrollo: costo y tiempo para 1 hoodie y 1 jogger talla M con su tela de stock más parecida, y si el costo de la muestra se acredita a la producción.
+2. Telas disponibles que cumplan 320-400 g/m² con algodón-spandex o bambú (composición, gramaje, precio por kg o metro, mínimos por color). Si no tienen la tela, ¿aceptan trabajar con tela que nosotros compremos (por ejemplo, Texterra o Coko & co)?
+3. Precio por pieza a 150, 300 y 500 piezas por modelo, mínimo por color y talla, condiciones de pago y tiempo de entrega tras aprobar la muestra.
+4. Si exportan a Canadá (régimen IMMEX o experiencia con T-MEC) y certificaciones que tengan.
+
+Con gusto envío el acuerdo de confidencialidad y la ficha técnica en cuanto confirmen interés.
+
+Saludos cordiales,
+${SIGN}`},
+ {id:'transfer', name:'Transfers de silicona 3D · muestra y cotización (EN)', to:'DOY Label, Cusmytrims, WeMust, Quality Woven Labels, 4customize, Hyi Fashion, Stahls UK', subject:'Quote request: 3D silicone heat transfer logo, 100-200 pcs, matte, tone-on-tone', body:
+`Hello [Name],
+
+I am launching an apparel brand in Vancouver, Canada and need 3D silicone heat-transfer labels for our logo, applied in-house on cotton French terry hoodies and joggers.
+
+Specification:
+- Artwork: one-colour silhouette (chinchilla with leaf tail), vector file attached after NDA. Minimum line width 1.5 mm at final size.
+- Sizes: 65 mm wide (hoodie chest) and 40 mm wide (jogger hip). Please advise if 40 mm is feasible with our line widths.
+- Thickness: 0.8-1.0 mm raised, matte finish, soft/rubbery hand (Lululemon-style).
+- Colours: tone-on-tone. Two Pantone references will be provided (dark and light). One colour per transfer.
+- Quantity: 100 pcs per size for the first order (200 total), then 300-500 per size.
+- Substrate: 100 % cotton or cotton-spandex French terry, 320-400 gsm.
+
+Please send:
+1. Unit price at 100 and 500 pcs per size, setup or mould fees, and sample cost.
+2. Lead time for a physical pre-production sample and for production, and shipping options to Vancouver (DHL/FedEx).
+3. Application sheet: temperature, time, pressure, peel (hot/cold) and wash test results (number of cycles at 40 °C).
+4. Whether you can print on a carrier compatible with a standard clamshell heat press (15x15 in).
+
+Thank you,
+${SIGN}`},
+ {id:'fabric', name:'Tela · muestra de metro (EN / ES)', to:'KenDor (EN), Kinderel (EN), Texterra (ES), Coko & co (ES)', subject:'Sample yardage request: cotton/bamboo-spandex French terry 280-400 gsm', body:
+`Hello [Name] / Hola [Nombre],
+
+EN: We are developing a heavyweight hoodie and jogger for a Vancouver brand and would like to order sample yardage of your French terry in the 280-400 gsm range with spandex (cotton-spandex or bamboo-cotton-spandex). Please send: available qualities with composition, gsm, width, colours in stock, price per metre at sample, 50 m and full-roll quantities, minimum per colour for custom dyeing, and shipping cost to Vancouver, BC. We would like 2 metres of each candidate quality in your darkest and lightest stock colours.
+
+ES: Estamos desarrollando un hoodie y un jogger pesados para una marca de Vancouver y queremos pedir metraje de muestra de su French terry de 280 a 400 g/m² con spandex (algodón-spandex o bambú-algodón-spandex). Favor de enviar: calidades disponibles con composición, gramaje, ancho, colores en existencia, precio por metro en muestra, a 50 m y por rollo completo, mínimo por color para teñido especial y costo de envío a Vancouver, BC. Queremos 2 metros de cada calidad candidata en su color más oscuro y más claro de existencia.
+
+Thank you / Gracias,
+${SIGN}`},
+ {id:'nda', name:'Envío de NCNDA (EN)', to:'Cualquier proveedor que pase a cotización', subject:'Chinchilla: mutual NDA before we share the tech pack and artwork', body:
+`Hello [Name],
+
+Thank you for your interest. Before I share the tech pack, the logo vector files and our volumes, please find attached our standard mutual non-disclosure and non-circumvention agreement (3-year term, governed by British Columbia law). It is mutual: it protects your pricing and sub-contractor information as much as our designs.
+
+If your company uses its own NDA template, send it and we will review it; otherwise please return the attached signed (electronic signature is fine) with the legal name, address and signatory title filled in, and I will send the complete package the same day.
+
+Best regards,
+${SIGN}`}
+];
+function renderEmails(){
+  const sel=document.getElementById('emailSel'); const cur=sel.value||EMAILS[0].id;
+  sel.innerHTML = EMAILS.map(e=>`<option value="${e.id}" ${e.id===cur?'selected':''}>${esc(e.name)}</option>`).join('');
+  const e=EMAILS.find(x=>x.id===cur);
+  document.getElementById('emailTo').textContent = 'Para: '+e.to;
+  document.getElementById('emailSubject').textContent = e.subject;
+  document.getElementById('emailBody').textContent = e.body;
+}
+document.getElementById('emailSel').addEventListener('change',renderEmails);
+document.getElementById('btnCopyEmail').addEventListener('click',()=>{ const e=EMAILS.find(x=>x.id===document.getElementById('emailSel').value); const ta=document.createElement('textarea'); ta.value='Subject: '+e.subject+'\n\n'+e.body; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast('Correo copiado'); }catch(err){ toast('Selecciona y copia el texto'); } document.body.removeChild(ta); });
+
+/* ============================================================
    LOGO 3D
    ============================================================ */
 function renderLogo(){
@@ -1148,6 +1317,8 @@ function renderLogo(){
   const m = METHODS.find(x=>x.id===chosen);
   document.getElementById('logoSpec').innerHTML = `<dt>Acabado</dt><dd>${esc(m.look)}</dd><dt>Relieve</dt><dd>${esc(m.thick)}</dd><dt>Durabilidad</dt><dd>${esc(m.dur)}</dd><dt>Costo unitario</dt><dd>${esc(m.cost)}</dd><dt>MOQ típico</dt><dd>${esc(m.moq)}</dd><dt>¿En casa?</dt><dd>${esc(m.home)}</dd>`;
   document.getElementById('methodsTable').innerHTML = `<thead><tr><th>Método</th><th>Cómo se hace</th><th>Look y tacto</th><th>Relieve</th><th>Durabilidad</th><th>Costo / u</th><th>MOQ</th><th>En casa con plancha</th></tr></thead><tbody>${METHODS.map(x=>`<tr ${x.id===chosen?'style="background:var(--accent-soft)"':''}><td><b>${esc(x.name)}</b>${x.id==='silicona'?'<div><span class="pill ok">Lululemon</span></div>':''}</td><td>${esc(x.how)}</td><td>${esc(x.look)}</td><td class="num">${esc(x.thick)}</td><td>${esc(x.dur)}</td><td class="num">${esc(x.cost)}</td><td class="num">${esc(x.moq)}</td><td>${esc(x.home)}</td></tr>`).join('')}</tbody>`;
+  document.getElementById('pressTable').innerHTML = `<thead><tr><th>#</th><th>Modelo</th><th>Tipo</th><th>Plato</th><th>Presión</th><th>Precio CAD</th><th>Dónde</th><th>Por qué</th></tr></thead><tbody>${PRESSES.map(p=>`<tr><td class="num"><b>${p[0]}</b></td><td><b><a href="${esc(p[7])}" target="_blank" rel="noopener">${esc(p[1])}</a></b></td><td>${esc(p[2])}</td><td class="num">${esc(p[3])}</td><td>${esc(p[4])}</td><td class="num">${esc(p[5])}</td><td class="tiny">${esc(p[6])}</td><td class="tiny">${esc(p[8])}</td></tr>`).join('')}</tbody>`;
+  document.getElementById('pressNotes').innerHTML = PRESS_NOTES.map(n=>`<div class="note">${esc(n)}</div>`).join('');
   document.getElementById('logoSteps').innerHTML = LOGO_STEPS.map(s=>`<div class="step"><div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div></div>`).join('');
   document.getElementById('paramsTable').innerHTML = `<thead><tr><th>Método</th><th>Temperatura</th><th>Tiempo</th><th>Presión</th><th>Peel</th><th>Notas</th></tr></thead><tbody>${PARAMS.map(p=>`<tr>${p.map((c,i)=>`<td class="${i>0&&i<4?'num':''}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody>`;
   const ls = SUPPLIERS.filter(s=>s.track==='transfer'||s.track==='local');
@@ -1213,6 +1384,17 @@ function renderFin(){
     tr.querySelector('.conf').addEventListener('change',e=>Store.set('budget',id,{confirmed:e.target.checked}));
   });
 
+  // palancas para caber en el tope
+  const over=b.total-BUDGET_CAP_DEFAULT;
+  const levers=[
+    ['Plancha Hotronix MAXX 15×15 en lugar de la Auto Open Clam (cotizar; ref. US$1,150 ≈ CAD 1,600)', 2484-1700],
+    ['Presentar la marca solo en clase 25 (ambas solicitudes)', 2*149.04],
+    ['Bajar muestras OEM de 3 a 2 proveedores en esta fase', 380],
+    ['Lote test de 60 unidades (35 hoodies + 25 joggers) en vez de 70', 5*58+5*48],
+    ['Plantilla legal de equity con abogado en fase 2 (solo revisión de exención ahora)', 1000],
+  ];
+  document.getElementById('budgetLevers').innerHTML = over>0 ? `<div class="callout warn"><b>El presupuesto excede el tope de CAD ${BUDGET_CAP_DEFAULT.toLocaleString('en-CA')} en ${money(over)}.</b> Palancas disponibles (ahorro aprox., con contingencia): <ul style="margin:6px 0 0 18px">${levers.map(l=>`<li>${esc(l[0])}: <b class="num">${money(l[1]*(1+CONTINGENCY))}</b></li>`).join('')}</ul><div class="tiny" style="margin-top:6px">Recomendación: plancha MAXX + solo clase 25 + legal de equity en fase 2 = ${money((levers[0][1]+levers[1][1]+levers[4][1])*(1+CONTINGENCY))} de ahorro, suficiente para caber sin tocar el lote test.</div></div>` : `<div class="callout good">Dentro del tope de CAD ${BUDGET_CAP_DEFAULT.toLocaleString('en-CA')} con holgura de ${money(-over)}.</div>`;
+
   // piloto
   document.getElementById('pilotTable').innerHTML = `<thead><tr><th>SKU</th><th>Unidades</th><th>Precio CAD</th><th>COGS landed</th><th class="r">Ingreso</th><th class="r">COGS</th><th class="r">Margen bruto</th></tr></thead><tbody>${pc.rows.map(r=>`<tr data-id="${r.id}"><td><b>${esc(r.name)}</b>${r.est?' <span class="pill est">est.</span>':''}</td><td><input class="cell-in f num" data-f="units" type="number" min="0" step="10" value="${r.units}" style="max-width:90px"></td><td><input class="cell-in f num" data-f="price" type="number" min="0" step="1" value="${r.price}" style="max-width:90px"></td><td><input class="cell-in f num" data-f="cogs" type="number" min="0" step="1" value="${r.cogs}" style="max-width:90px"></td><td class="r num">${money(r.units*r.price)}</td><td class="r num">${money(r.units*r.cogs)}</td><td class="r num">${money(r.units*(r.price-r.cogs))} <span class="tiny">${r.price?Math.round(100*(r.price-r.cogs)/r.price):0} %</span></td></tr>`).join('')}</tbody><tfoot><tr><td>Total</td><td class="num">${pc.units}</td><td></td><td></td><td class="r num">${money(pc.rev)}</td><td class="r num">${money(pc.cogs)}</td><td class="r num">${money(pc.gm)} <span class="tiny">${pc.rev?Math.round(100*pc.gm/pc.rev):0} %</span></td></tr></tfoot>`;
   document.querySelectorAll('#pilotTable tr[data-id]').forEach(tr=>{ const id=tr.dataset.id; tr.querySelectorAll('.f').forEach(inp=>inp.addEventListener('change',e=>{ const m=Store.get('meta','pilot'); const rows={...(m.rows||{})}; rows[id]={...(rows[id]||{}),[inp.dataset.f]:+e.target.value}; Store.set('meta','pilot',{rows}); })); });
@@ -1230,9 +1412,15 @@ function renderFin(){
   const pctSum=r.use.reduce((a,u)=>a+u.pct,0);
   document.getElementById('useTable').innerHTML = `<thead><tr><th>Uso de fondos</th><th>%</th><th class="r">CAD</th></tr></thead><tbody>${r.use.map(u=>`<tr data-id="${u.id}"><td>${esc(u.name)}</td><td><input class="cell-in pct num" type="number" min="0" max="100" step="5" value="${u.pct}" style="max-width:80px"></td><td class="r num">${money(r.ask*u.pct/100)}</td></tr>`).join('')}</tbody><tfoot><tr><td>Total</td><td class="num ${pctSum!==100?'':''}" style="${pctSum!==100?'color:var(--bad)':''}">${pctSum} %${pctSum!==100?' (debe ser 100)':''}</td><td class="r num">${money(r.ask*pctSum/100)}</td></tr></tfoot>`;
   document.querySelectorAll('#useTable tr[data-id]').forEach(tr=>tr.querySelector('.pct').addEventListener('change',e=>{ const m=Store.get('meta','round'); const use={...(m.use||{})}; use[tr.dataset.id]=+e.target.value; Store.set('meta','round',{use}); }));
+  const maxEq = +(Store.get('meta','round').maxEquity ?? 15);
+  const eqEl=document.getElementById('maxEquity'); if(document.activeElement!==eqEl) eqEl.value=maxEq;
+  const post = r.ask/(maxEq/100), pre = post - r.ask;
+  document.getElementById('equityTable').innerHTML = `<thead><tr><th>Escenario</th><th>Equity cedido</th><th class="r">Monto</th><th class="r">Post-money</th><th class="r">Pre-money</th></tr></thead><tbody>${[[maxEq, r.ask],[maxEq, 25000],[maxEq, 40000],[10, r.ask],[12.5, r.ask]].map(([e,a])=>`<tr ${e===maxEq&&a===r.ask?'style="background:var(--accent-soft)"':''}><td>${e===maxEq&&a===r.ask?'<b>Base</b>':'Alternativa'}</td><td class="num">${e} %</td><td class="r num">${money(a)}</td><td class="r num">${money(a/(e/100))}</td><td class="r num">${money(a/(e/100)-a)}</td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('equityNote').innerHTML = `<div class="callout warn"><b>Lo que implica tu regla:</b> levantar ${money(r.ask)} cediendo máximo ${maxEq} % obliga a defender una valuación post-money de ${money(post)} (pre-money ${money(pre)}) para una marca sin ventas. Con familia y amigos se puede sostener si el deck muestra los gates aprobados, pero es una valuación de "confianza en el fundador", no de mercado. <b>Recomendación:</b> mantener la regla del 15 % como techo y ofrecer una <b>nota convertible o SAFE con tope de valuación</b> igual a ${money(Math.round(post/5000)*5000)} y descuento del 20 %. Así el inversionista entra hoy, el equity se fija cuando haya ventas del piloto, y el techo de dilución queda garantizado por el tope. El abogado en BC lo estructura con la misma exención de familia, amigos y socios de negocio.</div>`;
   document.getElementById('structTable').innerHTML = `<thead><tr><th>Instrumento</th><th>Qué es</th><th>Cuándo conviene</th></tr></thead><tbody>${STRUCTURES.map(s=>`<tr><td><b>${s[0]}</b></td><td>${s[1]}</td><td>${s[2]}</td></tr>`).join('')}</tbody>`;
 }
 document.getElementById('roundAsk').addEventListener('change',e=>Store.set('meta','round',{ask:+e.target.value}));
+document.getElementById('maxEquity').addEventListener('change',e=>Store.set('meta','round',{maxEquity:+e.target.value}));
 
 /* ============================================================
    INVERSIONISTAS
@@ -1289,15 +1477,15 @@ const COLOR_OPTIONS = [
  ['Heather Grey','#A8A9AD','Neutro athleisure · esconde uso diario'],['Bone','#E8E2D3','Neutro cálido · alternativa al blanco']
 ];
 const SOCIAL = [
- ['dominio','Dominio y correo','chinchilla.store (usado en el deck) · alternativas: wearchinchilla.com, chinchilla.ca','Alta','Comprar dominio, configurar Google Workspace o Zoho: hola@ y vancouver@.'],
- ['instagram','Instagram','@chinchilla.store · alt: @wearchinchilla','Alta','Cuenta profesional (Creador). Bio: promesa + "Vancouver · lista de espera" + link. 9 posts de textura antes de anunciar nada.'],
- ['tiktok','TikTok','@chinchilla.store','Alta','Cuenta Business. Primer video: la prueba de tacto ciego. Formato vertical 9:16, 7-15 s.'],
- ['threads','Threads','@chinchilla.store','Media','Se crea desde Instagram. Voz de marca en texto; sirve para el "diario de fabricación".'],
- ['pinterest','Pinterest','chinchillastore','Media','Tableros: paleta, texturas, fits. Tráfico lento pero durable hacia la landing.'],
- ['youtube','YouTube','@chinchillastore','Baja','Shorts espejo de TikTok. Un video largo: el proceso del logo en relieve.'],
- ['x','X','@chinchillastore','Baja','Reservar el handle. Sin actividad hasta el piloto.'],
+ ['dominio','Dominio y correo','mychinchilla.ca (ya lo usas para correo) · el deck decía chinchilla.store: unificar','Alta','Correo ya activo en mychinchilla.ca. Decidir si la landing vive en mychinchilla.ca o se compra chinchilla.store para la tienda; usar uno solo en todo.'],
+ ['instagram','Instagram','@mychinchilla · alt: @mychinchilla.ca, @wearchinchilla','Alta','Cuenta profesional (Creador). Bio: promesa + "Vancouver · lista de espera" + link. 9 posts de textura antes de anunciar nada.'],
+ ['tiktok','TikTok','@mychinchilla','Alta','Cuenta Business. Primer video: la prueba de tacto ciego. Formato vertical 9:16, 7-15 s.'],
+ ['threads','Threads','@mychinchilla','Media','Se crea desde Instagram. Voz de marca en texto; sirve para el "diario de fabricación".'],
+ ['pinterest','Pinterest','mychinchilla','Media','Tableros: paleta, texturas, fits. Tráfico lento pero durable hacia la landing.'],
+ ['youtube','YouTube','@mychinchilla','Baja','Shorts espejo de TikTok. Un video largo: el proceso del logo en relieve.'],
+ ['x','X','@mychinchilla','Baja','Reservar el handle. Sin actividad hasta el piloto.'],
  ['discord','Discord (comunidad de testers)','Servidor privado "Chinchilla Testers"','Media','Canal por prenda, canal de feedback, anuncios. Sustituye al grupo de WhatsApp para 40-60 personas.'],
- ['linktree','Linktree o landing','chinchilla.store/waitlist','Alta','Un solo destino: lista de espera. Nada más hasta la preventa.'],
+ ['linktree','Linktree o landing','mychinchilla.ca/waitlist','Alta','Un solo destino: lista de espera. Nada más hasta la preventa.'],
  ['landing','Landing "coming soon" con captura de email','Shopify Starter o Carrd','Alta','Título, foto macro del relieve, campo de email, talla preferida. Conectada a Mailchimp o Shopify Email.'],
  ['brandkit','Brand kit','Carpeta en Drive','Alta','Isotipo vectorial, versiones tono sobre tono, tipografías, paleta, 3 plantillas de post, 2 de historia. Lo hace el diseñador con la guía D5.']
 ];
@@ -1373,16 +1561,20 @@ function renderMarketing(){
    LEGAL: marca, contratos, NCNDA
    ============================================================ */
 const TM_STEPS = [
- ['tm1','Búsqueda de conflictos','Buscar "Chinchilla" y variantes en la Base de Datos de Marcas Canadienses (CIPO) y en el buscador de la USPTO, clases 25 (ropa) y 35 (venta al menudeo). Anotar marcas vivas que puedan chocar. Si hay una marca viva idéntica en clase 25, hablar con agente antes de presentar.','Semana 1 · Jorge con apoyo de Claude'],
- ['tm2','Decidir qué se presenta','Dos solicitudes separadas: (1) marca nominativa CHINCHILLA, (2) marca figurativa con el isotipo. Cada una paga su propia tarifa. Si el presupuesto obliga a elegir, primero la nominativa: protege el nombre en cualquier tipografía.','Semana 1'],
- ['tm3','Redactar productos y servicios','Usar términos preaprobados del Manual de Productos y Servicios de CIPO. Clase 25: hoodies, sweatshirts, sweatpants, joggers, t-shirts, hats, caps. Clase 35 (opcional): online retail store services featuring clothing. Cada clase adicional suma tarifa.','Semana 1 · Claude redacta'],
- ['tm4','Preparar el isotipo para la marca figurativa','Imagen en blanco y negro, alta resolución, sin reivindicación de color (así cubre todos los colores). Formato y tamaño según la guía de presentación electrónica de CIPO. Requiere el vector del diseñador.','Semana 2 · depende de la pregunta 3'],
- ['tm5','Crear cuenta y presentar en línea','Cuenta de servicios en línea de CIPO a nombre de Jorge Chinchilla, persona física, domicilio en BC. Presentar la(s) solicitud(es) y pagar la tarifa oficial vigente. Guardar número de solicitud, fecha de presentación y recibo.','Semana 2 · Jorge'],
- ['tm6','Seguimiento del examen','CIPO examina en el orden recibido; el primer informe puede tardar muchos meses. Responder a cualquier informe de examen dentro del plazo. Después viene publicación y un periodo de oposición de 2 meses; luego registro por 10 años renovable.','Continuo'],
- ['tm7','Ceder la marca a la sociedad','Cuando exista la BC Ltd, registrar en CIPO el cambio de titular (cesión) de Jorge a la sociedad. Se puede hacer con la solicitud pendiente, no hay que esperar al registro.','Al constituir la sociedad'],
- ['tm8','EE. UU. y México','Antes de la primera venta transfronteriza: presentar en USPTO (base de intención de uso) y en IMPI, directamente o vía Protocolo de Madrid usando la solicitud canadiense como base. Buscar conflictos en ambas bases antes.','Semanas 8-12']
+ ['tm1','Días 1-2 · Búsquedas de conflicto','Base de Datos de Marcas Canadienses (ised-isde.canada.ca/cipo/trademark-search): "CHINCHILLA" exacta y fonética, sin filtro y luego clases 25 y 35; variantes CHINCHI*, CHINCHILA, CHIN CHILLA. Complementar con WIPO Global Brand Database y tmsearch.uspto.gov. En EE. UU. ya se detectó: CHINCHILLA en clase 25 (serie 77012419) abandonada en 2008; ROYAL CHINCHILLAS (98255305/98255289, clase 25 "shirts", 2023) con estado por verificar en TSDR. Buscar también uso no registrado en Instagram/Shopify en Canadá.','Jorge · 10 minutos por base · Claude prepara la lista de variantes'],
+ ['tm2','Días 2-3 · Decidir alcance','Dos solicitudes separadas, cada una con su tasa completa: (A) marca nominativa CHINCHILLA y (B) marca figurativa con el isotipo solo (sin la palabra), en blanco y negro sin reivindicación de color. Clase 25 obligatoria; clase 35 recomendada (tienda en línea); clase 18 solo si habrá bolsas en 3 años (cancelable por no uso). Si el presupuesto obliga a elegir una: la palabra.','Jorge'],
+ ['tm3','Días 3-5 · Arte final del logo','Archivo cuadrado, blanco y negro, ≥300 dpi, fondo blanco, sin texto; JPG y TIFF. CIPO lo reduce a 8×8 cm: probar que el ojo y la separación oreja-cabeza siguen legibles. Confirmar formato admitido en la pantalla de carga del e-filing. Requiere el vector del diseñador (pregunta 3).','Jorge · diseñador'],
+ ['tm4','Días 4-6 · Lista de productos con términos preaprobados','Pegar la lista en la herramienta "Classify list" del Manual de Productos y Servicios de CIPO y conservar solo lo que salga en verde. Clase 25 propuesta: hooded sweatshirts; sweatshirts; crewneck sweaters; t-shirts; long-sleeved shirts; tank tops; jogging pants; sweatpants; shorts; jackets; baseball caps; hats; toques; beanies; socks. Clase 35: online retail store services featuring clothing, headwear and fashion accessories; retail store services featuring clothing and headwear. NO incluir abrigos ni nada de piel: "chinchilla" es una piel y abre la objeción de marca engañosamente descriptiva (art. 12(1)(b)). Con lista preaprobada el estándar de primera acción es 18 meses vs 28 sin ella.','Claude redacta · Jorge valida en la herramienta'],
+ ['tm5','Días 6-7 · Cuenta en CIPO','GCKey (o Sign-In Partner con banca en línea) + My Canada Business Account. Solicitante: nombre legal completo de Jorge Chinchilla, persona física, domicilio en BC; no se requiere representante al tener domicilio en Canadá. Sin requisito de uso desde 2019.','Jorge'],
+ ['tm6','Día 8 · Presentar las dos solicitudes y pagar','Servicio "File a new or amended trademark application" (Trademark e-Filing). Tasa 2026 en línea: CAD 491.06 primera clase + CAD 149.04 por clase adicional, por solicitud. Palabra (25+35) CAD 640.10 + logo (25+35) CAD 640.10 = CAD 1,280.20 (o CAD 982.12 solo clase 25 en ambas). No hay tasa de registro separada. El número de solicitud llega de inmediato al pagar; esa fecha es la fecha de prioridad. Guardar recibo y acuse en Drive.','Jorge · tarjeta de crédito'],
+ ['tm7','Días 9-10 · Calendario de prioridad y seguimiento','Convenio de París: hasta 6 meses después de la fecha canadiense para presentar en EE. UU. y México reclamando esa fecha (anotar la fecha límite). Revisar estado en la base de CIPO cada mes. Pronóstico CIPO: primer examen ≈ 8 meses para solicitudes de septiembre 2026; oposición 2 meses tras publicación; registro total 12-18 meses sin objeciones; vigencia 10 años (renovación CAD 595.06 + 185.49 por clase adicional). Usar ™, no ®, hasta registrar.','Jorge · Claude recuerda las fechas'],
+ ['tm8','Días 10-14 · EE. UU. con abogado','Un solicitante domiciliado fuera de EE. UU. está obligado a usar abogado con licencia en EE. UU. Base 1(b) intent-to-use + 44(d) prioridad canadiense; tasa USD 350 por clase (Trademark Center) usando solo términos del ID Manual (recargo USD 200 por descripción libre). Después: Statement of Use USD 150/clase, prorrogable. Pendencia total ≈ 10 meses. Verificar ROYAL CHINCHILLAS en TSDR antes de presentar. Presupuesto fase 2, no de las 10 semanas.','Jorge · abogado US · dentro de los 6 meses'],
+ ['tm9','Meses 1-3 · México (IMPI)','Marca en Línea con apoderado mexicano (un extranjero necesita domicilio en México para notificaciones). Tarifa 2026 reportada ≈ MXN 2,814 IVA incluido por clase en línea (verificar en gob.mx/impi). Examen de forma 1-2 meses, oposición 1 mes, total 4-8 meses. Declaración de uso obligatoria a los 3 años. México es first-to-file: hacerlo antes de que un maquilador conozca la marca. Alternativa: vía Protocolo de Madrid junto con otros países.','Jorge · apoderado MX · antes de la primera maquila'],
+ ['tm10','Al constituir la sociedad · Cesión','Contrato de cesión firmado Jorge → sociedad (incluye goodwill, ambas solicitudes y derechos extranjeros). Inscribir en línea en CIPO ("Ownership & Representation → Transfer of ownership"), tasa citada CAD 125 por marca (verificar). Si el titular la solicita, no requiere prueba. Repetir en USPTO e IMPI la misma semana. Si se usará Madrid, presentar con la sociedad ya como titular (titular base e internacional deben coincidir).','Jorge · abogado BC']
 ];
-const TM_NOTES = '<div class="callout warn"><b>Tarifas y plazos oficiales:</b> se están verificando contra las páginas de CIPO, USPTO e IMPI y se actualizan aquí en cuanto estén confirmados. No pagues nada basado en cifras de terceros.</div>';
+const TM_NOTES = `<div class="callout warn"><b>Dos riesgos de registrabilidad propios de la palabra "Chinchilla" (no son conflictos con terceros):</b> (1) art. 12(1)(b): "chinchilla" es una piel; para hoodies de algodón no describe el producto, pero un examinador puede alegar "engañosamente descriptiva". Mitigación: excluir abrigos y pieles de la lista. (2) art. 12(1)(a): es tu apellido; la ley prohíbe marcas que sean "principalmente solo un apellido", pero cuando la palabra tiene significado de diccionario (el animal) normalmente no aplica. Ninguno impide presentar; ambos son argumentables si llega un informe de examen.</div>
+<div class="callout accent"><b>Presupuesto gubernamental fase 1 (sin honorarios):</b> Canadá CAD 1,280.20 (2 solicitudes, clases 25+35). Fase 2: EE. UU. USD 350 por clase + abogado US (CAD 1,000-2,000 típico) · México ≈ MXN 2,814 por clase + apoderado. Agente canadiense opcional: CAD 1,000-3,500 por solicitud; vale la pena solo para la búsqueda profesional (CAD 300-800 aprox.) o para responder una objeción. <a href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/research/registro-de-marca.md" target="_blank" rel="noopener">Informe completo con fuentes</a>.</div>
+<div class="note">Cifras tomadas de fuentes que reproducen las tarifas oficiales de CIPO 2026 (ajuste del 2.7 % el 1 de enero de 2026). Antes de pagar, confirmar en la página oficial de tarifas de CIPO. Verificar también: tasa de cesión 2026, formato de imagen admitido en el e-filing, tarifa IMPI 2026 (dos cifras distintas en fuentes secundarias).</div>`;
 const CONTRACTS = [
  ['c1','NCNDA con proveedores (OEM, transfers, tela, decoradores)','Proveedor','Antes de compartir tech pack, vector del logo o volúmenes','Listo en borrador (abajo). Revisión de abogado pendiente.'],
  ['c2','Orden de compra con términos (calidad, tolerancias, fechas, penalidades, muestras de aprobación)','Proveedor','Con cada pedido de muestras y con la PO del piloto','Plantilla por redactar (Claude) en S4.'],
@@ -1451,7 +1643,7 @@ function typingNow(){ const a=document.activeElement; return !!(a && a.closest &
 function renderAll(){
   if(typingNow()){ pendingRender = true; return; }
   pendingRender = false;
-  renderNav(); renderResumen(); renderPlan(); renderSuppliers(); renderLogo(); renderTesters(); renderFin(); renderInv(); renderMarketing(); renderLegal(); renderRecursos();
+  renderNav(); renderResumen(); renderPlan(); renderSuppliers(); renderLogo(); renderTesters(); renderFin(); renderInv(); renderMarketing(); renderLegal(); renderRecursos(); renderEmails();
 }
 document.querySelector('.main').addEventListener('focusout', ()=>{ setTimeout(()=>{ if(pendingRender && !typingNow()) renderAll(); }, 50); });
 document.getElementById('todayTxt').textContent = new Date().toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
