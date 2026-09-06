@@ -308,18 +308,20 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div>
           <div class="eyebrow">Proveedores</div>
           <h1>Quién nos puede dar muestras suaves, en volumen chico y a tiempo</h1>
-          <p>Dos pistas en paralelo. <b>Blanks premium</b> (mayoristas sin mínimo) para tener el lote de testers en 3-4 semanas. <b>OEM</b> (corte y confección con nuestra tela) para el piloto y el Drop 01. Cada proveedor avanza por etapas; anota cotización y calificación de suavidad cuando llegue la muestra.</p>
+          <p>Dos pistas en paralelo. <b>Blanks premium</b> (mayoristas sin mínimo) para tener el lote de testers en 3-4 semanas. <b>OEM</b> (corte y confección con nuestra tela) para el piloto y el Drop 01. Cada proveedor avanza por etapas; anota cotización y calificación de suavidad cuando llegue la muestra. Orden: primero Canadá, luego México, luego stock en Canadá, luego el resto.</p>
         </div>
       </div>
       <div class="grid g-kpi" id="supKpis"></div>
       <div class="toolbar" id="supFilter"></div>
+      <div class="toolbar" id="supCountry" style="margin-top:-6px"></div>
       <div class="tablewrap"><table id="supTable"></table></div>
       <div class="card">
         <h3>Agregar proveedor</h3>
         <div class="form" id="supForm">
           <label>Nombre<input id="sf_name" placeholder="Empresa"></label>
           <label>Pista<select id="sf_track"><option value="blanks">Blanks premium</option><option value="oem">OEM / cut & sew</option><option value="transfer">Transfers 3D</option><option value="tela">Tela</option><option value="local">Decorador local</option></select></label>
-          <label>País / ciudad<input id="sf_loc" placeholder="Los Ángeles, US"></label>
+          <label>País<input id="sf_country" placeholder="México"></label>
+          <label>Ciudad<input id="sf_loc" placeholder="Monterrey, NL"></label>
           <label>Producto<input id="sf_prod" placeholder="Hoodie 400gsm FT"></label>
           <label>MOQ<input id="sf_moq" placeholder="Sin mínimo"></label>
           <label>Precio ref.<input id="sf_price" placeholder="USD 38"></label>
@@ -403,7 +405,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
           <label>Nombre<input id="tf_name"></label>
           <label>Edad<input id="tf_age" type="number" min="14" max="40"></label>
           <label>Talla<select id="tf_size"><option>XS</option><option>S</option><option selected>M</option><option>L</option><option>XL</option></select></label>
-          <label>Prenda<select id="tf_item"><option>Hoodie</option><option>Jogger</option><option>Tee</option><option>Gorra</option><option>Hoodie + Jogger</option></select></label>
+          <label>Prenda<select id="tf_item"><option>Hoodie</option><option>Jogger</option><option>Hoodie + Jogger</option></select></label>
           <label>Referido por<input id="tf_ref" placeholder="Miembro de la familia"></label>
           <button class="btn primary" id="tf_add">Agregar tester</button>
         </div>
@@ -493,6 +495,98 @@ dl.kv dt{color:var(--muted);font-weight:700}
       </div>
     </section>
 
+    <!-- ================= MARKETING ================= -->
+    <section class="view" data-view="marketing">
+      <div class="topline">
+        <div>
+          <div class="eyebrow">Marketing</div>
+          <h1>Deck para inversionistas y pre-lanzamiento en redes</h1>
+          <p>Dos entregables con fecha: el deck que se envía el 1 de noviembre con datos reales del test, y una campaña teaser que construye lista de espera antes del piloto. Cada paso se marca aquí.</p>
+        </div>
+      </div>
+      <div class="grid g-kpi" id="mkKpis"></div>
+
+      <div class="card">
+        <div class="row between"><h3>A. Deck para inversionistas (versión 1 nov)</h3><span class="tiny">Base: Chinchilla Brand Presentation (julio 2026). Se reescribe con datos del Test Day.</span></div>
+        <div class="tablewrap"><table id="deckTable"></table></div>
+        <div class="callout accent"><b>Regla del deck:</b> cada número tiene fuente (formulario de testers, cotización firmada o este portal). Sin datos del test no se envía: se manda el "save the date" y se agenda la reunión para después del 1 de noviembre.</div>
+      </div>
+
+      <div class="card">
+        <h3>Colorway del lanzamiento: opciones para votar</h3>
+        <div class="hint">Pediste más opciones. Aquí están los 4 colores oficiales y 6 candidatos tomados de la paleta extendida de la marca (mayo 2025) más dos neutros de athleisure. Marca finalistas y descartes; la familia vota entre los finalistas.</div>
+        <div class="swatches" id="colorVote"></div>
+        <div class="note">Regla práctica para el lote test: 2 colorways máximo (uno oscuro, uno claro) para que el tono sobre tono del logo se pruebe en ambos extremos. El tono oscuro esconde el frisado; el claro delata el encogimiento y las manchas del proceso.</div>
+      </div>
+
+      <div class="card">
+        <h3>B. Cuentas de redes y activos digitales</h3>
+        <div class="hint">Mismo handle en todas las plataformas. Si el handle principal no está libre, se usa la variante en toda la lista, no una por red.</div>
+        <div class="tablewrap"><table id="socialTable"></table></div>
+      </div>
+
+      <div class="card">
+        <h3>Campaña teaser: fases y pasos</h3>
+        <div class="hint">Del 21 de septiembre (semana 3) al 15 de noviembre. Sin producto a la venta: el objetivo es lista de espera y testers calificados, no seguidores.</div>
+        <div id="teaserPhases"></div>
+      </div>
+
+      <div class="card">
+        <h3>Calendario semanal de contenido</h3>
+        <div class="tablewrap"><table id="calTable"></table></div>
+      </div>
+
+      <div class="card">
+        <h3>Métricas objetivo al 15 de noviembre</h3>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Métrica</th><th>Meta</th><th>Por qué importa</th></tr></thead>
+          <tbody>
+            <tr><td>Lista de espera (emails)</td><td class="num">300</td><td>Con 60 % de preventa objetivo sobre 300-500 unidades, se necesitan ~200 compradores; 300 emails a 30-40 % de conversión en preventa cerrada es el mínimo.</td></tr>
+            <tr><td>Seguidores en Instagram y TikTok</td><td class="num">500 + 500</td><td>Suficiente para que el drop no arranque en cero. No es la métrica de decisión.</td></tr>
+            <tr><td>Contenido de testers publicado (UGC)</td><td class="num">15 piezas</td><td>Prueba social real para el deck y la preventa.</td></tr>
+            <tr><td>Respuesta al formulario ola 1</td><td class="num">≥ 80 %</td><td>Sin datos no hay deck.</td></tr>
+            <tr><td>Costo de pauta</td><td class="num">≤ CAD 300</td><td>Solo para probar 2 creativos y medir costo por email. Todo lo demás orgánico.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ================= LEGAL ================= -->
+    <section class="view" data-view="legal">
+      <div class="topline">
+        <div>
+          <div class="eyebrow">Marca y contratos</div>
+          <h1>Registro de marca, NCNDA y contratos</h1>
+          <p>La marca se presenta ahora a nombre de Jorge Chinchilla y se cede a la empresa cuando exista. El NCNDA se firma con cualquier proveedor antes de compartir tech pack, vector del logo o volúmenes.</p>
+        </div>
+      </div>
+      <div class="grid g-kpi" id="legalKpis"></div>
+
+      <div class="card">
+        <h3>Registro de marca: pasos a seguir</h3>
+        <div class="hint">Marca todos los pasos; la nota guarda número de solicitud, fecha y monto pagado.</div>
+        <div class="tasklist" id="tmSteps"></div>
+        <div id="tmNotes"></div>
+      </div>
+
+      <div class="card">
+        <h3>Contratos y documentos necesarios</h3>
+        <div class="tablewrap"><table id="contractsTable"></table></div>
+      </div>
+
+      <div class="card">
+        <div class="row between"><h3>NCNDA estándar para proveedores</h3><div class="row"><button class="btn" id="btnCopyNda">Copiar texto</button><a class="btn" href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/legal/NCNDA-Chinchilla.docx" target="_blank" rel="noopener">Descargar .docx</a></div></div>
+        <div class="hint">Acuerdo mutuo de confidencialidad y no elusión, ley de British Columbia, 3 años de vigencia, confidencialidad 5 años, no elusión 2 años, propiedad intelectual de diseños y logo para Chinchilla, destrucción de sobrantes marcados. Borrador para revisión de abogado antes del primer uso.</div>
+        <details><summary class="btn ghost" style="display:inline-flex;cursor:pointer">Ver texto completo</summary><pre id="ndaText" style="white-space:pre-wrap;font-family:var(--body);font-size:.84rem;line-height:1.55;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-top:10px;max-height:520px;overflow:auto"></pre></details>
+      </div>
+
+      <div class="card">
+        <h3>Seguimiento de NCNDA por proveedor</h3>
+        <div class="hint">Solo proveedores de OEM, transfers, tela y decoradores. Los mayoristas de blanks no requieren NCNDA (no reciben diseños ni el logo).</div>
+        <div class="tablewrap"><table id="ndaTable"></table></div>
+      </div>
+    </section>
+
     <!-- ================= RECURSOS ================= -->
     <section class="view" data-view="recursos">
       <div class="topline">
@@ -555,14 +649,14 @@ const WS = {
 
 // id, ws, título, semana inicio, semana fin, responsable, detalle, gate?
 const TASKS = [
- ['A1','A','Congelar specs de las 4 piezas del lote test',1,1,'Jorge','Hoodie, jogger, tee y gorra: fit (relaxed, ligeramente oversized), gramaje objetivo ≥280 gsm French terry o fleece cepillado, composición objetivo, colorway del test y curva de tallas del roster.'],
+ ['A1','A','Congelar specs de las 4 piezas del lote test',1,1,'Jorge','Hoodie y jogger (tee y gorra quedan para el piloto): fit (relaxed, ligeramente oversized), gramaje objetivo ≥280 gsm French terry o fleece cepillado, composición objetivo, colorway del test y curva de tallas del roster.'],
  ['A2','A','Definir el protocolo de suavidad',1,1,'Familia · QA','Panel de 5 personas, ciego, escala 1-5, contra 2 referencias (un hoodie premium de mercado y uno estándar). Misma hoja para blanks, muestras OEM y testers.'],
  ['A3','A','Enviar tech pack y RFQ a 5 OEM',1,2,'Jorge (Claude redacta)','Pedir: muestra de desarrollo (costo y tiempo), MOQ piloto, precio a 300 y 500 u, telas disponibles en bambú/orgánico/modal, capacidad de aplicar transfer de silicona en fábrica.'],
  ['A4','A','Pedir sample packs de blanks premium',2,2,'Jorge','3-4 mayoristas de la pista Blanks: hoodie y jogger talla M en 2 colores cada uno. Envío a Vancouver. Registrar costo landed real (precio + envío + duties).'],
  ['A5','A','Evaluar blanks recibidos con el protocolo',3,3,'Familia · QA','Suavidad 1-5, gramaje medido (pesar 10x10 cm), encogimiento tras 3 lavadas, frisado visual. Llenar calificación en la pestaña Proveedores.'],
  ['A6','A','Seguimiento de muestras OEM',3,4,'Jorge','Confirmar muestra en producción, fecha de salida, pago de muestra y guía. Escalar si un proveedor no responde en 5 días hábiles.'],
  ['A7','A','GATE · Lote test con blanks o esperar OEM',4,4,'Jorge','Decisión con datos: si al menos un blank da ≥4.5 de suavidad, el lote test se hace con blanks y el OEM queda para el piloto. Si no, se espera OEM y el Test Day se mueve.',true],
- ['A8','A','Ordenar lote test: 60-80 unidades',4,4,'Jorge','Mix sugerido: 30 hoodies, 25 joggers, 15 tees, 10 gorras, en la curva de tallas del roster. Confirmar stock por talla antes de pagar.'],
+ ['A8','A','Ordenar lote test: 60-80 unidades',4,4,'Jorge','Mix: 40 hoodies y 30 joggers (decisión del 6 sep: solo hoodie + jogger en el lote test), en la curva de tallas del roster. Confirmar stock por talla antes de pagar.'],
  ['A9','A','Recibir y evaluar muestras OEM; pedir cotización piloto',5,5,'Jorge · QA','Mismo protocolo. Pedir cotización firme a 300 y 500 u con tela final, etiquetas y transfer aplicado en fábrica.'],
  ['A10','A','Recibir lote test y QC de entrada',5,5,'Familia · Ops','Conteo, tallas, defectos, manchas. Separar 5 prendas para medición de encogimiento.'],
  ['A11','A','Cerrar spec del piloto y cotización firme con 2 proveedores',8,9,'Jorge','Con feedback de testers integrado (fit, gramaje, detalles). Dos proveedores cotizados para tener alternativa.'],
@@ -604,7 +698,7 @@ const TASKS = [
 
 const QUESTIONS = [
  ['q1','¿Las 4 piezas del lote test son hoodie, jogger, tee y gorra, o solo hoodie + jogger? Cambia el presupuesto y el roster.'],
- ['q2','¿Tope de presupuesto para la fase de muestras? Asumí ~CAD 13,000 autofinanciado.'],
+ ['q2','¿Tope de presupuesto para la fase de muestras? Respondiste CAD 15,000; ya está como tope en Financieros.'],
  ['q3','¿Quién diseñó el isotipo? Necesito el archivo vectorial (AI/EPS/PDF). En Drive solo hay JPG y PDF rasterizado.'],
  ['q4','¿Colorway del lote test? El deck familiar lo dejaba a votación. Propongo Graphite Ink y Mountain Bluebird.'],
  ['q5','¿Ya existe una entidad legal o cuenta bancaria para Chinchilla, o usamos una existente?'],
@@ -629,15 +723,13 @@ const DATAROOM = [
 // Presupuesto fase muestras: id, concepto, categoría, cantidad, unitario CAD, estimado?, nota
 const BUDGET = [
  ['b1','Sample packs de blanks (hoodie + jogger, 4 proveedores)','Producto',12,48,true,'Costo landed aprox. por pieza incl. envío y duties desde US'],
- ['b2','Lote test: hoodies blanks','Producto',30,58,true,'Hoodie premium 400 gsm+, precio mayorista landed'],
- ['b3','Lote test: joggers blanks','Producto',25,48,true,''],
- ['b4','Lote test: tees pesadas','Producto',15,16,true,''],
- ['b5','Lote test: gorras estructuradas','Producto',10,12,true,'Yupoong 6089M a CAD 10.22 en Decky Canada'],
+ ['b2','Lote test: hoodies blanks','Producto',40,58,true,'Hoodie premium 400 gsm+, precio mayorista landed. Lote test = hoodie + jogger (tu respuesta del 6 sep)'],
+ ['b3','Lote test: joggers blanks','Producto',30,48,true,''],
  ['b6','Muestras OEM (3 proveedores × 2 piezas) + courier','Producto',3,380,true,'Incluye costo de muestra y envío express'],
  ['b7','Muestras de transfers de silicona (3 proveedores)','Logo',3,130,true,'DOY: muestra US$9.99/pz + courier; WeMust y Cusmytrims a cotizar'],
  ['b8','Transfers de silicona de producción (200 pcs, 2 tamaños)','Logo',200,2.2,true,'DOY publica US$0.79-1.49/pz en bulk; QWL desde US$2.59/pz a 100 pz. Incluye envío'],
  ['b9','Plancha de calor 15×15 in (clase Hotronix MAXX) + teflón + almohadillas + termómetro','Logo',1,1200,true,'Equipo reutilizable. Opción profesional: Hotronix Auto-Open Clam 16×20 a CAD 2,650 (Sign Supply Canada)'],
- ['b10','Kits de entrega (bolsa, tarjeta, etiqueta)','Testers',80,5,true,''],
+ ['b10','Kits de entrega (bolsa, tarjeta, etiqueta)','Testers',70,5,true,''],
  ['b11','Test Day (espacio, bebidas, impresos)','Testers',1,600,true,''],
  ['b12','Solicitud de marca CIPO (1 clase + isotipo)','Legal',1,650,true,'Verificar tarifa vigente en CIPO'],
  ['b13','Constitución BC Ltd + búsqueda de nombre','Legal',1,450,true,'Verificar tarifas vigentes de BC Registries'],
@@ -646,6 +738,7 @@ const BUDGET = [
  ['b16','Fotografía y contenido','Marca',1,500,true,''],
 ];
 const CONTINGENCY = 0.10;
+const BUDGET_CAP_DEFAULT = 15000; // tope indicado por Jorge el 6 sep
 
 // Piloto: sku, unidades, precio, COGS landed
 const PILOT_DEFAULT = {
@@ -750,70 +843,70 @@ const LOGO_SOURCES = [
 /* ---------- PROVEEDORES semilla (investigación 6 sep 2026; verified:false = existencia confirmada pero datos clave no publicados) ---------- */
 const SUPPLIERS = [
  // Blanks premium
- {id:'s_ind', track:'blanks', name:'Independent Trading Co. — IND5000P Legend + IND20PNT', loc:'California · stock en Canadá (T-Sport, S&S, Northern Blanks)', prod:'Hoodie 450 gsm + pantalón fleece 288 gsm', fabric:'13.5 oz 70/30 ring-spun/poli, 3-end brushed fleece, cara 100 % algodón', moq:'Sin mínimo', price:'US$35-42 (distrib. US); CAD con login', lead:'1-3 días desde bodega CA', url:'https://www.independenttradingco.com/products/ind5000p', note:'Candidato #1 para el hoodie del lote test. IND20PNT es el jogger a juego (8.5 oz).'},
- {id:'s_cc', track:'blanks', name:'Comfort Colors 1567 (vía S&S Canada)', loc:'Bodega S&S en Vancouver', prod:'Hoodie garment-dyed 322 gsm', fabric:'9.5 oz 80/20 ring-spun, 30 singles, soft-washed', moq:'Sin mínimo', price:'Desde CAD 74 lista (sin login)', lead:'1-2 días', url:'https://en-ca.ssactivewear.com/p/comfort_colors/1567', note:'Exclusivo de S&S Canada desde dic 2025 (salió de SanMar).'},
- {id:'s_lane', track:'blanks', name:'Lane Seven — LS16001 Urban + LST006 jogger', loc:'Irwindale, CA · Canadá vía United Blanks (Toronto)', prod:'Hoodie 340 gsm + jogger 3-end', fabric:'10 oz 80/20; LS14001 Premium es 280 gsm (8.25 oz)', moq:'Sin mínimo en distribuidores', price:'LS16001 US$29.89 (NYFifth)', lead:'2-5 días desde Toronto', url:'https://www.lanesevenapparel.com/product/LS16001/', note:''},
- {id:'s_laa', track:'blanks', name:'Los Angeles Apparel — HF09 hoodie + HF04 sweatpant', loc:'Los Ángeles (fábrica propia)', prod:'Hoodie 14 oz (~475 gsm) + sweatpant', fabric:'100 % algodón heavy fleece; F97 flex fleece', moq:'12 pz/estilo wholesale; retail sin mínimo', price:'No publicado sin cuenta', lead:'2-3 semanas; aranceles incluidos en checkout', url:'https://losangelesapparel.net/products/hf09-unisex-14oz-heavy-fleece-hooded-pullover-sweatshirt', note:'Envío gratis a Canadá >US$125.'},
- {id:'s_jerico', track:'blanks', name:'Jerico — Bamboo Fleece Hoody 70/30', loc:'Canadá (tejido y confección domésticos)', prod:'Hoodie bambú 320 gsm; estándar 280 gsm 50/50', fabric:'70 % rayón de bambú / 30 % algodón orgánico, 320 gsm', moq:'Blanks vía resellers (T-Sport); made-to-order 24/estilo/color, 50 % depósito', price:'No publicado (login wholesale)', lead:'2-5 días', url:'https://jerico.ca/collections/70-30-bamboo-fleece', note:'La tela más cercana a nuestra promesa (bambú) con producción canadiense. Sirve para lote test y para piloto made-to-order.'},
- {id:'s_gabe', track:'blanks', name:'Gabe Clothing — Blank Pullover Hoodie 450 gsm', loc:'Toronto, ON (hecho en Canadá)', prod:'Hoodie fleece orgánico 450 gsm', fabric:'Algodón orgánico, flatlock, capucha doble', moq:'B2B desde 5 pz (confirmar)', price:'Wholesale con cuenta', lead:'2-5 días', url:'https://gabeclothing.ca/collections/blank-hoodies/450-gsm', note:''},
- {id:'s_hob', track:'blanks', name:'House of Blanks / Roopa Knitting Mills', loc:'Toronto, ON (tejido propio)', prod:'Hoodie 400 gsm; gama 400-500 gsm fleece y French terry', fabric:'Fleece 400 gsm', moq:'Wholesale disponible', price:'~CAD 26-31 según talla (verificar; parece bajo)', lead:'2-5 días', url:'https://www.houseofblanks.com/products/pullover-hooded-sweatshirt-black', note:''},
- {id:'s_redwood', track:'blanks', name:'Redwood Classics (WS & Co.) — Hudson Hoody W1623', loc:'Toronto, ON (hecho en Canadá)', prod:'Hoodie 16 oz canadiense (~540 gsm)', fabric:'Brushed fleece, flatlock', moq:'Blanks sin mínimo publicado; custom 200/estilo', price:'Retail CAD 105; wholesale por email', lead:'2-5 días; flete gratis ≥CAD 200', url:'https://redwoodclassics.net/en-us/products/hudson-hoody-w1623', note:'Muy pesado; evaluar si el peso compite con la suavidad.'},
- {id:'s_of', track:'blanks', name:'Original Favorites — Heavyweight Organic Brushed Hood', loc:'EE. UU.', prod:'Hoodie 400 gsm GOTS', fabric:'Algodón orgánico, interior cepillado, reverse flatlock', moq:'Cuenta wholesale', price:'US$72-81 retail; wholesale con login', lead:'1-2 semanas + aduana (aranceles a cargo del comprador)', url:'https://originalfavorites.com/collections/gots-organic-cotton-hooded-sweatshirts', note:''},
- {id:'s_asc', track:'blanks', name:'AS Colour — Heavy Hood 5146 / Relax Hood 5161', loc:'EE. UU. (sin bodega canadiense)', prod:'Hoodie 400 gsm / 320 gsm', fabric:'80/20 con poli reciclado', moq:'Sin mínimo', price:'5146: US$39.30 a 100 pz; US$54 retail', lead:'1-2 semanas + aduana', url:'https://ascolour.com/mens-heavy-hood-5146/', note:'Aranceles e impuestos a cargo del comprador.'},
- {id:'s_ch', track:'blanks', name:'Cotton Heritage — M2580 hoodie + M7580 jogger', loc:'Los Ángeles', prod:'Hoodie 288 gsm + jogger', fabric:'8.5 oz 3-end fleece 65/35, cara 100 % algodón, soft-washed', moq:'Sin mínimo en distribuidores US', price:'M2580 US$17.60-25.95; M7580 desde US$15.96', lead:'1-2 semanas + aduana', url:'https://www.cottonheritage.com/product/M2580/Unisex-Premium-Pullover-Hoodie.html', note:'Sin distribuidor canadiense claro.', verified:false},
- {id:'s_allmade', track:'blanks', name:'Allmade — AL4000 Organic French Terry Hoodie', loc:'EE. UU. (SanMar US)', prod:'Hoodie French terry 281 gsm', fabric:'100 % algodón orgánico', moq:'Sin mínimo en SanMar', price:'Retail US$41.98; wholesale con login', lead:'1-2 semanas', url:'https://allmade.com/products/unisex-organic-cotton-french-terry-hoodie', note:'No confirmado en SanMar Canada.', verified:false},
- {id:'s_ss', track:'blanks', name:'Stanley/Stella — Cruiser 2.0', loc:'Bélgica; dealers US/UE', prod:'Hoodie 350 gsm', fabric:'100 % algodón orgánico cepillado, capucha doble', moq:'Según dealer', price:'No publicado', lead:'2-4 semanas', url:'https://stanleystella.com/en-us/cruiser-2-0-sasu003', note:'Sin dealer canadiense localizado.', verified:false},
- {id:'s_yupoong', track:'blanks', name:'Yupoong 6089M (gorra estructurada) vía Decky Canada / Idealcaps', loc:'Montreal, QC', prod:'Gorra 6 paneles estructurada, snapback', fabric:'Mezcla lana', moq:'Sin mínimo; envío mismo día', price:'CAD 10.22', lead:'2-4 días', url:'https://www.decky.ca/', note:'Candidato para la gorra del lote test. Alternativas en S&S Canada: Flexfit 6277 (US$25.30 lista), Richardson 112 (US$21.10).'},
- {id:'s_ssc', track:'blanks', name:'S&S Canada (distribuidor)', loc:'Bodegas Toronto, Calgary y Vancouver', prod:'Distribuidor: Gildan, Comfort Colors, Independent Trading, Richardson, Tultex', fabric:'', moq:'Sin mínimo', price:'Con login', lead:'1-2 días al 99 % del país', url:'https://en-ca.ssactivewear.com/', note:'Abrir cuenta wholesale esta semana.'},
- {id:'s_tsport', track:'blanks', name:'T-Sport (distribuidor)', loc:'Richmond Hill, ON', prod:'Distribuidor: Independent Trading, Jerico, Decky, Bella+Canvas, Flexfit', fabric:'', moq:'Sin mínimo; envío gratis ≥CAD 399', price:'Con login', lead:'2-5 días', url:'https://www.tsport.ca/', note:'Abrir cuenta wholesale esta semana.'},
+ {id:'s_ind', country:'EE. UU. (stock en Canadá)', track:'blanks', name:'Independent Trading Co. — IND5000P Legend + IND20PNT', loc:'California · stock en Canadá (T-Sport, S&S, Northern Blanks)', prod:'Hoodie 450 gsm + pantalón fleece 288 gsm', fabric:'13.5 oz 70/30 ring-spun/poli, 3-end brushed fleece, cara 100 % algodón', moq:'Sin mínimo', price:'US$35-42 (distrib. US); CAD con login', lead:'1-3 días desde bodega CA', url:'https://www.independenttradingco.com/products/ind5000p', note:'Candidato #1 para el hoodie del lote test. IND20PNT es el jogger a juego (8.5 oz).'},
+ {id:'s_cc', country:'EE. UU. (stock en Canadá)', track:'blanks', name:'Comfort Colors 1567 (vía S&S Canada)', loc:'Bodega S&S en Vancouver', prod:'Hoodie garment-dyed 322 gsm', fabric:'9.5 oz 80/20 ring-spun, 30 singles, soft-washed', moq:'Sin mínimo', price:'Desde CAD 74 lista (sin login)', lead:'1-2 días', url:'https://en-ca.ssactivewear.com/p/comfort_colors/1567', note:'Exclusivo de S&S Canada desde dic 2025 (salió de SanMar).'},
+ {id:'s_lane', country:'EE. UU. (stock en Canadá)', track:'blanks', name:'Lane Seven — LS16001 Urban + LST006 jogger', loc:'Irwindale, CA · Canadá vía United Blanks (Toronto)', prod:'Hoodie 340 gsm + jogger 3-end', fabric:'10 oz 80/20; LS14001 Premium es 280 gsm (8.25 oz)', moq:'Sin mínimo en distribuidores', price:'LS16001 US$29.89 (NYFifth)', lead:'2-5 días desde Toronto', url:'https://www.lanesevenapparel.com/product/LS16001/', note:''},
+ {id:'s_laa', country:'EE. UU.', track:'blanks', name:'Los Angeles Apparel — HF09 hoodie + HF04 sweatpant', loc:'Los Ángeles (fábrica propia)', prod:'Hoodie 14 oz (~475 gsm) + sweatpant', fabric:'100 % algodón heavy fleece; F97 flex fleece', moq:'12 pz/estilo wholesale; retail sin mínimo', price:'No publicado sin cuenta', lead:'2-3 semanas; aranceles incluidos en checkout', url:'https://losangelesapparel.net/products/hf09-unisex-14oz-heavy-fleece-hooded-pullover-sweatshirt', note:'Envío gratis a Canadá >US$125.'},
+ {id:'s_jerico', country:'Canadá', track:'blanks', name:'Jerico — Bamboo Fleece Hoody 70/30', loc:'Canadá (tejido y confección domésticos)', prod:'Hoodie bambú 320 gsm; estándar 280 gsm 50/50', fabric:'70 % rayón de bambú / 30 % algodón orgánico, 320 gsm', moq:'Blanks vía resellers (T-Sport); made-to-order 24/estilo/color, 50 % depósito', price:'No publicado (login wholesale)', lead:'2-5 días', url:'https://jerico.ca/collections/70-30-bamboo-fleece', note:'La tela más cercana a nuestra promesa (bambú) con producción canadiense. Sirve para lote test y para piloto made-to-order.'},
+ {id:'s_gabe', country:'Canadá', track:'blanks', name:'Gabe Clothing — Blank Pullover Hoodie 450 gsm', loc:'Toronto, ON (hecho en Canadá)', prod:'Hoodie fleece orgánico 450 gsm', fabric:'Algodón orgánico, flatlock, capucha doble', moq:'B2B desde 5 pz (confirmar)', price:'Wholesale con cuenta', lead:'2-5 días', url:'https://gabeclothing.ca/collections/blank-hoodies/450-gsm', note:''},
+ {id:'s_hob', country:'Canadá', track:'blanks', name:'House of Blanks / Roopa Knitting Mills', loc:'Toronto, ON (tejido propio)', prod:'Hoodie 400 gsm; gama 400-500 gsm fleece y French terry', fabric:'Fleece 400 gsm', moq:'Wholesale disponible', price:'~CAD 26-31 según talla (verificar; parece bajo)', lead:'2-5 días', url:'https://www.houseofblanks.com/products/pullover-hooded-sweatshirt-black', note:''},
+ {id:'s_redwood', country:'Canadá', track:'blanks', name:'Redwood Classics (WS & Co.) — Hudson Hoody W1623', loc:'Toronto, ON (hecho en Canadá)', prod:'Hoodie 16 oz canadiense (~540 gsm)', fabric:'Brushed fleece, flatlock', moq:'Blanks sin mínimo publicado; custom 200/estilo', price:'Retail CAD 105; wholesale por email', lead:'2-5 días; flete gratis ≥CAD 200', url:'https://redwoodclassics.net/en-us/products/hudson-hoody-w1623', note:'Muy pesado; evaluar si el peso compite con la suavidad.'},
+ {id:'s_of', country:'EE. UU.', track:'blanks', name:'Original Favorites — Heavyweight Organic Brushed Hood', loc:'EE. UU.', prod:'Hoodie 400 gsm GOTS', fabric:'Algodón orgánico, interior cepillado, reverse flatlock', moq:'Cuenta wholesale', price:'US$72-81 retail; wholesale con login', lead:'1-2 semanas + aduana (aranceles a cargo del comprador)', url:'https://originalfavorites.com/collections/gots-organic-cotton-hooded-sweatshirts', note:''},
+ {id:'s_asc', country:'EE. UU. / Nueva Zelanda', track:'blanks', name:'AS Colour — Heavy Hood 5146 / Relax Hood 5161', loc:'EE. UU. (sin bodega canadiense)', prod:'Hoodie 400 gsm / 320 gsm', fabric:'80/20 con poli reciclado', moq:'Sin mínimo', price:'5146: US$39.30 a 100 pz; US$54 retail', lead:'1-2 semanas + aduana', url:'https://ascolour.com/mens-heavy-hood-5146/', note:'Aranceles e impuestos a cargo del comprador.'},
+ {id:'s_ch', country:'EE. UU.', track:'blanks', name:'Cotton Heritage — M2580 hoodie + M7580 jogger', loc:'Los Ángeles', prod:'Hoodie 288 gsm + jogger', fabric:'8.5 oz 3-end fleece 65/35, cara 100 % algodón, soft-washed', moq:'Sin mínimo en distribuidores US', price:'M2580 US$17.60-25.95; M7580 desde US$15.96', lead:'1-2 semanas + aduana', url:'https://www.cottonheritage.com/product/M2580/Unisex-Premium-Pullover-Hoodie.html', note:'Sin distribuidor canadiense claro.', verified:false},
+ {id:'s_allmade', country:'EE. UU.', track:'blanks', name:'Allmade — AL4000 Organic French Terry Hoodie', loc:'EE. UU. (SanMar US)', prod:'Hoodie French terry 281 gsm', fabric:'100 % algodón orgánico', moq:'Sin mínimo en SanMar', price:'Retail US$41.98; wholesale con login', lead:'1-2 semanas', url:'https://allmade.com/products/unisex-organic-cotton-french-terry-hoodie', note:'No confirmado en SanMar Canada.', verified:false},
+ {id:'s_ss', country:'Bélgica', track:'blanks', name:'Stanley/Stella — Cruiser 2.0', loc:'Bélgica; dealers US/UE', prod:'Hoodie 350 gsm', fabric:'100 % algodón orgánico cepillado, capucha doble', moq:'Según dealer', price:'No publicado', lead:'2-4 semanas', url:'https://stanleystella.com/en-us/cruiser-2-0-sasu003', note:'Sin dealer canadiense localizado.', verified:false},
+ {id:'s_yupoong', country:'Canadá (distribuidor)', track:'blanks', name:'Yupoong 6089M (gorra estructurada) vía Decky Canada / Idealcaps', loc:'Montreal, QC', prod:'Gorra 6 paneles estructurada, snapback', fabric:'Mezcla lana', moq:'Sin mínimo; envío mismo día', price:'CAD 10.22', lead:'2-4 días', url:'https://www.decky.ca/', note:'Candidato para la gorra del lote test. Alternativas en S&S Canada: Flexfit 6277 (US$25.30 lista), Richardson 112 (US$21.10).'},
+ {id:'s_ssc', country:'Canadá', track:'blanks', name:'S&S Canada (distribuidor)', loc:'Bodegas Toronto, Calgary y Vancouver', prod:'Distribuidor: Gildan, Comfort Colors, Independent Trading, Richardson, Tultex', fabric:'', moq:'Sin mínimo', price:'Con login', lead:'1-2 días al 99 % del país', url:'https://en-ca.ssactivewear.com/', note:'Abrir cuenta wholesale esta semana.'},
+ {id:'s_tsport', country:'Canadá', track:'blanks', name:'T-Sport (distribuidor)', loc:'Richmond Hill, ON', prod:'Distribuidor: Independent Trading, Jerico, Decky, Bella+Canvas, Flexfit', fabric:'', moq:'Sin mínimo; envío gratis ≥CAD 399', price:'Con login', lead:'2-5 días', url:'https://www.tsport.ca/', note:'Abrir cuenta wholesale esta semana.'},
 
  // OEM / cut & sew
- {id:'o_groove', track:'oem', name:'Groovecolor', loc:'Dongguan, China', prod:'Hoodies y joggers custom; fleece 300-600 gsm, French terry, garment wash', fabric:'Fleece pesado y French terry', moq:'50-100 / color', price:'No publicado', lead:'Muestra 2-3 sem; bulk 3-4 sem', url:'https://www.groovecolor.com/comm37/Custom-Hoodies-Manufacturer.htm', note:'Único OEM que lista "silicone printing" como capacidad interna.'},
- {id:'o_qian', track:'oem', name:'Qianshiwear', loc:'Guangzhou, China', prod:'Hoodie premium pesado; French terry hasta 600 gsm', fabric:'Heavyweight French terry', moq:'50 / estilo', price:'US$15-25 hoodie a 100 pz (guía propia); muestra US$80-250 acreditable', lead:'Muestra 5-10 días; bulk 30 días', url:'https://qianshiwear.com/production/hoodies-manufacturer/', note:''},
- {id:'o_tz', track:'oem', name:'Tuozhen / TZ Streetwear', loc:'China', prod:'Streetwear; French terry 220-700 gsm', fabric:'French terry', moq:'50', price:'Referencia: 30-50 pz bajo US$5,000', lead:'Muestra 10-15 días; bulk 20-25 días', url:'https://www.tzstreetwear.com/hoodie-manufacturer/', note:''},
- {id:'o_wc', track:'oem', name:'White Cotton', loc:'Barcelos, Portugal', prod:'Hoodies; French terry 280-500 gsm; brushed fleece 260-580 gsm', fabric:'GOTS / OEKO-TEX; orgánico sí', moq:'75 / color-fit (50 si 2+ colorways)', price:'No publicado', lead:'Muestra 2-6 sem (sin mínimo, 1 unidad); producción 4-6 sem', url:'https://www.whitecotton.pt/manufacturing/hoodies', note:''},
- {id:'o_asbx', track:'oem', name:'ASBX', loc:'Portugal', prod:'Hoodies French terry pesado; orgánico disponible', fabric:'French terry', moq:'100 / estilo / color (50 con recargo)', price:'No publicado (+30-50 % vs Asia)', lead:'Muestra 10-15 días; producción ~3 sem', url:'https://asbx.pt/asbx-faq/', note:'Muestras de catálogo €20-99.'},
- {id:'o_ag', track:'oem', name:'AG Tekstil', loc:'Estambul, Turquía', prod:'Hoodies French terry 340 y 400 gsm 100 % algodón', fabric:'FT 340/400 gsm', moq:'100 (negro/blanco/crema); 300 para Pantone', price:'No publicado', lead:'No publicado', url:'https://agtekstil.com/custom-hoodie-manufacturer/', note:''},
- {id:'o_impaqqt', track:'oem', name:'IMPAQQT', loc:'Estambul, Turquía', prod:'Hoodies y básicos', fabric:'No publicado', moq:'50-100', price:'No publicado', lead:'~14 días con tela de stock', url:'https://turkeyclothingmanufacturers.com/', note:''},
- {id:'o_ati', track:'oem', name:'ATI – Apparel & Textile Innovations', loc:'Hong Kong · planta en Thu Duc, HCMC, Vietnam', prod:'Hoodies streetwear, lotes pequeños', fabric:'No publicado', moq:'50-100 / estilo', price:'No publicado', lead:'No publicado', url:'https://atihongkong.com/small-batch-clothing-manufacturer-in-vietnam', note:''},
- {id:'o_dony', track:'oem', name:'DONY Garment', loc:'Ho Chi Minh, Vietnam', prod:'Cut & sew; enfoque uniformes y workwear', fabric:'No publicado', moq:'200 (combinando diseños)', price:'Muestra US$100 reembolsable con bulk', lead:'Muestra 5-7 días; producción 2-5 sem', url:'https://garment.dony.vn/', note:'Ya estaba en la lista de 2024.'},
- {id:'o_thyg', track:'oem', name:'Thygesen Textile Vietnam', loc:'Vietnam (SA8000, GOTS, GRS, OEKO-TEX)', prod:'Activewear; algodón orgánico, Tencel, bambú viscosa, French terry', fabric:'Bambú viscosa/spandex, Tencel, FT', moq:'3,000 / diseño', price:'Muestra cobrada y reembolsada con bulk', lead:'Muestra 7-10 días', url:'https://thygesenapparel.com/faqs', note:'MOQ demasiado alto para piloto; candidato para Drop 01 en adelante.'},
- {id:'o_mutuo', track:'oem', name:'MUTUO Maquila Deportiva', loc:'Monterrey, NL, México', prod:'Maquila deportiva (Dry Fit, 4-way); FT no publicado', fabric:'Deportiva', moq:'100 (hasta 2 colores, 3 tallas)', price:'No publicado (+52 81 3101 0361)', lead:'No publicado', url:'https://www.maquiladeropadeportiva.com/', note:'Nearshoring Monterrey; confirmar si manejan French terry pesado.'},
- {id:'o_bomme', track:'oem', name:'BOMME Studio', loc:'Los Ángeles + planta en Tijuana', prod:'CMT (cliente provee tela); desarrollo de muestras', fabric:'Tela del cliente (p. ej. KenDor bambú)', moq:'CMT 150 / estilo; full package 600+', price:'Muestra cotizada aparte', lead:'No publicado', url:'https://www.bommestudio.com/clothing-sample-development', note:''},
- {id:'o_api', track:'oem', name:'Apparel Production Inc.', loc:'Nueva York + República Dominicana (CAFTA-DR)', prod:'Nearshore cut & sew', fabric:'No publicado', moq:'200 doméstico; 300 overseas', price:'No publicado', lead:'RD 6-8 sem', url:'https://apparelproductionny.com/services/nearshore-production/', note:''},
- {id:'o_wearlab', track:'oem', name:'Wearlab', loc:'Vancouver, BC', prod:'Desarrollo completo: consultoría, sourcing, patrón, fittings, producción', fabric:'Sourcing a medida', moq:'50-100', price:'Paquete desde CAD 2,500; guía CAD 5-10k all-in para 50-100 u', lead:'No publicado', url:'https://wearlabinc.com/pages/manufacturing', note:'Opción para coser en Vancouver con tela KenDor.'},
- {id:'o_das', track:'oem', name:'Designer Apparel Services', loc:'Vancouver, BC', prod:'Patronaje, muestras y lotes pequeños (punto y plano)', fabric:'Tela del cliente', moq:'Sin mínimo fijo', price:'Página de precios (consultar)', lead:'No publicado', url:'https://designerapparelservices.com/faq/', note:''},
- {id:'o_xeno', track:'oem', name:'Xeno Fashion', loc:'129-1020 Mainland St, Vancouver', prod:'Contract sewing, lotes pequeños y grandes', fabric:'Tela del cliente', moq:'Lotes pequeños', price:'No publicado (604-600-5803)', lead:'No publicado', url:'https://xenofashion.com/contract-sewing-manufacturing/', note:''},
- {id:'o_peros', track:'oem', name:'Peros Garment Factory', loc:'Toronto / Scarborough, ON', prod:'CMT y full service; blanks French terry y micro modal', fabric:'Micro modal y French terry en catálogo', moq:'CMT 150; full service 300; blanks FT desde 30 pz', price:'No publicado', lead:'No publicado', url:'https://www.perosgarmentfactory.com/pages/full-service-cmt-1', note:''},
+ {id:'o_groove', country:'China', track:'oem', name:'Groovecolor', loc:'Dongguan, China', prod:'Hoodies y joggers custom; fleece 300-600 gsm, French terry, garment wash', fabric:'Fleece pesado y French terry', moq:'50-100 / color', price:'No publicado', lead:'Muestra 2-3 sem; bulk 3-4 sem', url:'https://www.groovecolor.com/comm37/Custom-Hoodies-Manufacturer.htm', note:'Único OEM que lista "silicone printing" como capacidad interna.'},
+ {id:'o_qian', country:'China', track:'oem', name:'Qianshiwear', loc:'Guangzhou, China', prod:'Hoodie premium pesado; French terry hasta 600 gsm', fabric:'Heavyweight French terry', moq:'50 / estilo', price:'US$15-25 hoodie a 100 pz (guía propia); muestra US$80-250 acreditable', lead:'Muestra 5-10 días; bulk 30 días', url:'https://qianshiwear.com/production/hoodies-manufacturer/', note:''},
+ {id:'o_tz', country:'China', track:'oem', name:'Tuozhen / TZ Streetwear', loc:'China', prod:'Streetwear; French terry 220-700 gsm', fabric:'French terry', moq:'50', price:'Referencia: 30-50 pz bajo US$5,000', lead:'Muestra 10-15 días; bulk 20-25 días', url:'https://www.tzstreetwear.com/hoodie-manufacturer/', note:''},
+ {id:'o_wc', country:'Portugal', track:'oem', name:'White Cotton', loc:'Barcelos, Portugal', prod:'Hoodies; French terry 280-500 gsm; brushed fleece 260-580 gsm', fabric:'GOTS / OEKO-TEX; orgánico sí', moq:'75 / color-fit (50 si 2+ colorways)', price:'No publicado', lead:'Muestra 2-6 sem (sin mínimo, 1 unidad); producción 4-6 sem', url:'https://www.whitecotton.pt/manufacturing/hoodies', note:''},
+ {id:'o_asbx', country:'Portugal', track:'oem', name:'ASBX', loc:'Portugal', prod:'Hoodies French terry pesado; orgánico disponible', fabric:'French terry', moq:'100 / estilo / color (50 con recargo)', price:'No publicado (+30-50 % vs Asia)', lead:'Muestra 10-15 días; producción ~3 sem', url:'https://asbx.pt/asbx-faq/', note:'Muestras de catálogo €20-99.'},
+ {id:'o_ag', country:'Turquía', track:'oem', name:'AG Tekstil', loc:'Estambul, Turquía', prod:'Hoodies French terry 340 y 400 gsm 100 % algodón', fabric:'FT 340/400 gsm', moq:'100 (negro/blanco/crema); 300 para Pantone', price:'No publicado', lead:'No publicado', url:'https://agtekstil.com/custom-hoodie-manufacturer/', note:''},
+ {id:'o_impaqqt', country:'Turquía', track:'oem', name:'IMPAQQT', loc:'Estambul, Turquía', prod:'Hoodies y básicos', fabric:'No publicado', moq:'50-100', price:'No publicado', lead:'~14 días con tela de stock', url:'https://turkeyclothingmanufacturers.com/', note:''},
+ {id:'o_ati', country:'Vietnam', track:'oem', name:'ATI – Apparel & Textile Innovations', loc:'Hong Kong · planta en Thu Duc, HCMC, Vietnam', prod:'Hoodies streetwear, lotes pequeños', fabric:'No publicado', moq:'50-100 / estilo', price:'No publicado', lead:'No publicado', url:'https://atihongkong.com/small-batch-clothing-manufacturer-in-vietnam', note:''},
+ {id:'o_dony', country:'Vietnam', track:'oem', name:'DONY Garment', loc:'Ho Chi Minh, Vietnam', prod:'Cut & sew; enfoque uniformes y workwear', fabric:'No publicado', moq:'200 (combinando diseños)', price:'Muestra US$100 reembolsable con bulk', lead:'Muestra 5-7 días; producción 2-5 sem', url:'https://garment.dony.vn/', note:'Ya estaba en la lista de 2024.'},
+ {id:'o_thyg', country:'Vietnam', track:'oem', name:'Thygesen Textile Vietnam', loc:'Vietnam (SA8000, GOTS, GRS, OEKO-TEX)', prod:'Activewear; algodón orgánico, Tencel, bambú viscosa, French terry', fabric:'Bambú viscosa/spandex, Tencel, FT', moq:'3,000 / diseño', price:'Muestra cobrada y reembolsada con bulk', lead:'Muestra 7-10 días', url:'https://thygesenapparel.com/faqs', note:'MOQ demasiado alto para piloto; candidato para Drop 01 en adelante.'},
+ {id:'o_mutuo', country:'México', track:'oem', name:'MUTUO Maquila Deportiva', loc:'Monterrey, NL, México', prod:'Maquila deportiva (Dry Fit, 4-way); FT no publicado', fabric:'Deportiva', moq:'100 (hasta 2 colores, 3 tallas)', price:'No publicado (+52 81 3101 0361)', lead:'No publicado', url:'https://www.maquiladeropadeportiva.com/', note:'Nearshoring Monterrey; confirmar si manejan French terry pesado.'},
+ {id:'o_bomme', country:'México / EE. UU.', track:'oem', name:'BOMME Studio', loc:'Los Ángeles + planta en Tijuana', prod:'CMT (cliente provee tela); desarrollo de muestras', fabric:'Tela del cliente (p. ej. KenDor bambú)', moq:'CMT 150 / estilo; full package 600+', price:'Muestra cotizada aparte', lead:'No publicado', url:'https://www.bommestudio.com/clothing-sample-development', note:''},
+ {id:'o_api', country:'República Dominicana / EE. UU.', track:'oem', name:'Apparel Production Inc.', loc:'Nueva York + República Dominicana (CAFTA-DR)', prod:'Nearshore cut & sew', fabric:'No publicado', moq:'200 doméstico; 300 overseas', price:'No publicado', lead:'RD 6-8 sem', url:'https://apparelproductionny.com/services/nearshore-production/', note:''},
+ {id:'o_wearlab', country:'Canadá', track:'oem', name:'Wearlab', loc:'Vancouver, BC', prod:'Desarrollo completo: consultoría, sourcing, patrón, fittings, producción', fabric:'Sourcing a medida', moq:'50-100', price:'Paquete desde CAD 2,500; guía CAD 5-10k all-in para 50-100 u', lead:'No publicado', url:'https://wearlabinc.com/pages/manufacturing', note:'Opción para coser en Vancouver con tela KenDor.'},
+ {id:'o_das', country:'Canadá', track:'oem', name:'Designer Apparel Services', loc:'Vancouver, BC', prod:'Patronaje, muestras y lotes pequeños (punto y plano)', fabric:'Tela del cliente', moq:'Sin mínimo fijo', price:'Página de precios (consultar)', lead:'No publicado', url:'https://designerapparelservices.com/faq/', note:''},
+ {id:'o_xeno', country:'Canadá', track:'oem', name:'Xeno Fashion', loc:'129-1020 Mainland St, Vancouver', prod:'Contract sewing, lotes pequeños y grandes', fabric:'Tela del cliente', moq:'Lotes pequeños', price:'No publicado (604-600-5803)', lead:'No publicado', url:'https://xenofashion.com/contract-sewing-manufacturing/', note:''},
+ {id:'o_peros', country:'Canadá', track:'oem', name:'Peros Garment Factory', loc:'Toronto / Scarborough, ON', prod:'CMT y full service; blanks French terry y micro modal', fabric:'Micro modal y French terry en catálogo', moq:'CMT 150; full service 300; blanks FT desde 30 pz', price:'No publicado', lead:'No publicado', url:'https://www.perosgarmentfactory.com/pages/full-service-cmt-1', note:''},
 
  // Tela
- {id:'t_kendor', track:'tela', name:'KenDor Textiles — T4151 Bamboo/Cotton Stretch French Terry', loc:'Vancouver, BC', prod:'French terry 280 gsm, 60"', fabric:'66 % rayón de bambú / 28 % algodón / 6 % spandex', moq:'Por rollo; muestra 1 por color', price:'Lista por rollo vía rep (askus@kendortextiles.com)', lead:'Stock local', url:'https://kendortextiles.com/products/t4151-t4751-bamboo-cotton-stretch-french-terry', note:'Tela candidata para muestras cosidas en Vancouver.'},
- {id:'t_kinderel', track:'tela', name:'Kinderel Organic Fabrics — Bamboo Cotton Stretch French Terry', loc:'Envía desde Canadá y EE. UU.', prod:'French terry 280 gsm, 163-165 cm', fabric:'67 % bambú / 28 % algodón orgánico / 5 % spandex', moq:'8-10 yardas', price:'US$9.45/yd (8-10 yd); US$8.50/yd rollo', lead:'Stock', url:'https://www.kinderel.com/products/wholesale-bamboo-stretch-french-terry-fabric', note:''},
- {id:'t_nature', track:'tela', name:"Nature's Fabrics — Bamboo Stretch French Terry 300 gsm", loc:'EE. UU.', prod:'French terry 300 gsm, 62"', fabric:'66 % bambú viscosa / 28 % algodón orgánico / 6 % spandex', moq:'1 yarda; rollos 39-45 yd', price:'US$14.99/yd retail', lead:'Stock', url:'https://naturesfabrics.com/products/black-bamboo-stretch-french-terry-300-gsm', note:''},
- {id:'t_ctg', track:'tela', name:'California Textile Group — 3-End French Terry', loc:'Los Ángeles', prod:'FT 320 gsm; orgánico 310-315; también 360/430/470 gsm', fabric:'100 % algodón', moq:'No publicado', price:'No publicado (213-765-0555)', lead:'Stock', url:'https://californiatextilegroup.com/products/72140', note:''},
- {id:'t_kosh', track:'tela', name:'Koshtex — French Terry 320 gsm', loc:'Los Ángeles', prod:'FT 320 gsm 50/50; 430 gsm 100 % algodón', fabric:'Algodón / mezcla', moq:'Por yarda, bolt o rollo', price:'US$12.95/yd', lead:'Stock', url:'https://www.koshtex.com/store/c34/FrenchTerry', note:''},
+ {id:'t_kendor', country:'Canadá', track:'tela', name:'KenDor Textiles — T4151 Bamboo/Cotton Stretch French Terry', loc:'Vancouver, BC', prod:'French terry 280 gsm, 60"', fabric:'66 % rayón de bambú / 28 % algodón / 6 % spandex', moq:'Por rollo; muestra 1 por color', price:'Lista por rollo vía rep (askus@kendortextiles.com)', lead:'Stock local', url:'https://kendortextiles.com/products/t4151-t4751-bamboo-cotton-stretch-french-terry', note:'Tela candidata para muestras cosidas en Vancouver.'},
+ {id:'t_kinderel', country:'Canadá / EE. UU.', track:'tela', name:'Kinderel Organic Fabrics — Bamboo Cotton Stretch French Terry', loc:'Envía desde Canadá y EE. UU.', prod:'French terry 280 gsm, 163-165 cm', fabric:'67 % bambú / 28 % algodón orgánico / 5 % spandex', moq:'8-10 yardas', price:'US$9.45/yd (8-10 yd); US$8.50/yd rollo', lead:'Stock', url:'https://www.kinderel.com/products/wholesale-bamboo-stretch-french-terry-fabric', note:''},
+ {id:'t_nature', country:'EE. UU.', track:'tela', name:"Nature's Fabrics — Bamboo Stretch French Terry 300 gsm", loc:'EE. UU.', prod:'French terry 300 gsm, 62"', fabric:'66 % bambú viscosa / 28 % algodón orgánico / 6 % spandex', moq:'1 yarda; rollos 39-45 yd', price:'US$14.99/yd retail', lead:'Stock', url:'https://naturesfabrics.com/products/black-bamboo-stretch-french-terry-300-gsm', note:''},
+ {id:'t_ctg', country:'EE. UU.', track:'tela', name:'California Textile Group — 3-End French Terry', loc:'Los Ángeles', prod:'FT 320 gsm; orgánico 310-315; también 360/430/470 gsm', fabric:'100 % algodón', moq:'No publicado', price:'No publicado (213-765-0555)', lead:'Stock', url:'https://californiatextilegroup.com/products/72140', note:''},
+ {id:'t_kosh', country:'EE. UU.', track:'tela', name:'Koshtex — French Terry 320 gsm', loc:'Los Ángeles', prod:'FT 320 gsm 50/50; 430 gsm 100 % algodón', fabric:'Algodón / mezcla', moq:'Por yarda, bolt o rollo', price:'US$12.95/yd', lead:'Stock', url:'https://www.koshtex.com/store/c34/FrenchTerry', note:''},
 
  // Transfers 3D y planchas
- {id:'x_doy', track:'transfer', name:'DOY Label', loc:'China', prod:'Transfer de silicona 3D high-density; Pantone; 20 lavados', fabric:'', moq:'100 pz', price:'Muestra US$9.99/pz; bulk US$0.79-1.49/pz', lead:'Muestra 3-5 días; producción 5-7 días', url:'https://www.doylabel.com/product/custom-3d-silicone-high-density-heat-transfer-labels-for-apparel/', note:'Único con precios publicados. Candidato #1.'},
- {id:'x_cusmy', track:'transfer', name:'Cusmytrims', loc:'China', prod:'Transfer de silicona 3D', fabric:'', moq:'100 pz', price:'No publicado (responde <10 h)', lead:'Muestra 2-4 días; producción 3-5 días; DHL 1-6 días', url:'https://cusmytrims.com/silicone-heat-transfer-labels/', note:''},
- {id:'x_4c', track:'transfer', name:'4customize', loc:'No publicado', prod:'Silicone raised heat transfer decals', fabric:'', moq:'10 pz', price:'No publicado', lead:'No publicado', url:'https://www.4customize.com/product/custom-3d-silicone-raised-heat-transfer-logo-decals/', note:'MOQ 10: útil para la primera prueba.', verified:false},
- {id:'x_hyi', track:'transfer', name:'Hyi Fashion', loc:'Fabricante asiático', prod:'Custom silicone heat transfer', fabric:'', moq:'10 pz', price:'No publicado; cotiza en 24 h', lead:'2-3 días hábiles', url:'https://hyifashion.com/collections/custom-silicone-heat-transfer', note:'', verified:false},
- {id:'x_qwl', track:'transfer', name:'Quality Woven Labels / New York Custom Labels', loc:'EE. UU.', prod:'Silicone heat transfer labels; pigmento Pantone a mano', fabric:'', moq:'100 pz', price:'Desde US$2.59/pz a 100 pz', lead:'No publicado', url:'https://qualitywovenlabels.com/silicone-heat-transfer-labels', note:'Aplicación 320 °F, 15 s, ~10 lb.'},
- {id:'x_wemust', track:'transfer', name:'WeMust', loc:'Hamilton, ON', prod:'Silicone Raised Prints, Liquid Silicone, 3D Foam Flex, Digital Puff', fabric:'', moq:'Sin mínimo', price:'No publicado', lead:'No publicado', url:'https://wemust.com/products/silicon-raised-prints', note:'Única opción canadiense de relieve de silicona sin mínimo. Pedir cotización esta semana.'},
- {id:'x_stahlsuk', track:'transfer', name:"Stahls' UK — Silicone 3D Heat Transfers", loc:'Reino Unido', prod:'Silicona 3D un color, Pantone, sin depilado', fabric:'', moq:'No publicado', price:'No publicado', lead:'10-15 días', url:'https://custom.stahls.co.uk/create/Silicone-3D-Heat-Transfers-One-Colour-?c=8126476', note:"Stahls' Canada NO lista este producto; sólo vende el HTV Silicone Dye-Block (200 µm)."},
- {id:'x_tko', track:'transfer', name:'TKO Sales', loc:'EE. UU.', prod:'Transfers de silicona 1 color, mate, plano o raised', fabric:'', moq:'25 hojas gang; setup gratis', price:'No publicado', lead:'No publicado', url:'https://www.tkosales.com/pp-silicone', note:'150-160 °C, 10-15 s, presión media, teflón.'},
- {id:'x_te', track:'transfer', name:'Transfer Express', loc:'Ohio, EE. UU.', prod:'Transfers de silicona (baja temperatura, textura suave) y puff', fabric:'', moq:'No publicado', price:'No publicado; flete plano US$15', lead:'5 días hábiles', url:'https://www.transferexpress.com/heat-press-transfers/silicone-screen-printed-transfers', note:'Su silicona es fina, orientada a poliéster; no es la etiqueta 3D gruesa.'},
- {id:'x_ninja', track:'transfer', name:'Ninja Transfers — 3D Puff', loc:'EE. UU.', prod:'Transfers puff (DTF/plastisol)', fabric:'', moq:'Sin mínimo', price:'Desde US$0.02/pulg²', lead:'3 días hábiles', url:'https://ninjatransfers.com/products/3d-puff-transfers', note:'Plan B rápido si la silicona se retrasa. Es puff, no silicona.'},
- {id:'x_alibaba', track:'transfer', name:'Alibaba: Dongguan Junyi, Qianglusi, Huakuan', loc:'China', prod:'3D silicone heat transfer labels', fabric:'', moq:'30-50 pz', price:'US$0.09-0.60/pz', lead:'Despacho ~5 días + envío', url:'https://www.alibaba.com/showroom/3d-silicone-heat-transfer-label.html', note:'Verificar cada vendedor (Trade Assurance).', verified:false},
- {id:'x_signsupply', track:'transfer', name:'Sign Supply Canada — planchas Hotronix / Geo Knight', loc:'Canadá', prod:'Hotronix Auto-Open Clam 16×20 CAD 2,650 · Fusion IQ 16×20 CAD 3,575 · Geo Knight DK20S CAD 3,595', fabric:'', moq:'1', price:'CAD 2,650-3,595', lead:'Stock', url:'https://www.signsupplycanada.com/hotronix-m-5.html', note:'Opción "de por vida". Para muestras basta una MAXX 15×15 (~US$799 en McLogan) o una genérica CAD 300-800 (DTF Vancouver).'},
+ {id:'x_doy', country:'China', track:'transfer', name:'DOY Label', loc:'China', prod:'Transfer de silicona 3D high-density; Pantone; 20 lavados', fabric:'', moq:'100 pz', price:'Muestra US$9.99/pz; bulk US$0.79-1.49/pz', lead:'Muestra 3-5 días; producción 5-7 días', url:'https://www.doylabel.com/product/custom-3d-silicone-high-density-heat-transfer-labels-for-apparel/', note:'Único con precios publicados. Candidato #1.'},
+ {id:'x_cusmy', country:'China', track:'transfer', name:'Cusmytrims', loc:'China', prod:'Transfer de silicona 3D', fabric:'', moq:'100 pz', price:'No publicado (responde <10 h)', lead:'Muestra 2-4 días; producción 3-5 días; DHL 1-6 días', url:'https://cusmytrims.com/silicone-heat-transfer-labels/', note:''},
+ {id:'x_4c', country:'No publicado', track:'transfer', name:'4customize', loc:'No publicado', prod:'Silicone raised heat transfer decals', fabric:'', moq:'10 pz', price:'No publicado', lead:'No publicado', url:'https://www.4customize.com/product/custom-3d-silicone-raised-heat-transfer-logo-decals/', note:'MOQ 10: útil para la primera prueba.', verified:false},
+ {id:'x_hyi', country:'Asia (no publicado)', track:'transfer', name:'Hyi Fashion', loc:'Fabricante asiático', prod:'Custom silicone heat transfer', fabric:'', moq:'10 pz', price:'No publicado; cotiza en 24 h', lead:'2-3 días hábiles', url:'https://hyifashion.com/collections/custom-silicone-heat-transfer', note:'', verified:false},
+ {id:'x_qwl', country:'EE. UU.', track:'transfer', name:'Quality Woven Labels / New York Custom Labels', loc:'EE. UU.', prod:'Silicone heat transfer labels; pigmento Pantone a mano', fabric:'', moq:'100 pz', price:'Desde US$2.59/pz a 100 pz', lead:'No publicado', url:'https://qualitywovenlabels.com/silicone-heat-transfer-labels', note:'Aplicación 320 °F, 15 s, ~10 lb.'},
+ {id:'x_wemust', country:'Canadá', track:'transfer', name:'WeMust', loc:'Hamilton, ON', prod:'Silicone Raised Prints, Liquid Silicone, 3D Foam Flex, Digital Puff', fabric:'', moq:'Sin mínimo', price:'No publicado', lead:'No publicado', url:'https://wemust.com/products/silicon-raised-prints', note:'Única opción canadiense de relieve de silicona sin mínimo. Pedir cotización esta semana.'},
+ {id:'x_stahlsuk', country:'Reino Unido', track:'transfer', name:"Stahls' UK — Silicone 3D Heat Transfers", loc:'Reino Unido', prod:'Silicona 3D un color, Pantone, sin depilado', fabric:'', moq:'No publicado', price:'No publicado', lead:'10-15 días', url:'https://custom.stahls.co.uk/create/Silicone-3D-Heat-Transfers-One-Colour-?c=8126476', note:"Stahls' Canada NO lista este producto; sólo vende el HTV Silicone Dye-Block (200 µm)."},
+ {id:'x_tko', country:'EE. UU.', track:'transfer', name:'TKO Sales', loc:'EE. UU.', prod:'Transfers de silicona 1 color, mate, plano o raised', fabric:'', moq:'25 hojas gang; setup gratis', price:'No publicado', lead:'No publicado', url:'https://www.tkosales.com/pp-silicone', note:'150-160 °C, 10-15 s, presión media, teflón.'},
+ {id:'x_te', country:'EE. UU.', track:'transfer', name:'Transfer Express', loc:'Ohio, EE. UU.', prod:'Transfers de silicona (baja temperatura, textura suave) y puff', fabric:'', moq:'No publicado', price:'No publicado; flete plano US$15', lead:'5 días hábiles', url:'https://www.transferexpress.com/heat-press-transfers/silicone-screen-printed-transfers', note:'Su silicona es fina, orientada a poliéster; no es la etiqueta 3D gruesa.'},
+ {id:'x_ninja', country:'EE. UU.', track:'transfer', name:'Ninja Transfers — 3D Puff', loc:'EE. UU.', prod:'Transfers puff (DTF/plastisol)', fabric:'', moq:'Sin mínimo', price:'Desde US$0.02/pulg²', lead:'3 días hábiles', url:'https://ninjatransfers.com/products/3d-puff-transfers', note:'Plan B rápido si la silicona se retrasa. Es puff, no silicona.'},
+ {id:'x_alibaba', country:'China', track:'transfer', name:'Alibaba: Dongguan Junyi, Qianglusi, Huakuan', loc:'China', prod:'3D silicone heat transfer labels', fabric:'', moq:'30-50 pz', price:'US$0.09-0.60/pz', lead:'Despacho ~5 días + envío', url:'https://www.alibaba.com/showroom/3d-silicone-heat-transfer-label.html', note:'Verificar cada vendedor (Trade Assurance).', verified:false},
+ {id:'x_signsupply', country:'Canadá', track:'transfer', name:'Sign Supply Canada — planchas Hotronix / Geo Knight', loc:'Canadá', prod:'Hotronix Auto-Open Clam 16×20 CAD 2,650 · Fusion IQ 16×20 CAD 3,575 · Geo Knight DK20S CAD 3,595', fabric:'', moq:'1', price:'CAD 2,650-3,595', lead:'Stock', url:'https://www.signsupplycanada.com/hotronix-m-5.html', note:'Opción "de por vida". Para muestras basta una MAXX 15×15 (~US$799 en McLogan) o una genérica CAD 300-800 (DTF Vancouver).'},
 
  // Decoradores locales Vancouver
- {id:'l_firebird', track:'local', name:'Firebird Prints', loc:'East Vancouver', prod:'Serigrafía puff y high-density, DTF, bordado, prensado de transfers sobre prendas del cliente', fabric:'', moq:'Sin mínimos', price:'No publicado', lead:'No publicado', url:'https://firebirdprints.com/print-my-item/', note:'Plan B para aplicar los transfers si no compramos plancha; y única vía local para high-density.'},
- {id:'l_bluesky', track:'local', name:'Blue Sky T-shirts', loc:'1523 Commercial Dr, Vancouver', prod:'Serigrafía con puff ink; DTG', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://www.blueskyt-shirts.com/screen-printing-vancouver/', note:'Acepta prendas del cliente nuevas, sin lavar.'},
- {id:'l_inhouse', track:'local', name:'IN|HOUSE', loc:'Vancouver', prod:'Serigrafía, puff, parches chenille, etiquetas', fabric:'', moq:'50 (divisible en 2 diseños)', price:'No publicado', lead:'No publicado', url:'https://inhousemade.com/pages/custom-screen-printing-canada', note:''},
- {id:'l_getbold', track:'local', name:'GetBold', loc:'North Vancouver', prod:'Bordado 3D puff en gorras; tintas especiales', fabric:'', moq:'6', price:'No publicado; sin setup', lead:'No publicado', url:'https://www.getbold.com/printing-services/embroidery/custom-puff-embroidery/', note:'Generalmente no acepta prendas del cliente. Opción para la gorra.'},
- {id:'l_threadco', track:'local', name:'ThreadCo Print Shop', loc:'951 E Kent Ave N, Vancouver', prod:'Serigrafía, DTF, parches, bordado', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://threadcoprint.com/', note:''},
- {id:'l_hatstore', track:'local', name:'Hatstore.ca', loc:'BC', prod:'Gorras bordadas flat y 3D puff, fabricadas en BC', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://www.hatstore.ca/embroidered-caps', note:''}
+ {id:'l_firebird', country:'Canadá', track:'local', name:'Firebird Prints', loc:'East Vancouver', prod:'Serigrafía puff y high-density, DTF, bordado, prensado de transfers sobre prendas del cliente', fabric:'', moq:'Sin mínimos', price:'No publicado', lead:'No publicado', url:'https://firebirdprints.com/print-my-item/', note:'Plan B para aplicar los transfers si no compramos plancha; y única vía local para high-density.'},
+ {id:'l_bluesky', country:'Canadá', track:'local', name:'Blue Sky T-shirts', loc:'1523 Commercial Dr, Vancouver', prod:'Serigrafía con puff ink; DTG', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://www.blueskyt-shirts.com/screen-printing-vancouver/', note:'Acepta prendas del cliente nuevas, sin lavar.'},
+ {id:'l_inhouse', country:'Canadá', track:'local', name:'IN|HOUSE', loc:'Vancouver', prod:'Serigrafía, puff, parches chenille, etiquetas', fabric:'', moq:'50 (divisible en 2 diseños)', price:'No publicado', lead:'No publicado', url:'https://inhousemade.com/pages/custom-screen-printing-canada', note:''},
+ {id:'l_getbold', country:'Canadá', track:'local', name:'GetBold', loc:'North Vancouver', prod:'Bordado 3D puff en gorras; tintas especiales', fabric:'', moq:'6', price:'No publicado; sin setup', lead:'No publicado', url:'https://www.getbold.com/printing-services/embroidery/custom-puff-embroidery/', note:'Generalmente no acepta prendas del cliente. Opción para la gorra.'},
+ {id:'l_threadco', country:'Canadá', track:'local', name:'ThreadCo Print Shop', loc:'951 E Kent Ave N, Vancouver', prod:'Serigrafía, DTF, parches, bordado', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://threadcoprint.com/', note:''},
+ {id:'l_hatstore', country:'Canadá', track:'local', name:'Hatstore.ca', loc:'BC', prod:'Gorras bordadas flat y 3D puff, fabricadas en BC', fabric:'', moq:'No publicado', price:'No publicado', lead:'No publicado', url:'https://www.hatstore.ca/embroidered-caps', note:''}
 ];
 
 
@@ -870,13 +963,13 @@ const debounce = (fn,ms=500)=>{ let t; return (...a)=>{ clearTimeout(t); t=setTi
    ============================================================ */
 const VIEWS = [
   ['resumen','Resumen'],['plan','Plan 10 semanas'],['proveedores','Proveedores'],['logo','Logo 3D'],
-  ['testers','Testers'],['financieros','Financieros'],['inversionistas','Inversionistas'],['recursos','Recursos']
+  ['testers','Testers'],['financieros','Financieros'],['inversionistas','Inversionistas'],['marketing','Marketing'],['legal','Marca y legal'],['recursos','Recursos']
 ];
 let view = (location.hash||'#resumen').slice(1);
 if(!VIEWS.some(v=>v[0]===view)) view='resumen';
 function renderNav(){
   const tasksOpen = TASKS.filter(t=>taskStatus(t.id)!=='hecho').length;
-  const counts = {plan: tasksOpen, proveedores: allSuppliers().length, testers: Object.keys(Store.data.testers).length, inversionistas: Object.keys(Store.data.investors).length, recursos: QUESTIONS.filter(q=>!(Store.get('meta','q_'+q[0]).done)).length};
+  const counts = {plan: tasksOpen, proveedores: allSuppliers().length, testers: Object.keys(Store.data.testers).length, inversionistas: Object.keys(Store.data.investors).length, recursos: QUESTIONS.filter(q=>!(Store.get('meta','q_'+q[0]).done)).length, legal: TM_STEPS.filter(s=>!Store.get('meta','tm_'+s[0]).done).length};
   document.getElementById('nav').innerHTML = VIEWS.map(([k,l])=>`<button class="${k===view?'active':''}" data-v="${k}">${l}${counts[k]!=null?`<span class="count num">${counts[k]}</span>`:''}</button>`).join('');
   document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active', s.dataset.view===view));
 }
@@ -985,9 +1078,13 @@ function renderResumen(){
 const STAGES = {identificado:'Identificado', contactado:'Contactado', cotizado:'Cotización recibida', muestra_pedida:'Muestra pedida', muestra_recibida:'Muestra recibida', evaluado:'Evaluado', seleccionado:'Seleccionado', descartado:'Descartado'};
 const TRACKS = {blanks:'Blanks premium', oem:'OEM / cut & sew', transfer:'Transfers 3D', tela:'Tela', local:'Decorador local (Vancouver)'};
 let supFilterVal = 'all';
+const REGIONS = {ca:'Canadá', mx:'México', us:'EE. UU.', eu:'Europa', asia:'Asia', other:'Otro'};
+function regionOf(c){ c=(c||'').toLowerCase(); if(c.startsWith('canad')) return 'ca'; if(c.includes('méxico')||c.includes('mexico')) return 'mx'; if(c.includes('ee. uu')||c.includes('eeuu')||c.includes('usa')||c.includes('estados')) return 'us'; if(/portugal|turqu|bélgica|belgica|reino unido|españa|italia|alemania|francia/.test(c)) return 'eu'; if(/china|vietnam|asia|india|bangladesh|indonesia|pakist/.test(c)) return 'asia'; return 'other'; }
+function prioOf(s){ const r=regionOf(s.country); if(r==='ca') return 0; if(r==='mx') return 1; if((s.country||'').includes('stock en Canadá')) return 2; if(r==='us') return 3; return 4; }
+let supCountryVal = 'all';
 function allSuppliers(){
   const custom = Object.entries(Store.data.suppliers).filter(([id,s])=>s.custom).map(([id,s])=>({...s,id}));
-  return [...SUPPLIERS, ...custom];
+  return [...SUPPLIERS, ...custom].sort((a,b)=>prioOf(a)-prioOf(b) || a.name.localeCompare(b.name));
 }
 const supStage = s => Store.get('suppliers',s.id).stage || 'identificado';
 function renderSuppliers(){
@@ -1000,11 +1097,13 @@ function renderSuppliers(){
     ['Evaluados ≥ 4.5', sups.filter(s=>+(Store.get('suppliers',s.id).soft||0)>=4.5).length, 'pasan el gate de suavidad'],
   ].map(k=>`<div class="tile"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('');
   document.getElementById('supFilter').innerHTML = `<button class="chip ${supFilterVal==='all'?'on':''}" data-t="all">Todos</button>` + Object.entries(TRACKS).map(([k,v])=>`<button class="chip ${supFilterVal===k?'on':''}" data-t="${k}">${v}</button>`).join('');
-  const list = sups.filter(s=>supFilterVal==='all'||s.track===supFilterVal);
+  document.getElementById('supCountry').innerHTML = `<span class="tiny" style="font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:4px">País</span><button class="chip ${supCountryVal==='all'?'on':''}" data-c="all">Todos</button>` + Object.entries(REGIONS).map(([k,v])=>{ const n=sups.filter(s=>regionOf(s.country)===k).length; return n?`<button class="chip ${supCountryVal===k?'on':''}" data-c="${k}">${v} <span class="num">${n}</span></button>`:''; }).join('');
+  const list = sups.filter(s=>(supFilterVal==='all'||s.track===supFilterVal) && (supCountryVal==='all'||regionOf(s.country)===supCountryVal));
   const rows = list.map(s=>{
-    const st = Store.get('suppliers',s.id);
+    const st = Store.get('suppliers',s.id); const pr=prioOf(s);
     return `<tr data-id="${s.id}" class="${supStage(s)==='descartado'?'strike':''}">
       <td><b>${s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a>`:esc(s.name)}</b><div class="tiny">${esc(s.loc||'')}${s.verified===false?' · <span class="pill est">no verificado</span>':''}${s.custom?' · agregado':''}</div></td>
+      <td><b style="font-size:.85rem">${esc(s.country||'—')}</b>${pr<=1?'<div><span class="pill ok">Prioridad</span></div>':(pr===2?'<div><span class="pill ws">Stock CA</span></div>':'')}</td>
       <td><span class="pill ws">${TRACKS[s.track]||s.track}</span></td>
       <td>${esc(s.prod||'')}<div class="tiny">${esc(s.fabric||'')}</div></td>
       <td class="num">${esc(s.moq||'—')}</td>
@@ -1017,7 +1116,7 @@ function renderSuppliers(){
       <td>${s.custom?'<button class="btn sm ghost danger del">Borrar</button>':''}</td>
     </tr>`;
   }).join('');
-  document.getElementById('supTable').innerHTML = `<thead><tr><th>Proveedor</th><th>Pista</th><th>Producto / tela</th><th>MOQ</th><th>Precio ref.</th><th>Lead time</th><th>Etapa</th><th>Suavidad</th><th>Cotización</th><th>Notas</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="11" class="tiny">Sin proveedores en esta pista.</td></tr>'}</tbody>`;
+  document.getElementById('supTable').innerHTML = `<thead><tr><th>Proveedor</th><th>País</th><th>Pista</th><th>Producto / tela</th><th>MOQ</th><th>Precio ref.</th><th>Lead time</th><th>Etapa</th><th>Suavidad</th><th>Cotización</th><th>Notas</th><th></th></tr></thead><tbody>${rows||'<tr><td colspan="12" class="tiny">Sin proveedores con estos filtros.</td></tr>'}</tbody>`;
   document.querySelectorAll('#supTable tr[data-id]').forEach(tr=>{
     const id=tr.dataset.id;
     tr.querySelector('.stg').addEventListener('change',e=>Store.set('suppliers',id,{stage:e.target.value}));
@@ -1028,11 +1127,12 @@ function renderSuppliers(){
   });
 }
 document.getElementById('supFilter').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; supFilterVal=b.dataset.t; renderSuppliers(); });
+document.getElementById('supCountry').addEventListener('click',e=>{ const b=e.target.closest('.chip'); if(!b) return; supCountryVal=b.dataset.c; renderSuppliers(); });
 document.getElementById('sf_add').addEventListener('click',()=>{
   const name=document.getElementById('sf_name').value.trim(); if(!name){ toast('Falta el nombre'); return; }
   const id='u_'+Date.now().toString(36);
-  Store.set('suppliers',id,{custom:true,name,track:document.getElementById('sf_track').value,loc:sf('loc'),prod:sf('prod'),moq:sf('moq'),price:sf('price'),lead:sf('lead'),url:sf('url'),stage:'identificado'});
-  ['name','loc','prod','moq','price','lead','url'].forEach(k=>document.getElementById('sf_'+k).value='');
+  Store.set('suppliers',id,{custom:true,name,track:document.getElementById('sf_track').value,country:sf('country'),loc:sf('loc'),prod:sf('prod'),moq:sf('moq'),price:sf('price'),lead:sf('lead'),url:sf('url'),stage:'identificado'});
+  ['name','country','loc','prod','moq','price','lead','url'].forEach(k=>document.getElementById('sf_'+k).value='');
   toast('Proveedor agregado');
 });
 const sf = k => document.getElementById('sf_'+k).value.trim();
@@ -1095,7 +1195,7 @@ function roundState(){ const m=Store.get('meta','round'); return {ask:m.ask??ROU
 function renderFin(){
   const b=budgetTotals(); const pc=pilotCalc(); const r=roundState();
   document.getElementById('finKpis').innerHTML = [
-    ['Fase muestras', money(b.total).replace('CAD ','<small>CAD</small> '), `incluye ${Math.round(CONTINGENCY*100)} % contingencia · autofinanciado`],
+    ['Fase muestras', money(b.total).replace('CAD ','<small>CAD</small> '), `tope CAD ${BUDGET_CAP_DEFAULT.toLocaleString('en-CA')} · ${b.total<=BUDGET_CAP_DEFAULT?'dentro del tope, holgura '+money(BUDGET_CAP_DEFAULT-b.total):'EXCEDE el tope en '+money(b.total-BUDGET_CAP_DEFAULT)}`],
     ['COGS piloto', money(pc.cogs).replace('CAD ','<small>CAD</small> '), `${pc.units} unidades · PO fábrica`],
     ['Ingreso piloto', money(pc.rev).replace('CAD ','<small>CAD</small> '), `margen bruto ${pc.rev?Math.round(100*pc.gm/pc.rev):0} %`],
     ['Resultado piloto', money(pc.net).replace('CAD ','<small>CAD</small> '), 'tras devoluciones, envío y marketing'],
@@ -1167,6 +1267,161 @@ document.getElementById('if_add').addEventListener('click',()=>{
 });
 
 /* ============================================================
+   MARKETING
+   ============================================================ */
+const DECK_SLIDES = [
+ ['d1','Portada y promesa','"Soft enough to notice. Clean enough to wear every day." Foto real del hoodie con logo en relieve.','Sesión de fotos F1'],
+ ['d2','El problema y la oportunidad','Athleisure USD 460B → 892B (2033). Gen Z y Alpha 40 % de compradores en una década. Vancouver como mercado de prueba.','Deck julio 2026 (validar cifras y fuentes)'],
+ ['d3','El producto','3 SKUs de lanzamiento, tela y gramaje medidos, logo 3D de silicona. Foto macro del relieve.','Specs A1, proveedor seleccionado'],
+ ['d4','La prueba: qué medimos','Los 4 gates y sus umbrales. Cómo se midió (panel ciego, lavadas, formulario).','Pestaña Testers'],
+ ['d5','Resultados del Test Day','Suavidad promedio, encogimiento, pilling, intención de compra y precio máximo. Citas textuales de testers.','Formulario ola 1 y 2 (C5, C6)'],
+ ['d6','Colorways y marca','Paleta, isotipo, tono sobre tono. Voto de la familia.','Pestaña Marketing (colorway)'],
+ ['d7','Modelo por gates','Test → piloto preventa → Drop 01. Qué gate abre qué inversión.','Deck julio 2026'],
+ ['d8','Economía del piloto','Unidades, precio, COGS landed real, margen, devoluciones, resultado. Nota honesta de break-even.','Pestaña Financieros bloque 2 con cotizaciones (E2)'],
+ ['d9','Cadena de suministro','Proveedor de blanks/OEM elegido, proveedor de transfers, plan México para Drop 01. Lead times reales.','Pestaña Proveedores'],
+ ['d10','Por qué este equipo','20 años de comercio internacional, red en Monterrey, familia en Vancouver con roles definidos.','Deck julio 2026'],
+ ['d11','El ask','Monto, instrumento (equity según tu respuesta), uso de fondos, protección de capital (no se transfiere hasta pasar el gate), reporte trimestral.','Pestaña Financieros bloque 3 + abogado (E3)'],
+ ['d12','Roadmap 60 semanas y cierre','Hitos con fechas reales. "Invest in proof, not promises." Contacto.','Plan 10 semanas + roadmap del deck']
+];
+const COLOR_OPTIONS = [
+ ['Mountain Bluebird','#5DADEC','Oficial · centro de la colección'],['Graphite Ink','#1D1D1F','Oficial · oscuro editorial'],['Cloud White','#F8F7F4','Oficial · lienzo claro'],['Purple Hebe','#7D5BA6','Oficial · pastel premium'],
+ ['Cotton Candy','#FDD7E4','Paleta extendida 2025'],['Fiery Coral','#FF6153','Paleta extendida 2025'],['Peach Tree','#FFAB76','Paleta extendida 2025'],['Rose Shadow','#C77F8D','Paleta extendida 2025'],['Berry Gloss','#852D91','Paleta extendida 2025'],['Purple Cactus Flower','#5E2F7A','Paleta extendida 2025'],
+ ['Heather Grey','#A8A9AD','Neutro athleisure · esconde uso diario'],['Bone','#E8E2D3','Neutro cálido · alternativa al blanco']
+];
+const SOCIAL = [
+ ['dominio','Dominio y correo','chinchilla.store (usado en el deck) · alternativas: wearchinchilla.com, chinchilla.ca','Alta','Comprar dominio, configurar Google Workspace o Zoho: hola@ y vancouver@.'],
+ ['instagram','Instagram','@chinchilla.store · alt: @wearchinchilla','Alta','Cuenta profesional (Creador). Bio: promesa + "Vancouver · lista de espera" + link. 9 posts de textura antes de anunciar nada.'],
+ ['tiktok','TikTok','@chinchilla.store','Alta','Cuenta Business. Primer video: la prueba de tacto ciego. Formato vertical 9:16, 7-15 s.'],
+ ['threads','Threads','@chinchilla.store','Media','Se crea desde Instagram. Voz de marca en texto; sirve para el "diario de fabricación".'],
+ ['pinterest','Pinterest','chinchillastore','Media','Tableros: paleta, texturas, fits. Tráfico lento pero durable hacia la landing.'],
+ ['youtube','YouTube','@chinchillastore','Baja','Shorts espejo de TikTok. Un video largo: el proceso del logo en relieve.'],
+ ['x','X','@chinchillastore','Baja','Reservar el handle. Sin actividad hasta el piloto.'],
+ ['discord','Discord (comunidad de testers)','Servidor privado "Chinchilla Testers"','Media','Canal por prenda, canal de feedback, anuncios. Sustituye al grupo de WhatsApp para 40-60 personas.'],
+ ['linktree','Linktree o landing','chinchilla.store/waitlist','Alta','Un solo destino: lista de espera. Nada más hasta la preventa.'],
+ ['landing','Landing "coming soon" con captura de email','Shopify Starter o Carrd','Alta','Título, foto macro del relieve, campo de email, talla preferida. Conectada a Mailchimp o Shopify Email.'],
+ ['brandkit','Brand kit','Carpeta en Drive','Alta','Isotipo vectorial, versiones tono sobre tono, tipografías, paleta, 3 plantillas de post, 2 de historia. Lo hace el diseñador con la guía D5.']
+];
+const TEASER = [
+ {id:'p0', name:'Fase 0 · Cimientos (S3, 21-27 sep)', goal:'Que todo lo que se publique después tenga un destino.', steps:[
+   ['t01','Comprar dominio y correo; reservar el mismo handle en todas las redes (tabla de arriba).'],
+   ['t02','Landing de lista de espera activa con pixel de Meta y TikTok instalados.'],
+   ['t03','Brand kit mínimo listo (isotipo, paleta, 3 plantillas).'],
+   ['t04','Definir voz: 3 adjetivos (calmo, preciso, cercano) y 3 cosas que nunca decimos (descuentos, "premium", superlativos vacíos).'],
+   ['t05','Banco de 20 fotos y 10 clips de textura y proceso con los blanks recibidos en S3.']]},
+ {id:'p1', name:'Fase 1 · La textura (S4-S5, 28 sep-11 oct)', goal:'Curiosidad sin revelar marca completa. Solo tacto, color y el relieve.', steps:[
+   ['t11','Publicar 9 posts en Instagram: macros de tela, manos tocando, el relieve del logo sin mostrar el isotipo completo.'],
+   ['t12','3 TikToks: "¿qué tan suave es? prueba ciega" con la familia; sin nombre de marca hasta el tercero.'],
+   ['t13','Historias diarias del proceso: plancha, pruebas de lavado, errores incluidos.'],
+   ['t14','CTA único: "Entra a la lista para tocarlo primero". Meta: 100 emails.'],
+   ['t15','Prueba de pauta: 2 creativos × CAD 75 en Meta hacia la landing. Medir costo por email.']]},
+ {id:'p2', name:'Fase 2 · Revelación y Test Day (S6, 12-18 oct)', goal:'Nombre, isotipo y el evento. Contenido real de testers.', steps:[
+   ['t21','Post de revelación: isotipo completo + promesa + "Vancouver, 17 de octubre".'],
+   ['t22','Cobertura del Test Day: 30 clips cortos, 50 fotos, reacciones al tacto con consentimiento firmado.'],
+   ['t23','Abrir el Discord de testers e invitar a los 40-60 con enlace único.'],
+   ['t24','Publicar 5 reacciones de testers en la primera semana (UGC).']]},
+ {id:'p3', name:'Fase 3 · La prueba en público (S7-S8, 19 oct-1 nov)', goal:'Mostrar los datos: suavidad medida, lavadas, encogimiento.', steps:[
+   ['t31','Carrusel "lo que medimos": los 4 gates y los resultados reales, con números.'],
+   ['t32','Video: 5 lavadas después, el logo sigue igual (o no; si no, se dice y se corrige).'],
+   ['t33','Semana del 26 de octubre: "el 1 de noviembre abrimos algo". Meta acumulada: 250 emails.'],
+   ['t34','Enviar a la lista el primer correo: resultados del test y fecha de preventa.']]},
+ {id:'p4', name:'Fase 4 · Preventa (S9-S10, 2-15 nov)', goal:'Convertir lista en pedidos del piloto.', steps:[
+   ['t41','Abrir preventa en Shopify a la lista 48 h antes que al público.'],
+   ['t42','Edición numerada del piloto (1-500) como beneficio de preventa; sin descuento.'],
+   ['t43','Publicar avance de preventa cada 3 días (honesto: unidades reservadas / meta).'],
+   ['t44','Cierre 15 de noviembre: si ≥60 % se coloca la PO; si no, se comunica y se ajusta.']]}
+];
+const CALENDAR = [
+ [3,'Cimientos','Sin publicaciones. Cuentas, landing, banco de contenido.','—'],
+ [4,'Textura I','3 posts macro · 1 TikTok prueba ciega · historias diarias','Lista de espera'],
+ [5,'Textura II y proceso','3 posts · 2 TikToks (plancha y lavado) · carrusel "por qué 280 gsm"','Lista de espera'],
+ [6,'Revelación + Test Day','Post isotipo · cobertura evento · 5 UGC','Lista de espera + Discord testers'],
+ [7,'Datos I','Carrusel gates · 2 TikToks reacción · historias con citas','Lista de espera'],
+ [8,'Datos II y anuncio','Video 5 lavadas · "1 de noviembre" · primer correo a la lista','Lista de espera'],
+ [9,'Preventa privada','Correo 48 h antes · post apertura · avance día 3','Pre-orden'],
+ [10,'Preventa pública y cierre','Avances cada 3 días · último llamado 14 nov · cierre 15 nov','Pre-orden']
+];
+function renderMarketing(){
+  const deckDone = DECK_SLIDES.filter(s=>(Store.get('meta','deck_'+s[0]).status||'pendiente')==='hecho').length;
+  const socDone = SOCIAL.filter(s=>['creada','configurada'].includes(Store.get('meta','social_'+s[0]).status)).length;
+  const steps = TEASER.flatMap(p=>p.steps); const stDone = steps.filter(s=>Store.get('meta','mk_'+s[0]).done).length;
+  const finalists = COLOR_OPTIONS.filter(c=>Store.get('meta','color_'+c[1].slice(1)).vote==='finalista').length;
+  document.getElementById('mkKpis').innerHTML = [
+    ['Slides del deck listas', `${deckDone}<small> / ${DECK_SLIDES.length}</small>`, 'versión del 1 de noviembre'],
+    ['Cuentas y activos', `${socDone}<small> / ${SOCIAL.length}</small>`, 'creadas o configuradas'],
+    ['Pasos del teaser', `${stDone}<small> / ${steps.length}</small>`, 'en 5 fases'],
+    ['Colorways finalistas', finalists, 'para votación de la familia'],
+  ].map(k=>`<div class="tile"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('');
+
+  document.getElementById('deckTable').innerHTML = `<thead><tr><th>#</th><th>Slide</th><th>Contenido</th><th>Fuente del dato</th><th>Estado</th><th>Notas</th></tr></thead><tbody>${DECK_SLIDES.map((s,i)=>{ const m=Store.get('meta','deck_'+s[0]); const st=m.status||'pendiente'; return `<tr data-id="${s[0]}" class="${st==='hecho'?'strike':''}"><td class="num">${i+1}</td><td><b>${esc(s[1])}</b></td><td>${esc(s[2])}</td><td class="tiny">${esc(s[3])}</td><td><select class="cell-in st">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></td><td><input class="cell-in nt" value="${esc(m.notes||'')}" placeholder="Nota"></td></tr>`; }).join('')}</tbody>`;
+  document.querySelectorAll('#deckTable tr[data-id]').forEach(tr=>{ const id='deck_'+tr.dataset.id; tr.querySelector('.st').addEventListener('change',e=>Store.set('meta',id,{status:e.target.value})); tr.querySelector('.nt').addEventListener('input',debounce(e=>Store.set('meta',id,{notes:e.target.value},{render:false}),600)); });
+
+  document.getElementById('colorVote').innerHTML = COLOR_OPTIONS.map(c=>{ const key='color_'+c[1].slice(1); const v=Store.get('meta',key).vote||'considerar'; return `<div class="sw" data-key="${key}" style="${v==='descartar'?'opacity:.45':''}${v==='finalista'?'outline:2px solid var(--violet)':''}"><i style="background:${c[1]}"></i><div><b>${c[0]}</b><span class="num tiny">${c[1]}</span><div class="tiny">${c[2]}</div><select class="cell-in vote" style="margin-top:6px;min-width:0"><option value="finalista" ${v==='finalista'?'selected':''}>Finalista</option><option value="considerar" ${v==='considerar'?'selected':''}>Considerar</option><option value="descartar" ${v==='descartar'?'selected':''}>Descartar</option></select></div></div>`; }).join('');
+  document.querySelectorAll('#colorVote .sw').forEach(el=>el.querySelector('.vote').addEventListener('change',e=>Store.set('meta',el.dataset.key,{vote:e.target.value})));
+
+  const SST={pendiente:'Pendiente',reservada:'Handle reservado',creada:'Creada',configurada:'Configurada y con contenido'};
+  document.getElementById('socialTable').innerHTML = `<thead><tr><th>Plataforma</th><th>Handle / nombre</th><th>Prioridad</th><th>Qué hacer</th><th>Estado</th><th>Handle final</th></tr></thead><tbody>${SOCIAL.map(s=>{ const m=Store.get('meta','social_'+s[0]); const st=m.status||'pendiente'; return `<tr data-id="${s[0]}"><td><b>${esc(s[1])}</b></td><td class="tiny">${esc(s[2])}</td><td><span class="pill ${s[3]==='Alta'?'gate':'ws'}">${s[3]}</span></td><td class="tiny">${esc(s[4])}</td><td><select class="cell-in st">${Object.entries(SST).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></td><td><input class="cell-in nt" value="${esc(m.handle||'')}" placeholder="@…"></td></tr>`; }).join('')}</tbody>`;
+  document.querySelectorAll('#socialTable tr[data-id]').forEach(tr=>{ const id='social_'+tr.dataset.id; tr.querySelector('.st').addEventListener('change',e=>Store.set('meta',id,{status:e.target.value})); tr.querySelector('.nt').addEventListener('input',debounce(e=>Store.set('meta',id,{handle:e.target.value},{render:false}),600)); });
+
+  document.getElementById('teaserPhases').innerHTML = TEASER.map(p=>{ const done=p.steps.filter(s=>Store.get('meta','mk_'+s[0]).done).length; return `<div style="margin-top:14px"><div class="row between"><h4>${esc(p.name)}</h4><span class="tiny num">${done}/${p.steps.length}</span></div><div class="tiny" style="margin:2px 0 8px">${esc(p.goal)}</div><div class="bar" style="margin:0 0 8px"><i style="width:${100*done/p.steps.length}%"></i></div><div class="tasklist">${p.steps.map(s=>{ const d=Store.get('meta','mk_'+s[0]).done; return `<label class="task ${d?'hecho':''}" style="grid-template-columns:auto 1fr;cursor:pointer;padding:9px 12px"><input type="checkbox" class="chk" data-id="${s[0]}" ${d?'checked':''}><div class="t" style="font-weight:600">${esc(s[1])}</div></label>`; }).join('')}</div></div>`; }).join('');
+  document.querySelectorAll('#teaserPhases .chk').forEach(cb=>cb.addEventListener('change',e=>Store.set('meta','mk_'+cb.dataset.id,{done:e.target.checked})));
+
+  const wk=currentWeek();
+  document.getElementById('calTable').innerHTML = `<thead><tr><th>Semana</th><th>Tema</th><th>Piezas</th><th>CTA</th></tr></thead><tbody>${CALENDAR.map(r=>`<tr ${r[0]===wk?'style="background:var(--accent-soft)"':''}><td class="num"><b>S${r[0]}</b><div class="tiny">${fmtD(weekStart(r[0]))} – ${fmtD(weekEnd(r[0]))}</div></td><td><b>${esc(r[1])}</b></td><td>${esc(r[2])}</td><td class="tiny">${esc(r[3])}</td></tr>`).join('')}</tbody>`;
+}
+
+/* ============================================================
+   LEGAL: marca, contratos, NCNDA
+   ============================================================ */
+const TM_STEPS = [
+ ['tm1','Búsqueda de conflictos','Buscar "Chinchilla" y variantes en la Base de Datos de Marcas Canadienses (CIPO) y en el buscador de la USPTO, clases 25 (ropa) y 35 (venta al menudeo). Anotar marcas vivas que puedan chocar. Si hay una marca viva idéntica en clase 25, hablar con agente antes de presentar.','Semana 1 · Jorge con apoyo de Claude'],
+ ['tm2','Decidir qué se presenta','Dos solicitudes separadas: (1) marca nominativa CHINCHILLA, (2) marca figurativa con el isotipo. Cada una paga su propia tarifa. Si el presupuesto obliga a elegir, primero la nominativa: protege el nombre en cualquier tipografía.','Semana 1'],
+ ['tm3','Redactar productos y servicios','Usar términos preaprobados del Manual de Productos y Servicios de CIPO. Clase 25: hoodies, sweatshirts, sweatpants, joggers, t-shirts, hats, caps. Clase 35 (opcional): online retail store services featuring clothing. Cada clase adicional suma tarifa.','Semana 1 · Claude redacta'],
+ ['tm4','Preparar el isotipo para la marca figurativa','Imagen en blanco y negro, alta resolución, sin reivindicación de color (así cubre todos los colores). Formato y tamaño según la guía de presentación electrónica de CIPO. Requiere el vector del diseñador.','Semana 2 · depende de la pregunta 3'],
+ ['tm5','Crear cuenta y presentar en línea','Cuenta de servicios en línea de CIPO a nombre de Jorge Chinchilla, persona física, domicilio en BC. Presentar la(s) solicitud(es) y pagar la tarifa oficial vigente. Guardar número de solicitud, fecha de presentación y recibo.','Semana 2 · Jorge'],
+ ['tm6','Seguimiento del examen','CIPO examina en el orden recibido; el primer informe puede tardar muchos meses. Responder a cualquier informe de examen dentro del plazo. Después viene publicación y un periodo de oposición de 2 meses; luego registro por 10 años renovable.','Continuo'],
+ ['tm7','Ceder la marca a la sociedad','Cuando exista la BC Ltd, registrar en CIPO el cambio de titular (cesión) de Jorge a la sociedad. Se puede hacer con la solicitud pendiente, no hay que esperar al registro.','Al constituir la sociedad'],
+ ['tm8','EE. UU. y México','Antes de la primera venta transfronteriza: presentar en USPTO (base de intención de uso) y en IMPI, directamente o vía Protocolo de Madrid usando la solicitud canadiense como base. Buscar conflictos en ambas bases antes.','Semanas 8-12']
+];
+const TM_NOTES = '<div class="callout warn"><b>Tarifas y plazos oficiales:</b> se están verificando contra las páginas de CIPO, USPTO e IMPI y se actualizan aquí en cuanto estén confirmados. No pagues nada basado en cifras de terceros.</div>';
+const CONTRACTS = [
+ ['c1','NCNDA con proveedores (OEM, transfers, tela, decoradores)','Proveedor','Antes de compartir tech pack, vector del logo o volúmenes','Listo en borrador (abajo). Revisión de abogado pendiente.'],
+ ['c2','Orden de compra con términos (calidad, tolerancias, fechas, penalidades, muestras de aprobación)','Proveedor','Con cada pedido de muestras y con la PO del piloto','Plantilla por redactar (Claude) en S4.'],
+ ['c3','Consentimiento de testers (uso de imagen, feedback, devolución de prenda no requerida)','Tester','Al entregar la prenda en el Test Day','Una página, firma digital o en papel. Por redactar (Claude) en S4.'],
+ ['c4','Instrumento de inversión (equity minoritario según tu respuesta) y acuerdo de accionistas simple','Inversionista','Antes de recibir fondos; después del gate del Test Day','Abogado en BC. Confirmar exención de prospecto aplicable (familia, amigos y socios de negocio).'],
+ ['c5','Constitución de la sociedad (BC Ltd) y cesión de la marca de Jorge a la sociedad','Jorge / sociedad','Antes de recibir dinero de terceros','Registro en BC Registries; cesión registrada en CIPO con el formulario de cambio de titular.'],
+ ['c6','Acuerdo de roles familiares (horas, decisiones, participación futura)','Familia','Antes del piloto','Documento simple de una página basado en el deck familiar. Evita malentendidos más adelante.'],
+ ['c7','Cesión de derechos del diseñador del isotipo','Diseñador','Al recibir el vector','Confirmar por escrito que los derechos del isotipo son de Chinchilla. Si el contrato original no lo dice, firmar cesión.'],
+ ['c8','Términos y política de privacidad de la landing y la preventa','Clientes','Antes de capturar emails (S3)','Plantilla de Shopify ajustada a PIPEDA y PIPA de BC.']
+];
+const NDA_ST = {no_enviado:'No enviado', enviado:'Enviado', firmado:'Firmado', no_requerido:'No requerido'};
+function renderLegal(){
+  const tmDone = TM_STEPS.filter(s=>Store.get('meta','tm_'+s[0]).done).length;
+  const ndaSups = allSuppliers().filter(s=>['oem','transfer','tela','local'].includes(s.track));
+  const signed = ndaSups.filter(s=>Store.get('suppliers',s.id).nda==='firmado').length;
+  const sent = ndaSups.filter(s=>Store.get('suppliers',s.id).nda==='enviado').length;
+  const cDone = CONTRACTS.filter(c=>Store.get('meta','ct_'+c[0]).done).length;
+  document.getElementById('legalKpis').innerHTML = [
+    ['Registro de marca', `${tmDone}<small> / ${TM_STEPS.length}</small>`, 'pasos completados'],
+    ['NCNDA firmados', `${signed}<small> / ${ndaSups.length}</small>`, `${sent} enviados sin firma`],
+    ['Contratos listos', `${cDone}<small> / ${CONTRACTS.length}</small>`, 'documentos necesarios antes del piloto'],
+  ].map(k=>`<div class="tile"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('');
+
+  const tm=document.getElementById('tmSteps');
+  tm.innerHTML = TM_STEPS.map(s=>{ const m=Store.get('meta','tm_'+s[0]); return `<div class="task ${m.done?'hecho':''}" data-id="${s[0]}"><input type="checkbox" class="chk" ${m.done?'checked':''}><div><div class="t">${esc(s[1])}</div><div class="d">${s[2]}</div>${s[3]?`<div class="m"><span class="tiny">${esc(s[3])}</span></div>`:''}<textarea class="nt" placeholder="Número de solicitud, fecha, monto…">${esc(m.notes||'')}</textarea></div></div>`; }).join('');
+  tm.querySelectorAll('.task').forEach(el=>{ const id='tm_'+el.dataset.id; el.querySelector('.chk').addEventListener('change',e=>Store.set('meta',id,{done:e.target.checked})); el.querySelector('.nt').addEventListener('input',debounce(e=>Store.set('meta',id,{notes:e.target.value},{render:false}),600)); });
+  document.getElementById('tmNotes').innerHTML = TM_NOTES;
+
+  document.getElementById('contractsTable').innerHTML = `<thead><tr><th></th><th>Documento</th><th>Con quién</th><th>Cuándo</th><th>Estado / quién lo hace</th></tr></thead><tbody>${CONTRACTS.map(c=>{ const d=Store.get('meta','ct_'+c[0]).done; return `<tr data-id="${c[0]}" class="${d?'strike':''}"><td><input type="checkbox" class="chk" ${d?'checked':''}></td><td><b>${esc(c[1])}</b></td><td>${esc(c[2])}</td><td class="tiny">${esc(c[3])}</td><td class="tiny">${esc(c[4])}</td></tr>`; }).join('')}</tbody>`;
+  document.querySelectorAll('#contractsTable tr[data-id]').forEach(tr=>tr.querySelector('.chk').addEventListener('change',e=>Store.set('meta','ct_'+tr.dataset.id,{done:e.target.checked})));
+
+  document.getElementById('ndaText').textContent = NDA_TEXT;
+  document.getElementById('ndaTable').innerHTML = `<thead><tr><th>Proveedor</th><th>Pista</th><th>País</th><th>NCNDA</th><th>Fecha</th><th>Firmante / notas</th></tr></thead><tbody>${ndaSups.map(s=>{ const m=Store.get('suppliers',s.id); const st=m.nda||'no_enviado'; return `<tr data-id="${s.id}"><td><b>${esc(s.name)}</b></td><td class="tiny">${TRACKS[s.track]}</td><td class="tiny">${esc(s.country||'')}</td><td><select class="cell-in st">${Object.entries(NDA_ST).map(([k,v])=>`<option value="${k}" ${k===st?'selected':''}>${v}</option>`).join('')}</select></td><td><input class="cell-in dt" type="date" value="${esc(m.ndaDate||'')}" style="min-width:140px"></td><td><input class="cell-in nt" value="${esc(m.ndaNotes||'')}" placeholder="Nombre y cargo del firmante"></td></tr>`; }).join('')}</tbody>`;
+  document.querySelectorAll('#ndaTable tr[data-id]').forEach(tr=>{ const id=tr.dataset.id; tr.querySelector('.st').addEventListener('change',e=>Store.set('suppliers',id,{nda:e.target.value})); tr.querySelector('.dt').addEventListener('change',e=>Store.set('suppliers',id,{ndaDate:e.target.value})); tr.querySelector('.nt').addEventListener('input',debounce(e=>Store.set('suppliers',id,{ndaNotes:e.target.value},{render:false}),600)); });
+}
+document.getElementById('btnCopyNda').addEventListener('click',()=>{ const ta=document.createElement('textarea'); ta.value=NDA_TEXT; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast('NCNDA copiado'); }catch(e){ toast('Selecciona y copia el texto'); } document.body.removeChild(ta); });
+const NDA_TEXT = "MUTUAL NON-DISCLOSURE AND NON-CIRCUMVENTION AGREEMENT (NCNDA)\n\nTemplate for suppliers of garments, fabrics, trims and logo transfers. Draft prepared 6 September 2026 for review by a British Columbia lawyer before first use. Not legal advice.\n\nThis Mutual Non-Disclosure and Non-Circumvention Agreement (the \"Agreement\") is entered into as of ____________, 2026 (the \"Effective Date\")\n\nBETWEEN:\n\nJorge Chinchilla, an individual resident in Vancouver, British Columbia, Canada, carrying on business under the brand \"CHINCHILLA\" (together with any corporation he incorporates to own that brand, \"Chinchilla\")\n\nAND:\n\n[SUPPLIER LEGAL NAME], a [company / individual] organized under the laws of [jurisdiction], with its principal place of business at [address] (the \"Supplier\")\n\n(each a \"Party\" and together the \"Parties\").\n\n1. Purpose\n\nThe Parties wish to explore and, if agreed, carry out a business relationship in which the Supplier may develop samples, quote, manufacture or supply garments, fabrics, trims, labels or heat-transfer logos for Chinchilla (the \"Purpose\"). In connection with the Purpose, each Party may disclose Confidential Information to the other.\n\n2. Confidential Information\n\n2.1 \"Confidential Information\" means all non-public information disclosed by a Party (the \"Disclosing Party\") to the other (the \"Receiving Party\"), in any form, before or after the Effective Date, including without limitation: designs, sketches, tech packs, patterns, fabric specifications and compositions, logo artwork and vector files, colourways, product names, launch dates, pricing, costs, quotations, order volumes, forecasts, business plans, marketing plans, customer and tester information, the identity of and terms with the Disclosing Party's suppliers, factories, mills, agents and sub-contractors, and any samples or prototypes.\n\n2.2 Confidential Information does not include information that the Receiving Party can demonstrate by written records: (a) was publicly available at the time of disclosure or later becomes publicly available through no breach of this Agreement; (b) was lawfully known to the Receiving Party before disclosure; (c) is lawfully received from a third party without restriction; or (d) is independently developed without use of the Confidential Information.\n\n3. Obligations of the Receiving Party\n\nThe Receiving Party shall: (a) use Confidential Information solely for the Purpose; (b) not disclose it to any person other than its employees, officers and sub-contractors who need to know it for the Purpose and are bound by written confidentiality obligations at least as protective as this Agreement; (c) protect it with at least the same degree of care it uses for its own confidential information, and no less than reasonable care; (d) not reverse-engineer, copy, photograph or publish samples, prototypes or artwork, including on social media, trade platforms, catalogues or showrooms, without the Disclosing Party's prior written consent; and (e) promptly notify the Disclosing Party of any unauthorized use or disclosure.\n\n4. Non-Circumvention\n\n4.1 During the Term and for two (2) years after it ends, the Supplier shall not, directly or indirectly, without Chinchilla's prior written consent: (a) contact, solicit, or transact with any customer, tester, investor, designer, factory, mill, decorator or other business contact of Chinchilla whose identity was disclosed by Chinchilla or learned through the Purpose, for the purpose of circumventing Chinchilla or offering products substantially similar to Chinchilla's products; or (b) use Chinchilla's designs, tech packs, artwork, logo, brand name or colourways to produce, offer or sell goods to any third party, including \"overrun\", \"stock lot\" or \"sample\" units.\n\n4.2 During the Term and for two (2) years after it ends, Chinchilla shall not, directly or indirectly, contract with any sub-contractor, mill or factory first introduced to Chinchilla by the Supplier in writing for the Purpose, in order to circumvent the Supplier, without the Supplier's prior written consent.\n\n4.3 Nothing in this Section prevents either Party from dealing with any person with whom it had a documented pre-existing relationship, or who is approached through a general, public advertisement.\n\n5. Intellectual Property\n\n5.1 All designs, artwork, logos (including the \"Chinchilla\" name and the chinchilla-and-leaf device), tech packs, patterns, samples, prototypes, product names and all related intellectual property rights supplied by Chinchilla or created by the Supplier at Chinchilla's request and for Chinchilla's account are and shall remain the exclusive property of Chinchilla. The Supplier hereby assigns to Chinchilla all right, title and interest in any such work product and waives any moral rights therein.\n\n5.2 No license or other right is granted under this Agreement except the limited right to use Confidential Information for the Purpose. The Supplier shall not register or attempt to register any trademark, design or domain name containing or confusingly similar to Chinchilla's brand or logo in any jurisdiction.\n\n5.3 All excess, defective, rejected or unclaimed units bearing Chinchilla's logo or made from Chinchilla's designs shall be destroyed or delivered to Chinchilla at Chinchilla's election and shall never be sold or distributed.\n\n6. Return or Destruction\n\nWithin ten (10) days of the Disclosing Party's written request, or upon termination of this Agreement, the Receiving Party shall return or securely destroy all Confidential Information, samples, artwork files and copies, and certify in writing that it has done so, except for one archival copy kept by legal counsel solely to evidence compliance.\n\n7. No Obligation to Transact\n\nThis Agreement does not obligate either Party to purchase, supply, or enter into any further agreement. Any purchase shall be governed by a separate written purchase order or supply agreement. Each Party bears its own costs.\n\n8. Term\n\nThis Agreement begins on the Effective Date and continues for three (3) years (the \"Term\"), unless terminated earlier by either Party on thirty (30) days' written notice. The obligations in Sections 3, 5 and 6 survive for five (5) years after the Term ends; obligations regarding trade secrets survive for as long as the information remains a trade secret; Section 4 survives as stated therein.\n\n9. Remedies\n\nEach Party acknowledges that a breach of this Agreement may cause irreparable harm for which damages would be inadequate, and that the non-breaching Party shall be entitled to seek injunctive relief and specific performance in any court of competent jurisdiction, in addition to any other remedy available at law or in equity, without posting a bond.\n\n10. Compelled Disclosure\n\nIf the Receiving Party is required by law or court order to disclose Confidential Information, it shall give the Disclosing Party prompt written notice (where legally permitted), cooperate in seeking a protective order, and disclose only the minimum required.\n\n11. General\n\n11.1 Governing law and forum. This Agreement is governed by the laws of the Province of British Columbia and the federal laws of Canada applicable therein. The Parties submit to the exclusive jurisdiction of the courts of British Columbia, sitting in Vancouver, without prejudice to either Party's right to seek injunctive relief in any jurisdiction.\n\n11.2 Assignment. Chinchilla may assign this Agreement to any corporation that acquires the Chinchilla brand without the Supplier's consent. The Supplier may not assign this Agreement without Chinchilla's prior written consent.\n\n11.3 Entire agreement; amendments. This Agreement is the entire agreement of the Parties on its subject matter and may only be amended in writing signed by both Parties.\n\n11.4 Severability; waiver. If any provision is held unenforceable, the remainder continues in force. No waiver is effective unless in writing.\n\n11.5 Counterparts and electronic signature. This Agreement may be signed in counterparts and by electronic signature, each of which is an original.\n\n11.6 Language. This Agreement is drafted in English. A Spanish courtesy translation may be provided; the English version prevails.\n\nIN WITNESS WHEREOF the Parties have executed this Agreement as of the Effective Date.\n\nCHINCHILLA        SUPPLIER\n\nSignature: ______________________        Signature: ______________________\nName: Jorge Chinchilla        Name: ______________________\nTitle: Founder        Title: ______________________\nDate: ______________________        Date: ______________________\nEmail: ______________________        Email: ______________________";
+
+/* ============================================================
    RECURSOS
    ============================================================ */
 function renderRecursos(){
@@ -1196,7 +1451,7 @@ function typingNow(){ const a=document.activeElement; return !!(a && a.closest &
 function renderAll(){
   if(typingNow()){ pendingRender = true; return; }
   pendingRender = false;
-  renderNav(); renderResumen(); renderPlan(); renderSuppliers(); renderLogo(); renderTesters(); renderFin(); renderInv(); renderRecursos();
+  renderNav(); renderResumen(); renderPlan(); renderSuppliers(); renderLogo(); renderTesters(); renderFin(); renderInv(); renderMarketing(); renderLegal(); renderRecursos();
 }
 document.querySelector('.main').addEventListener('focusout', ()=>{ setTimeout(()=>{ if(pendingRender && !typingNow()) renderAll(); }, 50); });
 document.getElementById('todayTxt').textContent = new Date().toLocaleDateString('es-MX',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
