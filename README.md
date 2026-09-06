@@ -122,3 +122,11 @@ pipeline de inversionistas.
   (métodos, proveedores, planchas, parámetros, fuentes).
 - `portal/research/proveedores.md`: investigación de proveedores de blanks, OEM y
   telas con MOQ bajo y envío a Canadá.
+- `portal/research/mexico-y-planchas.md`: fabricantes y telas en México; planchas
+  térmicas disponibles en Canadá con precios CAD.
+- `portal/research/registro-de-marca.md`: pasos, tarifas 2026 y plazos para
+  registrar la marca en CIPO, USPTO e IMPI.
+- `portal/legal/NCNDA-Chinchilla.md` y `.docx`: acuerdo mutuo de confidencialidad
+  y no elusión para proveedores (borrador para revisión legal).
+- `portal/outreach/rfq-emails.md`: correos RFQ para blanks, OEM (EN/ES), transfers,
+  telas y envío de NCNDA.

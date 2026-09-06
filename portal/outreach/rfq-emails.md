@@ -1,10 +1,15 @@
-/* ============================================================
-   CORREOS RFQ (listos para copiar; remitente mychinchilla.ca)
-   ============================================================ */
-const SIGN = "Jorge Chinchilla\nFounder, Chinchilla\nVancouver, BC, Canada\n[tu correo]@mychinchilla.ca";
-const EMAILS = [
- {id:'blanks', name:'Blanks premium · pedido de sample pack (EN)', to:'S&S Canada, T-Sport, Jerico, Gabe, House of Blanks, Lane Seven/United Blanks, Mammon Blanks', subject:'Wholesale account + sample order: heavyweight hoodie and jogger (Vancouver brand)', body:
-`Hello [Name / Wholesale team],
+# Correos RFQ para proveedores (6 sep 2026)
+
+Remitente: correo de mychinchilla.ca. Reemplazar los corchetes. Adjuntar el NCNDA antes de compartir tech pack o vector del logo.
+
+## Blanks premium · pedido de sample pack (EN)
+
+**Para:** S&S Canada, T-Sport, Jerico, Gabe, House of Blanks, Lane Seven/United Blanks, Mammon Blanks
+
+**Asunto:** Wholesale account + sample order: heavyweight hoodie and jogger (Vancouver brand)
+
+```
+Hello [Name / Wholesale team],
 
 I am launching Chinchilla, a Vancouver-based athleisure brand, and I am selecting blanks for a 70-unit tester batch shipping in early October, followed by a 300-500 unit pilot.
 
@@ -22,9 +27,20 @@ Could you confirm:
 Ship to: [address], Vancouver, BC. Billing: [entity or name].
 
 Thank you,
-${SIGN}`},
- {id:'oem', name:'OEM / cut & sew · muestra de desarrollo (EN)', to:'Groovecolor, Qianshiwear, Tuozhen, White Cotton, ASBX, AG Tekstil, ATI, Wearlab, Designer Apparel Services, Peros', subject:'Development samples + pilot quote: heavyweight cotton-spandex French terry hoodie and jogger', body:
-`Hello [Name],
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
+## OEM / cut & sew · muestra de desarrollo (EN)
+
+**Para:** Groovecolor, Qianshiwear, Tuozhen, White Cotton, ASBX, AG Tekstil, ATI, Wearlab, Designer Apparel Services, Peros
+
+**Asunto:** Development samples + pilot quote: heavyweight cotton-spandex French terry hoodie and jogger
+
+```
+Hello [Name],
 
 I am the founder of Chinchilla, a Vancouver, Canada athleisure brand launching with two core pieces. I am looking for a manufacturing partner for development samples now and a 300-500 unit pilot in Q1 2027.
 
@@ -44,9 +60,20 @@ Please quote:
 I can send our NDA and tech pack as soon as you confirm interest.
 
 Best regards,
-${SIGN}`},
- {id:'oem_es', name:'OEM México · muestra de desarrollo (ES)', to:'MUTUO, Grupo Textil Román, MAOYI, About Blanks, JOITE, Simón Textiles', subject:'Muestras de desarrollo y cotización de piloto: hoodie y jogger en French terry algodón-spandex', body:
-`Hola [Nombre],
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
+## OEM México · muestra de desarrollo (ES)
+
+**Para:** MUTUO, Grupo Textil Román, MAOYI, About Blanks, JOITE, Simón Textiles
+
+**Asunto:** Muestras de desarrollo y cotización de piloto: hoodie y jogger en French terry algodón-spandex
+
+```
+Hola [Nombre],
 
 Soy fundador de Chinchilla, una marca de athleisure con base en Vancouver, Canadá. Estamos buscando un taller aliado en México para muestras de desarrollo ahora y un piloto de 300 a 500 piezas en el primer trimestre de 2027, con la idea de crecer a producción recurrente.
 
@@ -66,9 +93,20 @@ Les pido cotizar:
 Con gusto envío el acuerdo de confidencialidad y la ficha técnica en cuanto confirmen interés.
 
 Saludos cordiales,
-${SIGN}`},
- {id:'transfer', name:'Transfers de silicona 3D · muestra y cotización (EN)', to:'DOY Label, Cusmytrims, WeMust, Quality Woven Labels, 4customize, Hyi Fashion, Stahls UK', subject:'Quote request: 3D silicone heat transfer logo, 100-200 pcs, matte, tone-on-tone', body:
-`Hello [Name],
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
+## Transfers de silicona 3D · muestra y cotización (EN)
+
+**Para:** DOY Label, Cusmytrims, WeMust, Quality Woven Labels, 4customize, Hyi Fashion, Stahls UK
+
+**Asunto:** Quote request: 3D silicone heat transfer logo, 100-200 pcs, matte, tone-on-tone
+
+```
+Hello [Name],
 
 I am launching an apparel brand in Vancouver, Canada and need 3D silicone heat-transfer labels for our logo, applied in-house on cotton French terry hoodies and joggers.
 
@@ -87,33 +125,49 @@ Please send:
 4. Whether you can print on a carrier compatible with a standard clamshell heat press (15x15 in).
 
 Thank you,
-${SIGN}`},
- {id:'fabric', name:'Tela · muestra de metro (EN / ES)', to:'KenDor (EN), Kinderel (EN), Texterra (ES), Coko & co (ES)', subject:'Sample yardage request: cotton/bamboo-spandex French terry 280-400 gsm', body:
-`Hello [Name] / Hola [Nombre],
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
+## Tela · muestra de metro (EN / ES)
+
+**Para:** KenDor (EN), Kinderel (EN), Texterra (ES), Coko & co (ES)
+
+**Asunto:** Sample yardage request: cotton/bamboo-spandex French terry 280-400 gsm
+
+```
+Hello [Name] / Hola [Nombre],
 
 EN: We are developing a heavyweight hoodie and jogger for a Vancouver brand and would like to order sample yardage of your French terry in the 280-400 gsm range with spandex (cotton-spandex or bamboo-cotton-spandex). Please send: available qualities with composition, gsm, width, colours in stock, price per metre at sample, 50 m and full-roll quantities, minimum per colour for custom dyeing, and shipping cost to Vancouver, BC. We would like 2 metres of each candidate quality in your darkest and lightest stock colours.
 
 ES: Estamos desarrollando un hoodie y un jogger pesados para una marca de Vancouver y queremos pedir metraje de muestra de su French terry de 280 a 400 g/m² con spandex (algodón-spandex o bambú-algodón-spandex). Favor de enviar: calidades disponibles con composición, gramaje, ancho, colores en existencia, precio por metro en muestra, a 50 m y por rollo completo, mínimo por color para teñido especial y costo de envío a Vancouver, BC. Queremos 2 metros de cada calidad candidata en su color más oscuro y más claro de existencia.
 
 Thank you / Gracias,
-${SIGN}`},
- {id:'nda', name:'Envío de NCNDA (EN)', to:'Cualquier proveedor que pase a cotización', subject:'Chinchilla: mutual NDA before we share the tech pack and artwork', body:
-`Hello [Name],
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
+## Envío de NCNDA (EN)
+
+**Para:** Cualquier proveedor que pase a cotización
+
+**Asunto:** Chinchilla: mutual NDA before we share the tech pack and artwork
+
+```
+Hello [Name],
 
 Thank you for your interest. Before I share the tech pack, the logo vector files and our volumes, please find attached our standard mutual non-disclosure and non-circumvention agreement (3-year term, governed by British Columbia law). It is mutual: it protects your pricing and sub-contractor information as much as our designs.
 
 If your company uses its own NDA template, send it and we will review it; otherwise please return the attached signed (electronic signature is fine) with the legal name, address and signatory title filled in, and I will send the complete package the same day.
 
 Best regards,
-${SIGN}`}
-];
-function renderEmails(){
-  const sel=document.getElementById('emailSel'); const cur=sel.value||EMAILS[0].id;
-  sel.innerHTML = EMAILS.map(e=>`<option value="${e.id}" ${e.id===cur?'selected':''}>${esc(e.name)}</option>`).join('');
-  const e=EMAILS.find(x=>x.id===cur);
-  document.getElementById('emailTo').textContent = 'Para: '+e.to;
-  document.getElementById('emailSubject').textContent = e.subject;
-  document.getElementById('emailBody').textContent = e.body;
-}
-document.getElementById('emailSel').addEventListener('change',renderEmails);
-document.getElementById('btnCopyEmail').addEventListener('click',()=>{ const e=EMAILS.find(x=>x.id===document.getElementById('emailSel').value); const ta=document.createElement('textarea'); ta.value='Subject: '+e.subject+'\n\n'+e.body; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast('Correo copiado'); }catch(err){ toast('Selecciona y copia el texto'); } document.body.removeChild(ta); });
+Jorge Chinchilla
+Founder, Chinchilla
+Vancouver, BC, Canada
+[tu correo]@mychinchilla.ca
+```
+
