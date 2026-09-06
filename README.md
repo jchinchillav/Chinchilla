@@ -104,3 +104,21 @@ Unofficial fan project for personal use. *The Rookie* and all related
 characters and quotes are property of their respective owners (ABC /
 Lionsgate / eOne / Alexi Hawley). No affiliation, no copyright infringement
 intended.
+
+---
+
+## 🐭 Chinchilla Launch Room (`portal/`)
+
+Portal de seguimiento del lanzamiento de la marca Chinchilla: plan de 10 semanas
+(7 sep – 15 nov 2026), proveedores de muestras (blanks premium, OEM, telas,
+transfers de silicona 3D, decoradores en Vancouver), proceso del logo con relieve,
+roster de testers, presupuesto de la fase de muestras, economía del piloto y
+pipeline de inversionistas.
+
+- `portal/index.html`: un solo archivo, sin build. Abierto como Artifact en
+  claude.ai guarda el estado en la base de datos del artifact (sincronizado entre
+  dispositivos); abierto desde GitHub Pages o en local guarda en el navegador.
+- `portal/research/logo-3d-silicona.md`: investigación del proceso de logo 3D
+  (métodos, proveedores, planchas, parámetros, fuentes).
+- `portal/research/proveedores.md`: investigación de proveedores de blanks, OEM y
+  telas con MOQ bajo y envío a Canadá.
