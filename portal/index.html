@@ -257,7 +257,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
       <div class="topline">
         <div>
           <div class="eyebrow">Resumen ejecutivo</div>
-          <h1>Muestras en manos de testers y ronda abierta el 1 de noviembre</h1>
+          <h1>Muestras en manos de testers el 28 de noviembre y ronda abierta el 13 de diciembre</h1>
           <p>Un solo lugar para saber qué toca esta semana, qué está atorado y cuánto falta. Todo lo que marques aquí se guarda.</p>
         </div>
         <div class="weekchip"><b id="weekNow">—</b><span id="weekRange"></span></div>
@@ -266,7 +266,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
       <div class="grid g-2" style="margin-top:16px">
         <div class="card" style="margin-top:0">
           <h3>Esta semana</h3>
-          <div class="hint">Tareas activas en la semana en curso (y las vencidas que siguen abiertas). Antes del 7 de septiembre muestra la semana 1.</div>
+          <div class="hint">Tareas activas en la semana en curso (y las vencidas que siguen abiertas). Antes del 19 de octubre muestra la semana 1.</div>
           <div class="tasklist" id="weekTasks"></div>
         </div>
         <div>
@@ -290,7 +290,8 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div>
           <div class="eyebrow">Plan de 10 semanas</div>
           <h1>Del spec a las manos de los testers</h1>
-          <p>Semana 1 arranca el lunes 7 de septiembre de 2026. Semana 8 cierra el 1 de noviembre con la ronda abierta. Semana 10 cierra el 15 de noviembre con compromisos y PO piloto.</p>
+          <p>Plan reanclado el 17 de octubre de 2026. Semana 1 arranca el lunes 19 de octubre. Test Day el sábado 28 de noviembre (semana 6). Semana 8 cierra el 13 de diciembre con la ronda abierta. Semana 10 cierra el 27 de diciembre con compromisos y PO piloto.</p>
+          <div class="callout warn" style="margin-top:10px"><b>Riesgo de calendario:</b> las semanas 9 y 10 (14-27 dic) caen en Navidad. Reuniones con inversionistas y preventa compiten con fiestas; proveedores en Asia cierran por año nuevo entre fines de enero y febrero. Opciones: (a) abrir la ronda el 7 de diciembre y aceptar compromisos hasta el 10 de enero; (b) usar la preventa navideña a favor (regalo con entrega en febrero). Decide en la semana 7.</div>
         </div>
         <div class="row">
           <button class="btn" id="btnExport">Exportar JSON</button>
@@ -492,7 +493,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div>
           <div class="eyebrow">Inversionistas</div>
           <h1>Pipeline de la ronda</h1>
-          <p>Meta: ronda abierta el 1 de noviembre con datos del test en mano, y 60 % del monto comprometido para el 15 de noviembre. Cada persona avanza por etapas; el compromiso se cuenta solo cuando está por escrito.</p>
+          <p>Meta: ronda abierta el 13 de diciembre con datos del test en mano, y 60 % del monto comprometido para el 27 de diciembre (o 10 de enero si se extiende por fiestas). Cada persona avanza por etapas; el compromiso se cuenta solo cuando está por escrito.</p>
         </div>
       </div>
       <div class="grid g-kpi" id="invKpis"></div>
@@ -519,15 +520,15 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div>
           <div class="eyebrow">Marketing</div>
           <h1>Deck para inversionistas y pre-lanzamiento en redes</h1>
-          <p>Dos entregables con fecha: el deck que se envía el 1 de noviembre con datos reales del test, y una campaña teaser que construye lista de espera antes del piloto. Cada paso se marca aquí.</p>
+          <p>Dos entregables con fecha: el deck que se envía el 13 de diciembre con datos reales del test, y una campaña teaser que construye lista de espera antes del piloto. Cada paso se marca aquí.</p>
         </div>
       </div>
       <div class="grid g-kpi" id="mkKpis"></div>
 
       <div class="card">
-        <div class="row between"><h3>A. Deck para inversionistas (versión 1 nov)</h3><span class="tiny">Base: Chinchilla Brand Presentation (julio 2026). Se reescribe con datos del Test Day.</span></div>
+        <div class="row between"><h3>A. Deck para inversionistas (versión 13 dic)</h3><span class="tiny">Base: Chinchilla Brand Presentation (julio 2026). Se reescribe con datos del Test Day.</span></div>
         <div class="tablewrap"><table id="deckTable"></table></div>
-        <div class="callout accent"><b>Regla del deck:</b> cada número tiene fuente (formulario de testers, cotización firmada o este portal). Sin datos del test no se envía: se manda el "save the date" y se agenda la reunión para después del 1 de noviembre.</div>
+        <div class="callout accent"><b>Regla del deck:</b> cada número tiene fuente (formulario de testers, cotización firmada o este portal). Sin datos del test no se envía: se manda el "save the date" y se agenda la reunión para después del 13 de diciembre.</div>
       </div>
 
       <div class="card">
@@ -545,7 +546,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
 
       <div class="card">
         <h3>Campaña teaser: fases y pasos</h3>
-        <div class="hint">Del 21 de septiembre (semana 3) al 15 de noviembre. Sin producto a la venta: el objetivo es lista de espera y testers calificados, no seguidores.</div>
+        <div class="hint">Del 2 de noviembre (semana 3) al 27 de diciembre. Sin producto a la venta: el objetivo es lista de espera y testers calificados, no seguidores.</div>
         <div id="teaserPhases"></div>
       </div>
 
@@ -555,7 +556,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
       </div>
 
       <div class="card">
-        <h3>Métricas objetivo al 15 de noviembre</h3>
+        <h3>Métricas objetivo al 27 de diciembre</h3>
         <div class="tablewrap"><table>
           <thead><tr><th>Métrica</th><th>Meta</th><th>Por qué importa</th></tr></thead>
           <tbody>
@@ -647,9 +648,9 @@ dl.kv dt{color:var(--muted);font-weight:700}
 /* ============================================================
    DATOS DEL PLAN (estáticos; el estado editable se guarda aparte)
    ============================================================ */
-const START = new Date(2026, 8, 7); // lunes 7 sep 2026 = W1
+const START = new Date(2026, 9, 19); // lunes 19 oct 2026 = W1 (plan reanclado el 17 oct 2026)
 const WEEKS = 10;
-const ROUND_OPEN = new Date(2026, 10, 1);
+const ROUND_OPEN = new Date(2026, 11, 13); // cierre de la semana 8
 const fmtD = d => d.toLocaleDateString('es-MX',{day:'numeric',month:'short'});
 const weekStart = w => { const d = new Date(START); d.setDate(d.getDate() + (w-1)*7); return d; };
 const weekEnd = w => { const d = weekStart(w); d.setDate(d.getDate()+6); return d; };
@@ -691,7 +692,7 @@ const TASKS = [
  ['C1','C','Roster de 40-60 testers',2,2,'Familia · Embajador(a)','5-10 por miembro de la familia. 16-28 años, Vancouver. Capturar talla y prenda preferida en la pestaña Testers.'],
  ['C2','C','Formulario de feedback listo',3,3,'Claude · Jorge','Google Form con las 9 preguntas de la pestaña Testers. QR impreso en la tarjeta del kit.'],
  ['C3','C','Kit de entrega',4,4,'Familia · Voz de marca','Bolsa, tarjeta con instrucciones de lavado y QR, etiqueta de talla. Sin sobre-empaque: la prenda es el producto.'],
- ['C4','C','TEST DAY · entrega de muestras en Vancouver',6,6,'Todos','Evento de 2 horas: tacto ciego contra referencias, entrega, fotos y video con permiso. Fecha propuesta: sábado 17 de octubre.',true],
+ ['C4','C','TEST DAY · entrega de muestras en Vancouver',6,6,'Todos','Evento de 2 horas: tacto ciego contra referencias, entrega, fotos y video con permiso. Fecha: sábado 28 de noviembre (plan reanclado el 17 oct).',true],
  ['C5','C','Feedback ola 1 (7 días de uso)',7,7,'Embajador(a)','Recordatorio personal a cada tester. Meta: ≥80 % de respuesta.'],
  ['C6','C','Feedback ola 2 y cierre de gates',8,8,'QA · Claude','Tras 3+ lavadas. Consolidar suavidad, encogimiento, pilling e intención de compra contra umbrales. Resumen de una página para inversionistas.',true],
 
@@ -705,9 +706,9 @@ const TASKS = [
  ['E2','E','Modelo del piloto v2 con cotizaciones reales',3,4,'Claude · Jorge','Reemplazar estimados con costos landed reales de blanks/OEM, transfers, empaque y envío.'],
  ['E3','E','Estructura de la ronda con abogado',5,6,'Jorge','Préstamo, nota convertible o equity minoritario. Confirmar exención aplicable bajo la regulación de valores de BC para familia, amigos y socios de negocio.'],
  ['E4','E','Actualizar deck F&F con datos del test',6,7,'Claude · Jorge','Suavidad medida, intención de compra, fotos reales, ask final y uso de fondos.'],
- ['E5','E','Lista de 10-15 inversionistas objetivo y agenda',7,7,'Jorge','Capturar en la pestaña Inversionistas. Agendar conversaciones para la semana del 2 de noviembre.'],
- ['E6','E','1 NOV · Abrir la ronda',8,8,'Jorge','Enviar deck y términos. Data room completo (checklist en Inversionistas).',true],
- ['E7','E','Reuniones y compromisos por escrito',9,10,'Jorge','Meta: ≥60 % del ask comprometido al 15 de noviembre para colocar la PO del piloto.'],
+ ['E5','E','Lista de 10-15 inversionistas objetivo y agenda',7,7,'Jorge','Capturar en la pestaña Inversionistas. Agendar conversaciones para la semana del 14 de diciembre (o la del 4 de enero si se extiende por fiestas).'],
+ ['E6','E','13 DIC · Abrir la ronda',8,8,'Jorge','Enviar deck y términos. Data room completo (checklist en Inversionistas).',true],
+ ['E7','E','Reuniones y compromisos por escrito',9,10,'Jorge','Meta: ≥60 % del ask comprometido al 27 de diciembre (o 10 de enero) para colocar la PO del piloto.'],
  ['E8','E','Preventa del piloto (landing con pre-orden)',10,10,'Jorge · Claude','Shopify básico. Meta del modelo: ≥60 % del piloto pre-vendido antes de la PO.'],
 
  ['F1','F','Sesión de fotos de producto',5,6,'Voz de marca','Flat lay y on-model con la paleta. Sirve para deck, landing y redes.'],
@@ -720,7 +721,7 @@ const QUESTIONS = [
  ['q3','¿Vector del isotipo? Respondiste: lo pides; faltan CAD 600 al diseñador (ya en presupuesto, línea b17). Pedir también cesión de derechos por escrito (contratos, c7).'],
  ['q4','¿Colorway del lote test? Respondiste: en principio bien la selección, pero quieres más opciones. Hay 12 candidatos con votación en Marketing → Colorway.'],
  ['q5','¿Entidad legal? Respondiste: no; la existente tiene un socio que habría que comprar. Recomendación: BC Ltd nueva y limpia (≈ CAD 450 en BC Registries) antes de recibir dinero; evita heredar pasivos y un cap table con tercero.'],
- ['q6','¿Test Day 17 de octubre (semana 6)? Respondiste ok. Fijado en el plan (C4).'],
+ ['q6','¿Test Day en la semana 6? Respondiste ok al 17 de octubre; con el plan reanclado el 17 oct, la semana 6 ahora es el sábado 28 de noviembre (C4). Confirma que la fecha te sirve.'],
  ['q7','¿Estructura de la ronda? Respondiste equity con máximo 15 % en la primera ronda. Cálculo de monto y valuación implícita ya está en Financieros (bloque 3).'],
  ['q8','¿Confirmas que el lote test se decora en casa (plancha propia)? Respondiste sí, salvo opción rápida y económica en Vancouver: Firebird Prints (East Van, sin mínimos, prensa transfers sobre prendas del cliente) es el plan B; pedir cotización por 70 aplicaciones.'],
  ['q9','¿Tienes referencias físicas de suavidad (hoodie Lululemon u otro) para el panel ciego? Respondiste: todavía no; mezcla ideal algodón-spandex (ya aplicado en specs y correos RFQ).'],
@@ -1105,7 +1106,7 @@ function renderResumen(){
   const ask = +(Store.get('meta','round').ask ?? ROUND_DEFAULT.ask);
   const testers = Object.values(Store.data.testers);
   document.getElementById('kpis').innerHTML = [
-    ['Días para el 1 de nov', `${days}`, days>0?'ronda abierta con datos del test':'ronda debía estar abierta'],
+    ['Días para abrir la ronda (13 dic)', `${days}`, days>0?'con datos del test en mano':'ronda debía estar abierta'],
     ['Tareas hechas', `${done}<small> / ${TASKS.length}</small>`, late?`${late} vencida${late>1?'s':''}`:'sin vencidas'],
     ['Proveedores con muestra', `${sampled}<small> / ${sups.length}</small>`, 'pedida, recibida o evaluada'],
     ['Testers en roster', `${testers.length}<small> / 40</small>`, `${testers.filter(t=>t.delivered).length} con prenda entregada`],
@@ -1433,7 +1434,7 @@ function renderInv(){
   const committed=sum(['firmado','fondos']), soft=sum(['verbal']), pipeline=sum(['contactado','deck','reunion']);
   document.getElementById('invKpis').innerHTML = [
     ['Objetivo', money(r.ask).replace('CAD ','<small>CAD</small> '), 'editable en Financieros'],
-    ['Comprometido por escrito', money(committed).replace('CAD ','<small>CAD</small> '), `${r.ask?Math.round(100*committed/r.ask):0} % del objetivo · meta 60 % al 15 nov`],
+    ['Comprometido por escrito', money(committed).replace('CAD ','<small>CAD</small> '), `${r.ask?Math.round(100*committed/r.ask):0} % del objetivo · meta 60 % al 27 dic`],
     ['Compromiso verbal', money(soft).replace('CAD ','<small>CAD</small> '), 'aún no cuenta'],
     ['En conversación', money(pipeline).replace('CAD ','<small>CAD</small> '), `${list.length} personas en pipeline`],
   ].map(k=>`<div class="tile"><div class="lab">${k[0]}</div><div class="val num">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('') + `<div class="tile" style="grid-column:1/-1"><div class="lab">Avance al objetivo</div><div class="bar"><i style="width:${Math.min(100,r.ask?100*committed/r.ask:0)}%"></i></div><div class="sub num">${money(committed)} firmados · ${money(soft)} verbales · faltan ${money(Math.max(0,r.ask-committed))}</div></div>`;
@@ -1490,33 +1491,33 @@ const SOCIAL = [
  ['brandkit','Brand kit','Carpeta en Drive','Alta','Isotipo vectorial, versiones tono sobre tono, tipografías, paleta, 3 plantillas de post, 2 de historia. Lo hace el diseñador con la guía D5.','https://drive.google.com/drive/folders/1B2E_MA0UVthSdTRourPMnNVPnRalVs14']
 ];
 const TEASER = [
- {id:'p0', name:'Fase 0 · Cimientos (S3, 21-27 sep)', goal:'Que todo lo que se publique después tenga un destino.', steps:[
+ {id:'p0', name:'Fase 0 · Cimientos (S3, 2-8 nov)', goal:'Que todo lo que se publique después tenga un destino.', steps:[
    ['t01','Comprar dominio y correo; reservar el mismo handle en todas las redes (tabla de arriba).'],
    ['t02','Landing de lista de espera activa con pixel de Meta y TikTok instalados.'],
    ['t03','Brand kit mínimo listo (isotipo, paleta, 3 plantillas).'],
    ['t04','Definir voz: 3 adjetivos (calmo, preciso, cercano) y 3 cosas que nunca decimos (descuentos, "premium", superlativos vacíos).'],
    ['t05','Banco de 20 fotos y 10 clips de textura y proceso con los blanks recibidos en S3.']]},
- {id:'p1', name:'Fase 1 · La textura (S4-S5, 28 sep-11 oct)', goal:'Curiosidad sin revelar marca completa. Solo tacto, color y el relieve.', steps:[
+ {id:'p1', name:'Fase 1 · La textura (S4-S5, 9-22 nov)', goal:'Curiosidad sin revelar marca completa. Solo tacto, color y el relieve.', steps:[
    ['t11','Publicar 9 posts en Instagram: macros de tela, manos tocando, el relieve del logo sin mostrar el isotipo completo.'],
    ['t12','3 TikToks: "¿qué tan suave es? prueba ciega" con la familia; sin nombre de marca hasta el tercero.'],
    ['t13','Historias diarias del proceso: plancha, pruebas de lavado, errores incluidos.'],
    ['t14','CTA único: "Entra a la lista para tocarlo primero". Meta: 100 emails.'],
    ['t15','Prueba de pauta: 2 creativos × CAD 75 en Meta hacia la landing. Medir costo por email.']]},
- {id:'p2', name:'Fase 2 · Revelación y Test Day (S6, 12-18 oct)', goal:'Nombre, isotipo y el evento. Contenido real de testers.', steps:[
-   ['t21','Post de revelación: isotipo completo + promesa + "Vancouver, 17 de octubre".'],
+ {id:'p2', name:'Fase 2 · Revelación y Test Day (S6, 23-29 nov)', goal:'Nombre, isotipo y el evento. Contenido real de testers.', steps:[
+   ['t21','Post de revelación: isotipo completo + promesa + "Vancouver, 28 de noviembre".'],
    ['t22','Cobertura del Test Day: 30 clips cortos, 50 fotos, reacciones al tacto con consentimiento firmado.'],
    ['t23','Abrir el Discord de testers e invitar a los 40-60 con enlace único.'],
    ['t24','Publicar 5 reacciones de testers en la primera semana (UGC).']]},
- {id:'p3', name:'Fase 3 · La prueba en público (S7-S8, 19 oct-1 nov)', goal:'Mostrar los datos: suavidad medida, lavadas, encogimiento.', steps:[
+ {id:'p3', name:'Fase 3 · La prueba en público (S7-S8, 30 nov-13 dic)', goal:'Mostrar los datos: suavidad medida, lavadas, encogimiento.', steps:[
    ['t31','Carrusel "lo que medimos": los 4 gates y los resultados reales, con números.'],
    ['t32','Video: 5 lavadas después, el logo sigue igual (o no; si no, se dice y se corrige).'],
-   ['t33','Semana del 26 de octubre: "el 1 de noviembre abrimos algo". Meta acumulada: 250 emails.'],
+   ['t33','Semana del 7 de diciembre: "el 13 de diciembre abrimos algo". Meta acumulada: 250 emails.'],
    ['t34','Enviar a la lista el primer correo: resultados del test y fecha de preventa.']]},
- {id:'p4', name:'Fase 4 · Preventa (S9-S10, 2-15 nov)', goal:'Convertir lista en pedidos del piloto.', steps:[
+ {id:'p4', name:'Fase 4 · Preventa (S9-S10, 14-27 dic)', goal:'Convertir lista en pedidos del piloto.', steps:[
    ['t41','Abrir preventa en Shopify a la lista 48 h antes que al público.'],
    ['t42','Edición numerada del piloto (1-500) como beneficio de preventa; sin descuento.'],
    ['t43','Publicar avance de preventa cada 3 días (honesto: unidades reservadas / meta).'],
-   ['t44','Cierre 15 de noviembre: si ≥60 % se coloca la PO; si no, se comunica y se ajusta.']]}
+   ['t44','Cierre 27 de diciembre (o 10 de enero): si ≥60 % se coloca la PO; si no, se comunica y se ajusta.']]}
 ];
 const CALENDAR = [
  [3,'Cimientos','Sin publicaciones. Cuentas, landing, banco de contenido.','—'],
@@ -1524,9 +1525,9 @@ const CALENDAR = [
  [5,'Textura II y proceso','3 posts · 2 TikToks (plancha y lavado) · carrusel "por qué 280 gsm"','Lista de espera'],
  [6,'Revelación + Test Day','Post isotipo · cobertura evento · 5 UGC','Lista de espera + Discord testers'],
  [7,'Datos I','Carrusel gates · 2 TikToks reacción · historias con citas','Lista de espera'],
- [8,'Datos II y anuncio','Video 5 lavadas · "1 de noviembre" · primer correo a la lista','Lista de espera'],
+ [8,'Datos II y anuncio','Video 5 lavadas · "13 de diciembre" · primer correo a la lista','Lista de espera'],
  [9,'Preventa privada','Correo 48 h antes · post apertura · avance día 3','Pre-orden'],
- [10,'Preventa pública y cierre','Avances cada 3 días · último llamado 14 nov · cierre 15 nov','Pre-orden']
+ [10,'Preventa pública y cierre','Avances cada 3 días · último llamado 26 dic · cierre 27 dic','Pre-orden']
 ];
 function renderMarketing(){
   const deckDone = DECK_SLIDES.filter(s=>(Store.get('meta','deck_'+s[0]).status||'pendiente')==='hecho').length;
@@ -1534,7 +1535,7 @@ function renderMarketing(){
   const steps = TEASER.flatMap(p=>p.steps); const stDone = steps.filter(s=>Store.get('meta','mk_'+s[0]).done).length;
   const finalists = COLOR_OPTIONS.filter(c=>Store.get('meta','color_'+c[1].slice(1)).vote==='finalista').length;
   document.getElementById('mkKpis').innerHTML = [
-    ['Slides del deck listas', `${deckDone}<small> / ${DECK_SLIDES.length}</small>`, 'versión del 1 de noviembre'],
+    ['Slides del deck listas', `${deckDone}<small> / ${DECK_SLIDES.length}</small>`, 'versión del 13 de diciembre'],
     ['Cuentas y activos', `${socDone}<small> / ${SOCIAL.length}</small>`, 'creadas o configuradas'],
     ['Pasos del teaser', `${stDone}<small> / ${steps.length}</small>`, 'en 5 fases'],
     ['Colorways finalistas', finalists, 'para votación de la familia'],
