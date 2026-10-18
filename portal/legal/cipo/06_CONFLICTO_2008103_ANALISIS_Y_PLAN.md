@@ -105,3 +105,28 @@ El lanzamiento del lote test (28 nov), el Test Day y la ronda no dependen del re
 - Lectura más probable: con una solicitud de intención de uso que reclama 2(f) (distintividad adquirida) sin haber alegado uso, la práctica de la USPTO es **suspender hasta que la solicitante presente prueba de uso** (TMEP 1212.09). Es coherente con "1(b) vigente" y con una suspensión que lleva al menos desde mediados de 2025. Mientras la titular no presente uso y evidencia de distintividad, la solicitud puede quedarse suspendida mucho tiempo, y como fue presentada antes que la nuestra, **una solicitud nuestra en EE. UU. quedaría suspendida detrás de ella**.
 - Implicación práctica: en EE. UU. el camino corto es un **acuerdo de consentimiento/coexistencia** con Karen Chinchilla LLC (sastrería a medida y alteraciones de lujo en Nueva York vs athleisure de marca): la USPTO da peso a los consentimientos entre partes. El camino largo es esperar a que su solicitud muera. En cualquier caso, nuestra solicitud US debe presentarse dentro de los 6 meses de prioridad canadiense para no perder fecha, aunque quede suspendida.
 - Pendiente: leer las 8 entradas anteriores del historial y los documentos (oficio de examen y carta de suspensión) para confirmar el motivo.
+
+
+### Historial completo de 98231447 (ficha de 9 páginas, 18 oct 2026)
+
+| Fecha | Evento | Lectura |
+|---|---|---|
+| 19-oct-2023 | Solicitud 1(b) (intención de uso), caracteres estándar | Sin uso al presentar |
+| 04-jun-2024 | Asignada a examinadora (Law Office 126) | |
+| 11-jun-2024 | **Oficio no final (Non-Final Action)** + resumen de búsqueda | Aquí está la objeción original: con alta probabilidad "primarily merely a surname" (2(e)(4)) y quizá otras. **Documento clave por descargar.** |
+| 04-sep-2024 | Prórroga para responder concedida | |
+| 09-dic-2024 | **Respuesta al oficio** + **Amendment to Allege Use con espécimen** + **Request to Divide** | La titular alegó uso real con muestra y pidió dividir la solicitud (separar los productos ya en uso de los que no). El reclamo 2(f) encaja aquí: distintividad adquirida como apellido con uso. |
+| 09-dic-2024 | **Carta de suspensión** escrita y enviada el mismo día | Motivo no visible en la ficha. **Documento clave por descargar.** |
+| 10-jun-2025 → 04-jul-2026 | Revisiones de suspensión cada 6 meses; sigue suspendida | La causa de la suspensión no se ha resuelto en 19 meses |
+| Base actual | 1(b) | Coherente con que el uso alegado haya quedado en una solicitud hija dividida, o con que la AAU no se haya aceptado aún |
+
+Cambios en la lectura:
+1. **La titular sí usa la marca** (alegó uso con espécimen en dic-2024). Esperar a que la solicitud muera deja de ser el plan principal en EE. UU.; **la coexistencia pasa a ser la vía primaria**, y tiene lógica de negocio: Karen Chinchilla LLC es sastrería y alteraciones de lujo con el apellido de la dueña; Chinchilla (Vancouver) es athleisure de marca con el animal como identidad.
+2. **Confirmado que la USPTO trata CHINCHILLA como apellido** (ella tuvo que reclamar 2(f)). Nuestra solicitud US recibirá la misma objeción. Defensa: el significado principal para el público es el animal (y la piel), reforzado por el isotipo del animal y el posicionamiento de suavidad; ella no pudo usar ese argumento porque su uso es literalmente su apellido.
+3. Posible **solicitud hija** (divisional) con los productos en uso, con otro número de serie, que no apareció en la búsqueda por palabra. Hay que buscar por titular.
+
+Pendientes para cerrar el diagnóstico (documentos públicos en la pestaña Documents de TSDR):
+- Non-Final Action (11-jun-2024): confirma la objeción.
+- Suspension Letter (09-dic-2024): confirma el motivo de la suspensión (si cita una solicitud anterior, hay un tercer actor que no hemos visto).
+- Resp. Offc. Action, Request to Divide, Amendment Allege Use y Specimen (09-dic-2024): muestran qué productos están en uso y cómo usa la marca.
+- Búsqueda por titular "Karen Chinchilla LLC" en https://tmsearch.uspto.gov/search/search-information para localizar la solicitud hija.
