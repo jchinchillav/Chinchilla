@@ -17,11 +17,15 @@ Preparado el 18 de octubre de 2026 a partir de la ficha oficial de CIPO (`CIPO_f
 | Clase 35 | Online sales of clothing |
 | Examen | Sin informes de examen ni oposición; aprobada en el primer paso (feb 2022), publicada marzo 2022, registrada mayo 2022 |
 
-Nota: la imagen incluida en el PDF exportado es el ícono de estado "Registered" de CIPO, no el diseño. La imagen real está en http://ised-isde.canada.ca/cipo/trademark-search/media/2008103.png
+**Corrección importante tras ver la imagen real (`CIPO_diseno_registrado_2008103.png`):** la marca registrada es **únicamente una silueta negra de roedor (tipo hámster, de pie) con una corona de cinco puntas**. **No contiene la palabra "Chinchilla"** ni ningún texto (sus códigos Vienna son solo de animales y coronas; no hay códigos de letras). "Chinchilla Design" es el nombre descriptivo que CIPO asigna al expediente.
 
-## 2. Qué significa para Chinchilla
+## 2. Qué significa para Chinchilla (revisado con la imagen real)
 
-- Solapamiento total de productos (gorras, sudaderas, camisetas) y de servicios (venta de ropa en línea). Un examinador citaría 2008103 contra nuestra marca nominativa CHINCHILLA y, con alta probabilidad, contra el isotipo si lleva la palabra. Presentar hoy sin más llevaría a un informe de confusión (art. 12(1)(d)) y, si pasara, a una posible oposición del titular.
+- Productos y servicios: solapamiento total (gorras, sudaderas, camisetas; venta en línea).
+- Parecido de las marcas, que es el factor de mayor peso según la Corte Suprema (Masterpiece, 2011): 
+  - **Marca nominativa CHINCHILLA vs silueta sin texto:** no hay parecido en apariencia ni en sonido. Solo podría alegarse parecido en la "idea sugerida" (un chinchilla). La silueta registrada parece más un hámster que una chinchilla, y lleva corona. **Probabilidad de que el examinador la cite: baja a media. Probabilidad de superar la objeción si la cita: alta.**
+  - **Nuestro isotipo (chinchilla sentada con cola de hoja) vs silueta de roedor coronado:** ambas son siluetas de roedor en ropa. Diferencias: postura (sentada vs de pie), cola de hoja (nuestro elemento distintivo), ojo, oreja y trazo geométrico vs silueta orgánica, sin corona. **Probabilidad de cita: media. Probabilidad de superarla: media-alta**, argumentando que la idea "roedor" no es monopolizable y que los rasgos distintivos difieren (corona vs hoja).
+- Conclusión: la marca ajena **no bloquea** presentar; sí es un riesgo de informe de examen, sobre todo para el isotipo. La cancelación por no uso (art. 45) deja de ser prerrequisito y pasa a ser la herramienta de respaldo para eliminar el riesgo del todo, incluido el camino internacional.
 - A favor nuestro: el registro cumplió **3 años el 25 de mayo de 2026**. Desde esa fecha cualquier persona puede pedir al Registrador que envíe al titular un **aviso del artículo 45** (cancelación por no uso). El titular tiene 3 meses para probar con declaración jurada que usó la marca en Canadá, con esos productos y servicios, en los 3 años anteriores al aviso. Si no responde, el registro se cancela; si prueba uso parcial, se recorta a lo probado.
 - Señales de no uso (a confirmar): no aparece ninguna tienda, Instagram, Shopify, Etsi ni mención de una marca de ropa "Chinchilla" de Toronto en búsquedas web del 18 oct 2026. El titular es una persona física, no una empresa. La ficha no muestra cambios desde 2022.
 
@@ -34,10 +38,11 @@ Nota: la imagen incluida en el PDF exportado es el ícono de estado "Registered"
 | C | **Solo isotipo** (sin la palabra) + nombre comercial compuesto | Presentar la marca figurativa del isotipo; usar un nombre donde Chinchilla no sea el elemento dominante | CAD 491.06-640.10 | 0-1,500 | Normal | Protege menos; el nombre sigue expuesto |
 | D | **Cambiar el nombre** | Nuevo naming y rebranding antes del lanzamiento | — | Diseño | 4-8 semanas | Perder equity de marca ya construida (poca aún) |
 
-## 4. Plan recomendado (orden)
+## 4. Plan recomendado (orden, revisado 18 oct tras ver el diseño y la decisión de Jorge de presentar él mismo)
 
+0. **Ahora · Presentar las dos solicitudes tú mismo** (palabra e isotipo), tal como estaba en el kit. Fija la fecha de prioridad sin alertar a nadie: el titular no recibe aviso por una solicitud ajena; solo la vería si monitorea el Trademarks Journal, y eso ocurre meses después, en la publicación. Costo CAD 1,280.20.
 1. **Esta semana · Verificar no uso (Jorge, 1 h, sin costo).** Buscar "Chinchilla" + ropa en Instagram, TikTok, Google Shopping, Etsy, Shopify, Amazon.ca, Wayback Machine (web.archive.org) con cualquier dominio que aparezca; buscar al titular en LinkedIn y en registros de empresas de Ontario (https://www.ontario.ca/page/ontario-business-registry). Anotar cada hallazgo con fecha en la hoja 03. Descargar la imagen del diseño y guardarla en esta carpeta.
-2. **Semana 1-2 · Agente.** Contratar un agente de marcas (no al del titular) para: (a) presentar la solicitud del art. 45 contra TMA1129774; (b) presentar al mismo tiempo nuestras dos solicitudes (palabra e isotipo) para fijar fecha de prioridad; el agente pedirá al examinador esperar el resultado del art. 45. Dónde buscar agente: Colegio de Agentes de Patentes y Marcas de Canadá, https://cpata-cabamc.ca/ (registro público).
+2. **Cuándo lanzar el art. 45.** Dos momentos posibles: (a) ahora, en paralelo, con agente, para que el registro ajeno haya caído antes de que examinen lo nuestro (≈ 8 meses); o (b) solo si el examinador lo cita en el informe. La opción (a) es la que limpia el camino también para el uso internacional y evita depender de un argumento; la (b) ahorra CAD 2,000-3,500 si el examinador no lo cita. Recomendación: (a), por tu decisión de pelear el nombre y de eliminar conflictos antes de salir a EE. UU. y México. El titular sí se entera del art. 45 (CIPO le envía el aviso), pero a esas alturas nuestra fecha de prioridad ya está fijada y "reactivar" uso después del aviso no le sirve: debe probar uso en los 3 años anteriores al aviso. Dónde buscar agente: https://cpata-cabamc.ca/ (registro público).
 3. **Mientras tanto.** Operar el lote test y la preventa con ™ y con el isotipo como elemento visual dominante. No invertir en etiquetas tejidas con el nombre en volumen hasta tener claridad (fin de 2026 / inicio de 2027).
 4. **Si el titular prueba uso.** Pasar a B (compra o coexistencia) con el mismo agente, o a C/D según el precio que pida.
 
