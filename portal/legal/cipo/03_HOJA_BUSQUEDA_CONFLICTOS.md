@@ -12,6 +12,21 @@ Fecha de la búsqueda: ____________  Hecha por: ____________
 | Clase 25 filtrada | | | | | | |
 | Clase 35 filtrada | | | | | | |
 
+
+## Resultado de la búsqueda en CIPO (CSV exportado por Jorge, 18 oct 2026; 30 registros)
+
+| Marca | Nº | Tipo | Estado | Clases | Lectura |
+|---|---|---|---|---|---|
+| **Chinchilla Design** | **2008103** | Design | **REGISTERED** | **25; 35** | **CONFLICTO DIRECTO. Marca viva en nuestras dos clases.** Abrir ficha: https://ised-isde.canada.ca/cipo/trademark-search/pdf/2008103?lang=eng · imagen: http://ised-isde.canada.ca/cipo/trademark-search/media/2008103.png |
+| CHINCHILLA | 0519811 | Word | EXPUNGED | 29 (alimentos) | Muerta, otra clase |
+| CHILLA | 0373330 | Word | EXPUNGED | 25 | Muerta |
+| CANADA CHINCHILLA & Design, COUNTESS CHINCHILLA, EMPRESS CHINCHILLA & Design, CANCHILLA | 0334194, 0334095, 0248791, 0321715 | varios | EXPUNGED | 18 (pieles) | Muertas |
+| AURORA CHINCHILLA, CHARLIE CHINCHILLA | 0709067, 1001237 | Word | EXPUNGED | 31 | Muertas, animales |
+| PRINTEMPS/ÉTÉ/AUTOMNE/HIVER DE CHINCHILLA | 0416044-0416047 | Word/Design | EXPUNGED | 3 (cosméticos) | Muertas |
+| Lovey, Genesis Ultra, Carlo Barbera, otros | — | — | REGISTERED | 31, 24 | Sin relación con la palabra |
+
+Conclusión: el único registro vivo relevante es **2008103**, y está exactamente en clases 25 y 35. Decisión pendiente de leer la ficha completa (titular, productos, fecha de registro, diseño).
+
 ## WIPO Global Brand Database (oficina CA) https://branddb.wipo.int/en/quicksearch?by=brandName&v=chinchilla
 
 | Marca | Oficina | Nº | Estado | Clases | ¿Conflicto? |
