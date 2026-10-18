@@ -73,3 +73,25 @@ Preparado el 18 de octubre de 2026 a partir de la ficha oficial de CIPO (`CIPO_f
 ## 6. Lo que esto no cambia
 
 El lanzamiento del lote test (28 nov), el Test Day y la ronda no dependen del registro. Sí conviene posponer la etiqueta tejida de cuello con el nombre y el dominio definitivo de la tienda hasta ver el resultado del art. 45.
+
+
+---
+
+# Anexo EE. UU. (18 oct 2026): CHINCHILLA 98231447, Karen Chinchilla LLC
+
+## Hechos (XLSX de la USPTO exportado por Jorge)
+- Marca nominativa CHINCHILLA, clase 25: women's and men's ready-to-wear cloth garments, bespoke and custom cloth garments.
+- Presentada 19-oct-2023, base 1(b) (intención de uso), **reclamo 2(f)** de distintividad adquirida. Viva, sin número de registro al 18-oct-2026.
+- Titular: Karen Chinchilla LLC, Nueva York. Es el negocio de una sastre y modista que usa su apellido (karenchinchilla.com: alteraciones de lujo, womenswear y menswear a medida).
+
+## Lectura
+1. El reclamo 2(f) indica casi con certeza que el examinador rechazó la marca como "primarily merely a surname" (art. 2(e)(4) de la Lanham Act) y la solicitante respondió alegando distintividad adquirida por años de uso del apellido en sastrería. Una solicitud 1(b) con 2(f) suele quedar **suspendida o en espera de Statement of Use**; tres años después de presentada y sin registro, es probable que esté en periodo de extensiones (hasta 36 meses tras la Notice of Allowance) o en suspensión. **Hay que leer el historial en TSDR** para saber cuál.
+2. Para nosotros, el riesgo en EE. UU. es doble y distinto al de Canadá:
+   - **Marca anterior:** si 98231447 llega a registro, bloquea CHINCHILLA en clase 25 (ropa a medida vs athleisure: misma clase, mismo canal potencial). Si caduca por no presentar Statement of Use, el camino queda libre.
+   - **Apellido:** la USPTO puede objetar también nuestra CHINCHILLA como apellido (es el tuyo y el de ella). Nuestra defensa es mejor que la de ella: no usamos el apellido de una persona como firma de sastrería, sino el nombre del animal, con isotipo del animal y promesa de suavidad. El significado principal para el consumidor es el animal, no un apellido (esa es la prueba legal). El abogado US debe preparar ese argumento desde el inicio.
+3. Canadá no se ve afectado por esta marca.
+
+## Qué hacer
+1. **Jorge, 5 min:** abrir https://tsdr.uspto.gov/#caseNumber=98231447&caseType=SERIAL_NO&searchType=statusSearch, pestañas "Status" y "Prosecution History" (y "Documents"), y pasarme capturas o el texto. Clave: fecha de la Notice of Allowance si existe, extensiones presentadas, última acción y su fecha, y si hay suspensión.
+2. **No presentar en EE. UU. todavía.** La ventana de prioridad de 6 meses desde la fecha canadiense da tiempo para que el abogado US decida entre: (a) presentar 1(b) + 44(d) y pedir suspensión hasta que 98231447 se resuelva; (b) esperar a que caduque; (c) acercamiento a la titular para coexistencia (sastrería a medida vs athleisure; ella no vende ropa de marca al público general). La opción (c) es realista porque los negocios no compiten y ella ya ha pasado por la objeción de apellido.
+3. **Vigilancia:** anotar 98231447 y 99901226 (HENCHILLA) en la lista de vigilancia; revisar TSDR cada mes.
