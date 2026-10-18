@@ -1,0 +1,26 @@
+CLASS 25
+Hooded sweatshirts
+Sweatshirts
+Crewneck sweaters
+T-shirts
+Long-sleeved shirts
+Tank tops
+Jogging pants
+Sweatpants
+Shorts
+Jackets
+Baseball caps
+Hats
+Toques
+Beanies
+Socks
+
+CLASS 35
+Online retail store services featuring clothing, headwear and fashion accessories
+Retail store services featuring clothing and headwear
+Online sale of clothing
+
+NOTAS
+- Validar cada línea en la herramienta Classify list del Manual de CIPO (https://www.ic.gc.ca/app/scr/ic/cgs/ext/home.html). Conservar solo lo que aparezca como preaprobado; con lista 100 % preaprobada el estándar de primera acción es 18 meses en lugar de 28.
+- No incluir: coats, fur coats, fur hats, outerwear made of fur, ni nada que evoque pieles.
+- Clase 18 (bags, backpacks, tote bags) solo si habrá producto real en 3 años; cada clase adicional cuesta CAD 149.04 y es cancelable por no uso.
