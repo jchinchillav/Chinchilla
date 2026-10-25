@@ -130,3 +130,6 @@ pipeline de inversionistas.
   y no elusión para proveedores (borrador para revisión legal).
 - `portal/outreach/rfq-emails.md`: correos RFQ para blanks, OEM (EN/ES), transfers,
   telas y envío de NCNDA.
+- `portal/production/`: batch de muestras (pedido a proveedor único), plan del logo
+  3D con compras exactas y talleres en Vancouver, protocolo de confidencialidad con
+  correos listos, ficha técnica del transfer y arte vectorial a tamaño exacto.
