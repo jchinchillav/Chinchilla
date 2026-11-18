@@ -91,7 +91,8 @@ p{max-width:68ch}
 .sync.db .dot{background:var(--good)}
 .sync.local .dot{background:var(--warn)}
 
-.main{padding:28px 34px 80px;max-width:1240px;width:100%}
+.main{padding:28px 34px 80px;max-width:1240px;width:100%;min-width:0}
+.shell>*{min-width:0}
 .topline{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px;flex-wrap:wrap}
 .topline .eyebrow{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
 .topline p{color:var(--ink-2);margin-top:6px}
@@ -230,7 +231,7 @@ dl.kv dt{color:var(--muted);font-weight:700}
   .nav button{white-space:nowrap;padding:7px 10px}
   .nav .count{display:none}
   .side .foot{display:none}
-  .main{padding:18px 14px 70px}
+  .main{padding:18px 16px 70px}
   .task{grid-template-columns:auto 1fr}
   .task .side-meta{grid-column:2}
 }
@@ -263,6 +264,58 @@ dl.kv dt{color:var(--muted);font-weight:700}
         <div class="weekchip"><b id="weekNow">—</b><span id="weekRange"></span></div>
       </div>
       <div class="grid g-kpi" id="kpis"></div>
+      <div class="card" id="estado18nov">
+        <div class="row between"><h3>Estado real al 18 nov (semana 5) y replan del Test Day</h3><span class="pill est">Decisión tuya pendiente</span></div>
+        <div class="callout warn" style="margin-top:8px"><b>Qué revisé hoy:</b> Gmail de naturaltrade.ca, Google Drive (carpetas CHINCHILLA) y Google Calendar desde el 1 de octubre. <b>No hay rastro de</b> pedido a S&amp;S, compra de plancha, pedido de transfers a WeMust o Hyi, ni acuse de CIPO. Lo último de la marca en Drive es del 18 oct (búsquedas de marca). El portal tiene 0 tareas marcadas. Si usaste el correo de mychinchilla.ca, ese buzón no está conectado y no lo veo. Los portales de proveedores y de marcas (S&amp;S, Amazon.ca, WeMust, CIPO, USPTO, WIPO) siguen bloqueados desde esta sesión en la nube.</div>
+        <div class="grid g-2" style="margin-top:12px">
+          <div>
+            <div class="tiny" style="font-weight:700;margin-bottom:6px">Datos nuevos verificados hoy</div>
+            <ul style="padding-left:18px;font-size:.88rem;margin:0">
+              <li><b>S&amp;S Canada ya opera su nuevo centro de distribución en Vancouver</b> (162,000 ft², empezó a despachar a fines de octubre; reemplaza al de 67,000 ft²). Pedidos antes del corte salen el mismo día hábil. <a href="https://www.tradeandindustrydev.com/region/british-columbia/news/cn-ss-opens-new-vancouver-distribution-center-more-36553" target="_blank" rel="noopener">Fuente</a> · <a href="https://press-ca.ssactivewear.com/helpcenter/shipping" target="_blank" rel="noopener">Cortes y tránsito</a></li>
+              <li><b>CIPO sube tasas el 1 ene 2027:</b> en línea CAD 499.41 la primera clase y 151.57 cada adicional (hoy 491.06 y 149.04). Presentar las dos solicitudes antes del 31 dic cuesta CAD 1,280.20 en vez de 1,301.96. Lo importante no es el ahorro (CAD 21.76) sino la fecha de prioridad. <a href="https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en/node/220" target="_blank" rel="noopener">Tabla oficial ISED</a></li>
+              <li>WeMust: no hay dato nuevo en buscadores. Referencia de mercado: World Emblem (emblema domed) = 4 días hábiles de producción + envío; Stahls Canadá pide mínimo 12 piezas en logos dimensionales. <a href="https://ca.worldemblem.com/flexstyle/domed/" target="_blank" rel="noopener">World Emblem</a> · <a href="https://assets.stahls.com/stahls/content/pdf/flyers/Dimensional-Logos-Brochure-Canada.pdf" target="_blank" rel="noopener">Stahls</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="tiny" style="font-weight:700;margin-bottom:6px">Por qué el 28 nov ya no es seguro</div>
+            <div style="font-size:.88rem">La ruta crítica es el transfer de silicona: WeMust (Hamilton, ON) tarda 4-5 días hábiles más envío a BC. Pedido el jueves 19 con prueba aprobada el viernes 20: listo el 26-27 nov; en North Vancouver el 27 nov solo con envío nocturno (mejor caso), el 1-2 dic con envío de 2 días (Xpresspost o similar) y el 3-4 dic con envío terrestre normal. Las prendas de S&amp;S no son el problema (1-3 días desde Vancouver), salvo que los joggers pastel no tengan stock en Canadá: hay que confirmarlo por teléfono al 1-800-711-1600.</div>
+          </div>
+        </div>
+        <div class="tablewrap" style="margin-top:12px"><table>
+          <thead><tr><th>Opción</th><th>Test Day</th><th>Ronda</th><th>A favor</th><th>En contra</th></tr></thead>
+          <tbody>
+            <tr><td><b>A · Mantener</b></td><td>Sáb 28 nov</td><td>13 dic</td><td>No se mueve nada</td><td>Depende de que el transfer llegue el 27 nov con envío exprés. Un día para aplicar 31 piezas y ninguna prueba de lavado. Si falla, se entrega sin logo y el test del logo no vale.</td></tr>
+            <tr><td><b>B · Una semana más</b> <span class="pill ok">Recomendada</span></td><td>Sáb 5 dic</td><td>13 dic, con la ola 1</td><td>Transfers con envío de 2 días, sin pagar nocturno (llegan 1-2 dic), prueba de lavado el 3 dic, aplicación el 3-4 dic. La ronda abre en la fecha con suavidad, fit e intención de compra medidas.</td><td>La ola 2 (después de 3 lavadas) llega el 19 dic y se manda como actualización a inversionistas.</td></tr>
+            <tr><td><b>C · Pasar la ronda a enero</b></td><td>Sáb 12 dic</td><td>Lun 11 ene 2027</td><td>Datos completos (ola 1 y 2) y no compite con Navidad.</td><td>Pierde 4 semanas y la PO del piloto pasa a fines de enero, cuando Asia cierra por año nuevo.</td></tr>
+          </tbody></table></div>
+        <div class="grid g-2" style="margin-top:12px">
+          <div>
+            <div class="tiny" style="font-weight:700;margin-bottom:6px">Ruta crítica con la opción B (pasos con fecha)</div>
+            <ol style="padding-left:18px;font-size:.88rem;margin:0">
+              <li><b>Jue 19 nov:</b> pedido a S&amp;S (19 hoodies IND4000 + 12 joggers IND20PNT) antes del corte. <a href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/production/01_PEDIDO_MUESTRAS_PROVEEDOR_UNICO.md" target="_blank" rel="noopener">Pedido listo</a></li>
+              <li><b>Jue 19 nov:</b> correo a WeMust con arte y cláusula de confidencialidad; aprobar prueba el 20. <a href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/production/03_CONFIDENCIALIDAD_ENVIO_DE_DISENOS.md" target="_blank" rel="noopener">Correo y cláusula</a> · <a href="https://github.com/jchinchillav/Chinchilla/tree/claude/chinchilla-tracking-portal-uhz6zp/portal/production" target="_blank" rel="noopener">Arte a tamaño exacto</a></li>
+              <li><b>Vie 20-sáb 21 nov:</b> comprar la plancha (Hotronix MAXX en RB Digital, Richmond, (604) 821-1771, o HTVRONT en Amazon.ca) y accesorios. <a href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/production/02_LOGO_3D_PLAN_Y_COMPRAS.md" target="_blank" rel="noopener">Lista de compras</a></li>
+              <li><b>Lun 23 nov:</b> roster de testers cerrado con talla (pestaña Testers). Formulario de feedback listo el 27.</li>
+              <li><b>Mar 1-mié 2 dic:</b> llegan los transfers (pedir envío de 2 días al pagar). Prueba en 2 prendas y una a lavado.</li>
+              <li><b>Jue 3-vie 4 dic:</b> aplicación y QC de las 31 piezas.</li>
+              <li><b>Sáb 5 dic:</b> Test Day. <b>Sáb 12 dic:</b> ola 1. <b>Dom 13 dic:</b> abrir ronda. <b>Sáb 19 dic:</b> ola 2.</li>
+              <li><b>Esta semana, en paralelo:</b> presentar en CIPO las solicitudes de palabra e isotipo (CAD 1,280.20). <a href="https://github.com/jchinchillav/Chinchilla/blob/claude/chinchilla-tracking-portal-uhz6zp/portal/legal/cipo/01_GUIA_PASO_A_PASO.md" target="_blank" rel="noopener">Guía paso a paso</a></li>
+            </ol>
+          </div>
+          <div>
+            <div class="tiny" style="font-weight:700;margin-bottom:6px">Lo que necesito de ti para dejar el portal en tiempo real</div>
+            <ul style="padding-left:18px;font-size:.88rem;margin:0">
+              <li>Opción A, B o C.</li>
+              <li>¿Ya pediste algo? Proveedor, fecha y número de orden de S&amp;S, la plancha y los transfers.</li>
+              <li>¿Presentaste en CIPO? Números de solicitud y fecha.</li>
+              <li>Resultado de las 9 verificaciones de no uso (B1-B9 del documento 07).</li>
+              <li>Tope de presupuesto: CAD 16,561 actual vs 13,000 aprobado.</li>
+              <li>Acceso: el correo de mychinchilla.ca conectado, o los dominios permitidos en una sesión nueva (ver la nota de acceso abajo).</li>
+            </ul>
+            <div class="tiny" style="margin-top:8px"><b>Nota de acceso:</b> los dominios se agregan en la configuración del entorno en la nube (menú del entorno en la barra de título de la sesión → Edit → Network access → Allowed domains) y aplican a sesiones nuevas. <a href="https://code.claude.com/docs/en/cloud-environments#network-access" target="_blank" rel="noopener">Instrucciones</a>. Faltan, como mínimo: en-ca.ssactivewear.com, www.wemust.ca, www.amazon.ca, ised-isde.canada.ca, tsdr.uspto.gov, tmsearch.uspto.gov, branddb.wipo.int.</div>
+          </div>
+        </div>
+      </div>
       <div class="grid g-2" style="margin-top:16px">
         <div class="card" style="margin-top:0">
           <h3>Esta semana</h3>
