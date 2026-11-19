@@ -21,10 +21,10 @@
 
 **Proveedor único del lote: Gabe Clothing.** Es la opción con mayor suavidad esperada que cumple las tres condiciones a la vez: set completo hoodie + jogger del mismo fabricante, pasteles de la paleta (rosa y menta) y llegada en 2-5 días a North Vancouver. Además, "hecho en Canadá con algodón orgánico" suma al deck.
 
-**Cobertura del riesgo (costo ≈ CAD 150):** comprar en S&S Vancouver 1 hoodie Bella+Canvas 3719 y 2 IND4000 (Lavender y Blue Aqua). Sirven para tres cosas:
+**Cobertura del riesgo (costo ≈ CAD 230):** comprar en S&S Vancouver 1 hoodie Bella+Canvas 3719, 2 American Apparel RF498 ReFlex Fleece (Bone y Sea Blue; agregado el 19 nov: algodón peinado 70/30, 258 g/m², etiqueta desprendible) y 2 IND4000 (Lavender y Blue Aqua). Sirven para tres cosas:
 1. Referencias del panel ciego del 26 nov.
 2. Prueba de los colores Purple Hebe y Mountain Bluebird que Gabe no tiene.
-3. Si Gabe no pasa el panel, ese mismo día se pide el lote a S&S (llega 27-30 nov) y el Test Day no se mueve.
+3. Si Gabe no pasa el panel, ese mismo día se pide el lote a S&S con el control mejor calificado (llega 27-30 nov) y el Test Day no se mueve. Si la RF498 gana, además queda como candidata al piloto por su etiqueta desprendible.
 
 **Alternativa más barata:** quedarse con IND4000 + IND20PNT de S&S (≈ CAD 1,140, todos los pasteles, 1-2 días). Ahorra hasta ≈ CAD 1,445 frente al techo de Gabe, a cambio de menor suavidad. Esa suavidad es justo el gate número 1 del test.
 
@@ -51,7 +51,7 @@ Precio de lista visto el 18 nov: hoodie CAD 78; Getaway Jogger CAD 40 (en oferta
 1. Abrir la cuenta wholesale en gabeclothing.ca (Wholesale / Blank Program).
 2. Mandar el correo de abajo a **info@gabeclothing.ca** (es la dirección que publican para órdenes de compra).
 3. Si no responden a las 11:00, comprar el lote a precio de lista en la tienda en línea con Xpresspost. El techo es CAD 2,585.
-4. En paralelo, comprar los 3 controles en S&S Canada (cuenta de empresa o 1-800-711-1600).
+4. En paralelo, comprar los 5 controles en S&S Canada (cuenta de empresa o 1-800-711-1600).
 5. No hace falta NDA con Gabe ni con S&S: solo se compran prendas lisas y no se envía ningún diseño. Las reglas de confidencialidad aplican a WeMust/Hyi (documento 03).
 
 ### Correo a Gabe Clothing (EN)
@@ -88,7 +88,7 @@ Founder, Chinchilla · Vancouver, BC
 | Vie 20-sáb 21 nov | Plancha y accesorios |
 | Lun 23 nov | Roster de testers cerrado con talla y color |
 | 23-26 nov | Llega el pedido de Gabe; QC de entrada |
-| **Jue 26 nov** | **GATE: panel ciego Gabe vs Bella 3719 vs IND4000.** Si falla, pedido de respaldo a S&S ese mismo día |
+| **Jue 26 nov** | **GATE: panel ciego Gabe vs Bella 3719 vs RF498 vs IND4000.** Si falla, pedido de respaldo a S&S ese mismo día con el control mejor calificado |
 | Vie 27 nov | Formulario de feedback listo |
 | Mar 1-mié 2 dic | Llegan los transfers; pruebas de aplicación y lavado |
 | Jue 3-vie 4 dic | Aplicación del logo a las 31 piezas y QC; fotos de producto |
