@@ -8,23 +8,48 @@ La sesión en la nube no podía abrir sitios de proveedores, marcas ni redes (el
 
 ## 1. Arranque (Jorge, en PowerShell)
 
+**Carpeta de trabajo (computadora nueva, nov 2026):** `C:\Users\JorgeChinchilla\Documents\1. My Chinchilla\Chinchilla`. La ruta tiene espacios: va siempre entre comillas.
+
+Instalación desde cero (PowerShell normal, sin administrador; cerrar y abrir PowerShell donde se indica):
+
 ```powershell
-# 1. Ir a Documentos (funciona aunque esté en OneDrive)
-cd ([Environment]::GetFolderPath('MyDocuments'))
-
-# 2. Verificar git (si falla: winget install --id Git.Git -e, cerrar y abrir PowerShell)
+# A. Git para Windows (Claude Code lo necesita en Windows)
+winget install --id Git.Git -e --source winget
+#    -> cerrar y abrir PowerShell
 git --version
+git config --global user.name "Jorge Chinchilla"
+git config --global user.email "TU_CORREO_DE_GITHUB"
 
-# 3. Bajar el proyecto en la rama de trabajo (la primera vez)
+# B. Google Chrome (si no está instalado)
+winget install --id Google.Chrome -e --source winget
+
+# C. Claude Code
+irm https://claude.ai/install.ps1 | iex
+#    -> cerrar y abrir PowerShell
+claude --version
+
+# D. Bajar el proyecto a la carpeta de trabajo
+cd "C:\Users\JorgeChinchilla\Documents\1. My Chinchilla"
 git clone -b claude/chinchilla-tracking-portal-uhz6zp https://github.com/jchinchillav/Chinchilla.git
 cd Chinchilla
 
-# 4. Claude Code actualizado y arranque
-claude update
+# E. Arrancar (la primera vez pide iniciar sesión: elegir la cuenta de Claude, no API key)
 claude --chrome --remote-control
 ```
 
-Si la carpeta `Chinchilla` ya existe: `cd Chinchilla` y luego `git pull`, en lugar del paso 3.
+En arranques posteriores basta con:
+
+```powershell
+cd "C:\Users\JorgeChinchilla\Documents\1. My Chinchilla\Chinchilla"
+git pull
+claude --chrome --remote-control
+```
+
+Si `claude` no se reconoce después de instalarlo, agregarlo al PATH y abrir otra PowerShell:
+
+```powershell
+[Environment]::SetEnvironmentVariable('Path', [Environment]::GetEnvironmentVariable('Path','User') + ";$env:USERPROFILE\.local\bin", 'User')
+```
 
 - **Chrome:** instalar la extensión *Claude in Chrome* (v1.0.36 o superior) desde la Chrome Web Store, con la misma cuenta de Claude. Dentro de la sesión, `/chrome` muestra el estado y permite dejarlo activado por defecto. Docs: https://code.claude.com/docs/en/chrome
 - **Remote Control** (para seguirla desde el celular o la app): `--remote-control` (o `/rc` dentro de la sesión). La PC debe quedar encendida y `claude` corriendo. Docs: https://code.claude.com/docs/en/remote-control
