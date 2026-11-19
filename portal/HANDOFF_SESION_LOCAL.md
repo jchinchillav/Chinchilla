@@ -9,13 +9,22 @@ La sesión en la nube no podía abrir sitios de proveedores, marcas ni redes (el
 ## 1. Arranque (Jorge, en PowerShell)
 
 ```powershell
+# 1. Ir a Documentos (funciona aunque esté en OneDrive)
+cd ([Environment]::GetFolderPath('MyDocuments'))
+
+# 2. Verificar git (si falla: winget install --id Git.Git -e, cerrar y abrir PowerShell)
+git --version
+
+# 3. Bajar el proyecto en la rama de trabajo (la primera vez)
+git clone -b claude/chinchilla-tracking-portal-uhz6zp https://github.com/jchinchillav/Chinchilla.git
+cd Chinchilla
+
+# 4. Claude Code actualizado y arranque
 claude update
-cd C:\Users\Jorge\Documents\Chinchilla
-git fetch origin
-git checkout claude/chinchilla-tracking-portal-uhz6zp
-git pull
 claude --chrome --remote-control
 ```
+
+Si la carpeta `Chinchilla` ya existe: `cd Chinchilla` y luego `git pull`, en lugar del paso 3.
 
 - **Chrome:** instalar la extensión *Claude in Chrome* (v1.0.36 o superior) desde la Chrome Web Store, con la misma cuenta de Claude. Dentro de la sesión, `/chrome` muestra el estado y permite dejarlo activado por defecto. Docs: https://code.claude.com/docs/en/chrome
 - **Remote Control** (para seguirla desde el celular o la app): `--remote-control` (o `/rc` dentro de la sesión). La PC debe quedar encendida y `claude` corriendo. Docs: https://code.claude.com/docs/en/remote-control
